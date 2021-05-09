@@ -105,7 +105,7 @@ async function main() {
     })
 
   } catch (e) { console.log(e) }
-} main();
+} //main();
 
 async function checkIDInDB(station_id: number): Promise<boolean> {
   const result =
