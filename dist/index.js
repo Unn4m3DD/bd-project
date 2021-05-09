@@ -9,15 +9,48 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const process = require("process");
 const express = require("express");
 const app = express();
 const port = 3000;
-const sql = require('mssql');
 const mqtt = require("mqtt");
-function main() {
+const ms_sql_connection = require("mssql");
+let my_sql_connection;
+function queryMySql(sql_query) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield sql.connect({
+        return new Promise((resolve, reject) => my_sql_connection.query(sql_query, function (error, results, fields) {
+            if (error)
+                reject(error);
+            resolve(results);
+        }));
+    });
+}
+function queryMsSql(sql_query) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield ms_sql_connection.query(sql_query);
+    });
+}
+let query;
+function parseArgs() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (process.argv[2] != "mySql" && process.argv[2] != "msSql") {
+            //console.log(process.argv)
+            //console.log("Usage: node index.js [mySql|msSql]")
+            process.exit(1);
+        }
+        if (process.argv[2] == "mySql") {
+            var mysql = require('mysql');
+            my_sql_connection = mysql.createConnection({
+                host: 'localhost',
+                user: 'me',
+                password: 'secret',
+                database: 'my_db'
+            });
+            my_sql_connection.connect();
+            query = queryMySql;
+        }
+        else {
+            yield ms_sql_connection.connect({
                 user: "p2g1",
                 password: "Tuprima1!",
                 server: "mednat.ieeta.pt",
@@ -29,15 +62,27 @@ function main() {
                     trustedConnection: false
                 }
             });
+            query = queryMsSql;
+        }
+    });
+}
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield parseArgs();
+        try {
             let client = mqtt.connect('mqtt://unn4m3dd.xyz', { port: 21, }); // ws://ccam.av.it.pt clientId: "it2s", username: "it2s", password: "it2sit2s", protocolId: 'MQIsdp', protocolVersion: 3 })
-            let can_send_by_id = {
-                10: {
-                    cpm: true,
-                }
+            let sent_recently = {
+                cpm: {},
+                cam: {},
+                denm: {},
+                vam: {},
             };
             client.on('connect', function () {
-                client.subscribe('its_center/inqueue/#');
-                console.log("connected");
+                client.subscribe('its_center/inqueue/cpm/#');
+                client.subscribe('its_center/inqueue/denm/#');
+                client.subscribe('its_center/inqueue/cam/#');
+                client.subscribe('its_center/inqueue/vam/#');
+                //console.log("connected")
             });
             client.on('message', (topic, message) => __awaiter(this, void 0, void 0, function* () {
                 // message is Buffer
@@ -45,20 +90,27 @@ function main() {
                 let message_type = topic_arr[2];
                 let message_content = JSON.parse(message.toString());
                 let quadtree = parseInt(topic_arr.slice(3).join(""), 4);
-                console.log(topic);
-                console.log(quadtree);
-                let id_in_db = yield checkEmitterIDInDB(message_type, message_content);
-                if (id_in_db) {
-                    if (!(message_content.station_id in can_send_by_id)) {
-                        can_send_by_id[message_content.station_id] = {};
-                        can_send_by_id[message_content.station_id][`${message_type}`] = false;
+                if (topic_arr.length <= 3)
+                    return;
+                //console.log(topic)
+                //console.log(quadtree)
+                try {
+                    let id_in_db = yield checkIDInDB(message_content.station_id);
+                    if (id_in_db)
+                        yield updateIDInDB(message_type, message_content);
+                    else
+                        yield insertIDInDB(message_type, message_content);
+                    //console.log(id_in_db)
+                    //console.log(message_type)
+                    if (!sent_recently[message_type][message_content.station_id]) {
+                        sent_recently[message_type][message_content.station_id] = true;
+                        setTimeout(() => sent_recently[message_type][message_content.station_id] = false, 1000);
                         dbOnMessage(message_type, message_content, quadtree);
                     }
-                    if (can_send_by_id[message_content.station_id][`${message_type}`]) {
-                        can_send_by_id[message_content.station_id][`${message_type}`] = false;
-                        setTimeout(() => can_send_by_id[message_content.station_id][`${message_type}`] = true, 1000);
-                        dbOnMessage(message_type, message_content, quadtree);
-                    }
+                }
+                catch (e) {
+                    /*this path might be taken due to race conditions but the db ensures data integrity
+                    this is not a problem because it only occures once or twice everytime a new id is added to the db*/
                 }
                 //client.end()
             }));
@@ -69,57 +121,72 @@ function main() {
     });
 }
 main();
-function checkEmitterIDInDB(message_type, message_content) {
+function checkIDInDB(station_id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const result = yield sql.query('Select * from it2s_db.Emitter');
-        for (let record of result.recordset) {
-            if (message_content.station_id, message_type, message_content == record.station_id)
-                return true;
+        const result = yield query(`Select * from it2s_db.Emitter where station_id = ${station_id}`);
+        return result.recordset.length == 1;
+    });
+}
+function updateIDInDB(message_type, message_content) {
+    return __awaiter(this, void 0, void 0, function* () {
+        switch (message_type) {
+            case "cpm":
+                yield query(`update it2s_db.Emitter set current_app_version=1 where station_id = ${message_content.station_id}`);
+                yield query(`update it2s_db.RSU set latitude=${message_content.latitude}, longitude=${message_content.longitude} where emitter_station_id = ${message_content.station_id}`);
+                break;
+            case "cam":
+                break;
+            case "vam":
+                break;
+            case "denm":
+                yield query(`update it2s_db.Emitter set current_app_version=1 where  station_id = ${message_content.station_id}`); //hardcode
+                yield query(`update it2s_db.App set configured_language='pt' where  emitter_station_id = ${message_content.station_id}`); //hardcode
+                break;
+            default:
+                break;
         }
-        try {
-            switch (message_type) {
-                case "cpm":
-                    yield sql.query(`insert into it2s_db.Emitter values(${message_content.station_id}, 1)`);
-                    yield sql.query(`insert into it2s_db.RSU values(${message_content.station_id}, ${message_content.latitude}, ${message_content.longitude})`);
-                    break;
-                case "cam":
-                    break;
-                case "vam":
-                    break;
-                case "denm":
-                    yield sql.query(`insert into it2s_db.Emitter values(${message_content.station_id}, 1)`);
-                    yield sql.query(`insert into it2s_db.App values(${message_content.station_id}, 'pt')`);
-                    break;
-                default:
-                    break;
-            }
+    });
+}
+function insertIDInDB(message_type, message_content) {
+    return __awaiter(this, void 0, void 0, function* () {
+        switch (message_type) {
+            case "cpm":
+                yield query(`insert into it2s_db.Emitter values(${message_content.station_id}, 1)`);
+                yield query(`insert into it2s_db.RSU values(${message_content.station_id}, ${message_content.latitude}, ${message_content.longitude})`);
+                break;
+            case "cam":
+                break;
+            case "vam":
+                break;
+            case "denm":
+                yield query(`insert into it2s_db.Emitter values(${message_content.station_id}, 1)`);
+                yield query(`insert into it2s_db.App values(${message_content.station_id}, 'pt')`);
+                break;
+            default:
+                break;
         }
-        catch (e) {
-            console.log(e);
-            return false;
-        }
-        return true;
     });
 }
 function dbOnMessage(message_type, message_content, quadtree) {
     return __awaiter(this, void 0, void 0, function* () {
         let query_to_send = "";
-        console.log("Sending...");
+        //console.log("Sending...")
         switch (message_type) {
             case "cpm":
+                const current_timestamp = Math.floor(Date.now() / 1000);
                 query_to_send = `insert into it2s_db.CPM values(
         ${message_content.station_id},
-        ${Date.now()},
+        ${current_timestamp},
         ${message_content.longitude},
         ${message_content.latitude},
         ${quadtree}
-        ")`;
-                yield sql.query(query_to_send);
+        )`;
+                yield query(query_to_send);
                 for (let perceived_object of message_content.perceived_objects) {
                     let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2));
                     query_to_send = `insert into it2s_db.PerceivedObject values( 
           ${message_content.station_id},
-          ${Date.now()},
+          ${current_timestamp},
           ${perceived_object.objectID},
           ${message_content.longitude},
           ${message_content.latitude},
@@ -129,28 +196,32 @@ function dbOnMessage(message_type, message_content, quadtree) {
           ${perceived_object.xSpeed},
           ${perceived_object.ySpeed},
           ${abs_speed})`;
-                    yield sql.query(query_to_send);
+                    yield query(query_to_send);
                 }
             case "cam":
                 break;
             case "vam":
                 break;
             case "denm":
-                query_to_send = `insert into it2s_db.CPM values(
+                query_to_send = `insert into it2s_db.DENM values(
               ${message_content.station_id},
-              ${Date.now()},
+              ${Math.floor(Date.now() / 1000)},
+              ${message_content.cause_code},
+              ${message_content.sub_cause_code},
               ${message_content.longitude},
               ${message_content.latitude},
+              ${message_content.validity_duration},
               ${quadtree}
               )`;
+                //console.log(query_to_send);
                 console.log(query_to_send);
-                yield sql.query(query_to_send);
+                yield query(query_to_send);
                 break;
             default:
-                //console.log(message_type + " is not recognized")
+                ////console.log(message_type + " is not recognized")
                 break;
         }
-        console.log(query_to_send);
+        //console.log(query_to_send);
     });
 }
 app.get("/api/car_count", (req, res) => {
