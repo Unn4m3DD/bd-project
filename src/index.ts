@@ -1,12 +1,49 @@
+import process = require("process")
 import express = require('express')
 const app = express()
 const port = 3000
-const sql = require('mssql')
 import mqtt = require('mqtt')
 
-async function main() {
-  try {
-    await sql.connect({
+import ms_sql_connection = require('mssql')
+
+let my_sql_connection: any;
+
+
+async function queryMySql(sql_query) {
+  return new Promise((resolve, reject) => my_sql_connection.query(
+    sql_query,
+    function (error, results, fields) {
+      if (error)
+        reject(error)
+      resolve(results)
+    })
+  )
+}
+async function queryMsSql(sql_query) {
+  return await ms_sql_connection.query(sql_query)
+}
+
+let query: (sql_query: string) => Promise<any>;
+
+async function parseArgs() {
+  if (process.argv[2] != "mySql" && process.argv[2] != "msSql") {
+    console.log(process.argv)
+    console.log("Usage: node index.js [mySql|msSql]")
+    process.exit(1);
+  }
+  if (process.argv[2] == "mySql") {
+    var mysql = require('mysql');
+    my_sql_connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'me',
+      password: 'secret',
+      database: 'my_db'
+    });
+    my_sql_connection.connect();
+    query = queryMySql
+  }
+  else {
+    await ms_sql_connection.connect({
       user: "p2g1",
       password: "Tuprima1!",
       server: "mednat.ieeta.pt",
@@ -18,6 +55,14 @@ async function main() {
         trustedConnection: false
       }
     })
+    query = queryMsSql
+  }
+
+}
+
+async function main() {
+  await parseArgs();
+  try {
     let client = mqtt.connect('mqtt://unn4m3dd.xyz', { port: 21, })// ws://ccam.av.it.pt clientId: "it2s", username: "it2s", password: "it2sit2s", protocolId: 'MQIsdp', protocolVersion: 3 })
     let can_send_by_id = {
       10: {
@@ -53,7 +98,7 @@ async function main() {
               ${quadtree}
               ")`;
             console.log(query_to_send)
-            await sql.query(query_to_send);
+            await query(query_to_send);
             for (let perceived_object of message_content.perceived_objects) {
               let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2))
               query_to_send = `insert into it2s_db.PerceivedObject values( 
@@ -68,7 +113,7 @@ async function main() {
                 ${perceived_object.xSpeed},
                 ${perceived_object.ySpeed},
                 ${abs_speed})`;
-              await sql.query(query_to_send);
+              await query(query_to_send);
             }
             break;
           case "cam":
@@ -90,7 +135,7 @@ async function main() {
               quadtree +
               ")";
             console.log(query_to_send)
-            await sql.query(query_to_send);*/
+            await query(query_to_send);*/
             break;
           default:
             //console.log(message_type + " is not recognized")
@@ -101,10 +146,11 @@ async function main() {
 
 
   } catch (e) { console.log(e) }
-} //main();
+}
+main();
 
 async function checkEmitterIDInDB(id) {
-  const result = await sql.query('Select * from it2s_db.Emitter');
+  const result = await query('Select * from it2s_db.Emitter');
   for (let record of result.recordset) {
     if (id == record.station_id) return true;
   }
