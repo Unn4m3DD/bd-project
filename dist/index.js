@@ -313,5 +313,5 @@ app.get("/api/denms_list", (req, res) => {
         }
     });
 });
-app.listen(10000);
+app.listen(8001);
 //# sourceMappingURL=index.js.map

@@ -120,16 +120,16 @@ app.get("/api/car_speed_average", (req, res) => {
 app.get("/api/people_count", (req, res) => {
   res.send({ count: 27 })
 })
-app.get("/api/max_simultaneos_people_count", (req, res) => {
+app.get("/api/max_simultaneous_people_count", (req, res) => {
   res.send({ max_simultaneos: 18 })
 })
-app.get("/api/min_simultaneos_people_count", (req, res) => {
+app.get("/api/min_simultaneous_people_count", (req, res) => {
   res.send({ min_simultaneos: 4 })
 })
-app.get("/api/min_simultaneoscar_count", (req, res) => {
+app.get("/api/min_simultaneous_count", (req, res) => {
   res.send({ min_simultaneos: 5 })
 })
-app.get("/api/max_simultaneoscar_count", (req, res) => {
+app.get("/api/max_simultaneous_count", (req, res) => {
   res.send({ max_simultaneos: 12 })
 })
 app.get("/api/cams_list", (req, res) => {
@@ -324,4 +324,4 @@ app.get("/api/denms_list", (req, res) => {
     }
   )
 })
-app.listen(801)
+app.listen(8001)
