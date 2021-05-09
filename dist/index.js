@@ -45,69 +45,21 @@ function main() {
                 let message_type = topic_arr[2];
                 let message_content = JSON.parse(message.toString());
                 let quadtree = parseInt(topic_arr.slice(3).join(""), 4);
-                let query_to_send = "";
-                //let id_in_db = await checkEmitterIDInDB(message_content.station_id);
-                let id_in_db = true;
-                if (id_in_db)
-                    switch (message_type) {
-                        case "cpm":
-                            if (!(message_content.station_id in can_send_by_id))
-                                can_send_by_id[message_content.station_id].last_cpm = false;
-                            if (!can_send_by_id[message_content.station_id].cpm)
-                                break;
-                            can_send_by_id[message_content.station_id].cpm = false;
-                            setTimeout(() => can_send_by_id[message_content.station_id].cpm = true, 1000);
-                            query_to_send = `insert into it2s_db.CPM values(
-              ${message_content.station_id},
-              ${message_content.timestamp_delta},
-              ${message_content.longitude},
-              ${message_content.latitude},
-              ${quadtree}
-              ")`;
-                            console.log(query_to_send);
-                            yield sql.query(query_to_send);
-                            for (let perceived_object of message_content.perceived_objects) {
-                                let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2));
-                                query_to_send = `insert into it2s_db.PerceivedObject values( 
-                ${message_content.station_id},
-                ${message_content.timestamp_delta},
-                ${perceived_object.objectID},
-                ${message_content.longitude},
-                ${message_content.latitude},
-                ${quadtree},
-                ${perceived_object.xDistance},
-                ${perceived_object.yDistance},
-                ${perceived_object.xSpeed},
-                ${perceived_object.ySpeed},
-                ${abs_speed})`;
-                                yield sql.query(query_to_send);
-                            }
-                            break;
-                        case "cam":
-                            break;
-                        case "vam":
-                            break;
-                        case "denm":
-                            console.log(message_content);
-                            /*if (!(message_content.station_id in can_send_by_id))
-                              can_send_by_id[message_content.station_id].last_cpm = false;
-                            if (!can_send_by_id[message_content.station_id].cpm) break;
-                            can_send_by_id[message_content.station_id].cpm = false;
-                            setTimeout(() => can_send_by_id[message_content.station_id].cpm = true, 1000);
-                            query_to_send = "insert into it2s_db.CPM values(" +
-                              message_content.station_id + ", " +
-                              message_content.timestamp_delta + ", " +
-                              message_content.longitude + ", " +
-                              message_content.latitude + ", " +
-                              quadtree +
-                              ")";
-                            console.log(query_to_send)
-                            await sql.query(query_to_send);*/
-                            break;
-                        default:
-                            //console.log(message_type + " is not recognized")
-                            break;
+                console.log(topic);
+                console.log(quadtree);
+                let id_in_db = yield checkEmitterIDInDB(message_type, message_content);
+                if (id_in_db) {
+                    if (!(message_content.station_id in can_send_by_id)) {
+                        can_send_by_id[message_content.station_id] = {};
+                        can_send_by_id[message_content.station_id][`${message_type}`] = false;
+                        dbOnMessage(message_type, message_content, quadtree);
                     }
+                    if (can_send_by_id[message_content.station_id][`${message_type}`]) {
+                        can_send_by_id[message_content.station_id][`${message_type}`] = false;
+                        setTimeout(() => can_send_by_id[message_content.station_id][`${message_type}`] = true, 1000);
+                        dbOnMessage(message_type, message_content, quadtree);
+                    }
+                }
                 //client.end()
             }));
         }
@@ -115,15 +67,90 @@ function main() {
             console.log(e);
         }
     });
-} //main();
-function checkEmitterIDInDB(id) {
+}
+main();
+function checkEmitterIDInDB(message_type, message_content) {
     return __awaiter(this, void 0, void 0, function* () {
         const result = yield sql.query('Select * from it2s_db.Emitter');
         for (let record of result.recordset) {
-            if (id == record.station_id)
+            if (message_content.station_id, message_type, message_content == record.station_id)
                 return true;
         }
-        return false;
+        try {
+            switch (message_type) {
+                case "cpm":
+                    yield sql.query(`insert into it2s_db.Emitter values(${message_content.station_id}, 1)`);
+                    yield sql.query(`insert into it2s_db.RSU values(${message_content.station_id}, ${message_content.latitude}, ${message_content.longitude})`);
+                    break;
+                case "cam":
+                    break;
+                case "vam":
+                    break;
+                case "denm":
+                    yield sql.query(`insert into it2s_db.Emitter values(${message_content.station_id}, 1)`);
+                    yield sql.query(`insert into it2s_db.App values(${message_content.station_id}, 'pt')`);
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch (e) {
+            console.log(e);
+            return false;
+        }
+        return true;
+    });
+}
+function dbOnMessage(message_type, message_content, quadtree) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let query_to_send = "";
+        console.log("Sending...");
+        switch (message_type) {
+            case "cpm":
+                query_to_send = `insert into it2s_db.CPM values(
+        ${message_content.station_id},
+        ${Date.now()},
+        ${message_content.longitude},
+        ${message_content.latitude},
+        ${quadtree}
+        ")`;
+                yield sql.query(query_to_send);
+                for (let perceived_object of message_content.perceived_objects) {
+                    let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2));
+                    query_to_send = `insert into it2s_db.PerceivedObject values( 
+          ${message_content.station_id},
+          ${Date.now()},
+          ${perceived_object.objectID},
+          ${message_content.longitude},
+          ${message_content.latitude},
+          ${quadtree},
+          ${perceived_object.xDistance},
+          ${perceived_object.yDistance},
+          ${perceived_object.xSpeed},
+          ${perceived_object.ySpeed},
+          ${abs_speed})`;
+                    yield sql.query(query_to_send);
+                }
+            case "cam":
+                break;
+            case "vam":
+                break;
+            case "denm":
+                query_to_send = `insert into it2s_db.CPM values(
+              ${message_content.station_id},
+              ${Date.now()},
+              ${message_content.longitude},
+              ${message_content.latitude},
+              ${quadtree}
+              )`;
+                console.log(query_to_send);
+                yield sql.query(query_to_send);
+                break;
+            default:
+                //console.log(message_type + " is not recognized")
+                break;
+        }
+        console.log(query_to_send);
     });
 }
 app.get("/api/car_count", (req, res) => {
@@ -135,16 +162,16 @@ app.get("/api/car_speed_average", (req, res) => {
 app.get("/api/people_count", (req, res) => {
     res.send({ count: 27 });
 });
-app.get("/api/max_simultaneos_people_count", (req, res) => {
+app.get("/api/max_simultaneous_people_count", (req, res) => {
     res.send({ max_simultaneos: 18 });
 });
-app.get("/api/min_simultaneos_people_count", (req, res) => {
+app.get("/api/min_simultaneous_people_count", (req, res) => {
     res.send({ min_simultaneos: 4 });
 });
-app.get("/api/min_simultaneoscar_count", (req, res) => {
+app.get("/api/min_simultaneous_count", (req, res) => {
     res.send({ min_simultaneos: 5 });
 });
-app.get("/api/max_simultaneoscar_count", (req, res) => {
+app.get("/api/max_simultaneous_count", (req, res) => {
     res.send({ max_simultaneos: 12 });
 });
 app.get("/api/cams_list", (req, res) => {

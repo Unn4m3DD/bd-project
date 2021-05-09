@@ -34,82 +34,108 @@ async function main() {
       let message_type = topic_arr[2]
       let message_content = JSON.parse(message.toString())
       let quadtree = parseInt(topic_arr.slice(3).join(""), 4)
-      let query_to_send = "";
-      //let id_in_db = await checkEmitterIDInDB(message_content.station_id);
-      let id_in_db = true
-      if (id_in_db)
-        switch (message_type) {
-          case "cpm":
-            if (!(message_content.station_id in can_send_by_id))
-              can_send_by_id[message_content.station_id].last_cpm = false;
-            if (!can_send_by_id[message_content.station_id].cpm) break;
-            can_send_by_id[message_content.station_id].cpm = false;
-            setTimeout(() => can_send_by_id[message_content.station_id].cpm = true, 1000);
-            query_to_send = `insert into it2s_db.CPM values(
-              ${message_content.station_id},
-              ${message_content.timestamp_delta},
-              ${message_content.longitude},
-              ${message_content.latitude},
-              ${quadtree}
-              ")`;
-            console.log(query_to_send)
-            await sql.query(query_to_send);
-            for (let perceived_object of message_content.perceived_objects) {
-              let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2))
-              query_to_send = `insert into it2s_db.PerceivedObject values( 
-                ${message_content.station_id},
-                ${message_content.timestamp_delta},
-                ${perceived_object.objectID},
-                ${message_content.longitude},
-                ${message_content.latitude},
-                ${quadtree},
-                ${perceived_object.xDistance},
-                ${perceived_object.yDistance},
-                ${perceived_object.xSpeed},
-                ${perceived_object.ySpeed},
-                ${abs_speed})`;
-              await sql.query(query_to_send);
-            }
-            break;
-          case "cam":
-            break;
-          case "vam":
-            break;
-          case "denm":
-            console.log(message_content)
-            /*if (!(message_content.station_id in can_send_by_id))
-              can_send_by_id[message_content.station_id].last_cpm = false;
-            if (!can_send_by_id[message_content.station_id].cpm) break;
-            can_send_by_id[message_content.station_id].cpm = false;
-            setTimeout(() => can_send_by_id[message_content.station_id].cpm = true, 1000);
-            query_to_send = "insert into it2s_db.CPM values(" +
-              message_content.station_id + ", " +
-              message_content.timestamp_delta + ", " +
-              message_content.longitude + ", " +
-              message_content.latitude + ", " +
-              quadtree +
-              ")";
-            console.log(query_to_send)
-            await sql.query(query_to_send);*/
-            break;
-          default:
-            //console.log(message_type + " is not recognized")
-            break;
+      console.log(topic)
+      console.log(quadtree)
+      let id_in_db = await checkEmitterIDInDB(message_type, message_content);
+      if (id_in_db) {
+        if (!(message_content.station_id in can_send_by_id)) {
+          can_send_by_id[message_content.station_id] = {}
+          can_send_by_id[message_content.station_id][`${message_type}`] = false;
+          dbOnMessage(message_type, message_content, quadtree);
         }
+        if (can_send_by_id[message_content.station_id][`${message_type}`]) {
+          can_send_by_id[message_content.station_id][`${message_type}`] = false;
+          setTimeout(() => can_send_by_id[message_content.station_id][`${message_type}`] = true, 1000);
+          dbOnMessage(message_type, message_content, quadtree);
+        }
+      }
       //client.end()
     })
 
-
   } catch (e) { console.log(e) }
-} //main();
+} main();
 
-async function checkEmitterIDInDB(id) {
+
+async function checkEmitterIDInDB(message_type, message_content) {
   const result = await sql.query('Select * from it2s_db.Emitter');
   for (let record of result.recordset) {
-    if (id == record.station_id) return true;
+    if (message_content.station_id, message_type, message_content == record.station_id) return true;
   }
-  return false;
+  try {
+    switch (message_type) {
+      case "cpm":
+        await sql.query(`insert into it2s_db.Emitter values(${message_content.station_id}, 1)`);
+        await sql.query(`insert into it2s_db.RSU values(${message_content.station_id}, ${message_content.latitude}, ${message_content.longitude})`);
+        break;
+      case "cam":
+        break;
+      case "vam":
+        break;
+      case "denm":
+        await sql.query(`insert into it2s_db.Emitter values(${message_content.station_id}, 1)`);
+        await sql.query(`insert into it2s_db.App values(${message_content.station_id}, 'pt')`);
+        break;
+      default:
+        break;
+    }
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+  return true;
 }
+
+async function dbOnMessage(message_type, message_content, quadtree) {
+  let query_to_send = "";
+  console.log("Sending...")
+  switch (message_type) {
+    case "cpm":
+      query_to_send = `insert into it2s_db.CPM values(
+        ${message_content.station_id},
+        ${Date.now()},
+        ${message_content.longitude},
+        ${message_content.latitude},
+        ${quadtree}
+        ")`;
+      await sql.query(query_to_send);
+      for (let perceived_object of message_content.perceived_objects) {
+        let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2))
+        query_to_send = `insert into it2s_db.PerceivedObject values( 
+          ${message_content.station_id},
+          ${Date.now()},
+          ${perceived_object.objectID},
+          ${message_content.longitude},
+          ${message_content.latitude},
+          ${quadtree},
+          ${perceived_object.xDistance},
+          ${perceived_object.yDistance},
+          ${perceived_object.xSpeed},
+          ${perceived_object.ySpeed},
+          ${abs_speed})`;
+        await sql.query(query_to_send);
+      }
+    case "cam":
+      break;
+    case "vam":
+      break;
+    case "denm":
+      query_to_send = `insert into it2s_db.CPM values(
+              ${message_content.station_id},
+              ${Date.now()},
+              ${message_content.longitude},
+              ${message_content.latitude},
+              ${quadtree}
+              )`;
+      console.log(query_to_send);
+      await sql.query(query_to_send);
+      break;
+    default:
+      //console.log(message_type + " is not recognized")
+      break;
+  }
+  console.log(query_to_send);
+}
+
 
 app.get("/api/car_count", (req, res) => {
   res.send({ count: 27 })
