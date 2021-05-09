@@ -23,39 +23,40 @@ async function main() {
       10: {
         cpm: true,
       }
+    }
     client.on('connect', function () {
-        client.subscribe('its_center/inqueue/#')
-        console.log("connected")
-      })
+      client.subscribe('its_center/inqueue/#')
+      console.log("connected")
+    })
     client.on('message', async (topic, message) => {
-        // message is Buffer
-        let topic_arr = topic.split("/")
-        let message_type = topic_arr[2]
-        let message_content = JSON.parse(message.toString())
-        let quadtree = parseInt(topic_arr.slice(3).join(""), 4)
-        let query_to_send = "";
-        //let id_in_db = await checkEmitterIDInDB(message_content.station_id);
-        let id_in_db = true
-        if (id_in_db)
-          switch (message_type) {
-            case "cpm":
-              if (!(message_content.station_id in can_send_by_id))
-                can_send_by_id[message_content.station_id].last_cpm = false;
-              if (!can_send_by_id[message_content.station_id].cpm) break;
-              can_send_by_id[message_content.station_id].cpm = false;
-              setTimeout(() => can_send_by_id[message_content.station_id].cpm = true, 1000);
-              query_to_send = `insert into it2s_db.CPM values(
+      // message is Buffer
+      let topic_arr = topic.split("/")
+      let message_type = topic_arr[2]
+      let message_content = JSON.parse(message.toString())
+      let quadtree = parseInt(topic_arr.slice(3).join(""), 4)
+      let query_to_send = "";
+      //let id_in_db = await checkEmitterIDInDB(message_content.station_id);
+      let id_in_db = true
+      if (id_in_db)
+        switch (message_type) {
+          case "cpm":
+            if (!(message_content.station_id in can_send_by_id))
+              can_send_by_id[message_content.station_id].last_cpm = false;
+            if (!can_send_by_id[message_content.station_id].cpm) break;
+            can_send_by_id[message_content.station_id].cpm = false;
+            setTimeout(() => can_send_by_id[message_content.station_id].cpm = true, 1000);
+            query_to_send = `insert into it2s_db.CPM values(
               ${message_content.station_id},
               ${message_content.timestamp_delta},
               ${message_content.longitude},
               ${message_content.latitude},
               ${quadtree}
               ")`;
-              console.log(query_to_send)
-              await sql.query(query_to_send);
-              for (let perceived_object of message_content.perceived_objects) {
-                let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2))
-                query_to_send = `insert into it2s_db.PerceivedObject values( 
+            console.log(query_to_send)
+            await sql.query(query_to_send);
+            for (let perceived_object of message_content.perceived_objects) {
+              let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2))
+              query_to_send = `insert into it2s_db.PerceivedObject values( 
                 ${message_content.station_id},
                 ${message_content.timestamp_delta},
                 ${perceived_object.objectID},
@@ -67,37 +68,36 @@ async function main() {
                 ${perceived_object.xSpeed},
                 ${perceived_object.ySpeed},
                 ${abs_speed})`;
-                await sql.query(query_to_send);
-              }
-              break;
-            case "cam":
-              break;
-            case "vam":
-              break;
-            case "denm":
-              console.log(message_content)
-              /*if (!(message_content.station_id in can_send_by_id))
-                can_send_by_id[message_content.station_id].last_cpm = false;
-              if (!can_send_by_id[message_content.station_id].cpm) break;
-              can_send_by_id[message_content.station_id].cpm = false;
-              setTimeout(() => can_send_by_id[message_content.station_id].cpm = true, 1000);
-              query_to_send = "insert into it2s_db.CPM values(" +
-                message_content.station_id + ", " +
-                message_content.timestamp_delta + ", " +
-                message_content.longitude + ", " +
-                message_content.latitude + ", " +
-                quadtree +
-                ")";
-              console.log(query_to_send)
-              await sql.query(query_to_send);*/
-              break;
-            default:
-              //console.log(message_type + " is not recognized")
-              break;
-          }
-        //client.end()
-      })
-    }
+              await sql.query(query_to_send);
+            }
+            break;
+          case "cam":
+            break;
+          case "vam":
+            break;
+          case "denm":
+            console.log(message_content)
+            /*if (!(message_content.station_id in can_send_by_id))
+              can_send_by_id[message_content.station_id].last_cpm = false;
+            if (!can_send_by_id[message_content.station_id].cpm) break;
+            can_send_by_id[message_content.station_id].cpm = false;
+            setTimeout(() => can_send_by_id[message_content.station_id].cpm = true, 1000);
+            query_to_send = "insert into it2s_db.CPM values(" +
+              message_content.station_id + ", " +
+              message_content.timestamp_delta + ", " +
+              message_content.longitude + ", " +
+              message_content.latitude + ", " +
+              quadtree +
+              ")";
+            console.log(query_to_send)
+            await sql.query(query_to_send);*/
+            break;
+          default:
+            //console.log(message_type + " is not recognized")
+            break;
+        }
+      //client.end()
+    })
 
 
   } catch (e) { console.log(e) }
