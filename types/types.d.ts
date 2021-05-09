@@ -1,11 +1,4 @@
-interface timeline_t {
-  [time: number]: [
-    cpm: cpm_t[],
-    cam: cam_t[],
-    vam: vam_t[],
-    denm: denm_t[]
-  ]
-}
+
 
 interface perceived_object_t {
   objectID: number,           // [0..255] this should be used to keep consistency
@@ -63,4 +56,12 @@ export enum StationType {
   specialVehicles = 10,
   tram = 11,
   roadSideUnit = 15
+}
+interface timeline_t {
+  [time: number]: {
+    cpm: cpm_t[],
+    cam: cam_t[],
+    vam: vam_t[],
+    denm: denm_t[]
+  }
 }

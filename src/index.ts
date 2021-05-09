@@ -3,6 +3,7 @@ const app = express()
 const port = 3000
 const sql = require('mssql')
 import mqtt = require('mqtt')
+/*
 async function main() {
   try {
     await sql.connect({
@@ -21,7 +22,6 @@ async function main() {
     let can_send_by_id = {
       10: {
         cpm: true,
-      }
     }
     client.on('connect', function () {
       client.subscribe('its_center/inqueue/#')
@@ -109,10 +109,8 @@ async function checkEmitterIDInDB(id) {
   }
   return false;
 }
-/*app.get("/api/timeline", (req, res) => {
-  res.send({
-    cpm: [
-
-    ]
-  })
-})*/
+*/
+app.get("/api/car_count", (req, res) => {
+  res.send({count: 27})
+})
+app.listen(10000)
