@@ -3,9 +3,10 @@ const app = express()
 const port = 3000
 const sql = require('mssql')
 import mqtt = require('mqtt')
+/*
 async function main() {
   try {
-    /*await sql.connect({
+    await sql.connect({
       user: "p2g1",
       password: "Tuprima1!",
       server: "mednat.ieeta.pt",
@@ -16,7 +17,7 @@ async function main() {
         enableArithAbort: false,
         trustedConnection: false
       }
-    })*/
+    })
     var client = mqtt.connect('ws://ccam.av.it.pt', { port: 8884, clientId: "it2s", username: "it2s", password: "it2sit2s", protocolId: 'MQIsdp', protocolVersion: 3 })
 
     client.on('connect', function () {
@@ -62,10 +63,8 @@ async function checkEmitterIDInDB(id) {
     }
     return false;
 }
-/*app.get("/api/timeline", (req, res) => {
-  res.send({
-    cpm: [
-
-    ]
-  })
-})*/
+*/
+app.get("/api/car_count", (req, res) => {
+  res.send({count: 27})
+})
+app.listen(10000)
