@@ -1,0 +1,8 @@
+image: archlinux
+stages:
+    - deploy
+
+deploy:
+    stage: deploy
+    script:
+        - curl http://10.0.12.50:8887/
