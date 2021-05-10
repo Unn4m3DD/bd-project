@@ -13,9 +13,8 @@ const api_endpoint_1 = require("./api-endpoint");
 let query;
 function setup() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (process.argv[2] != "mySql" && process.argv[2] != "msSql") {
-            console.log(process.argv);
-            console.log("Usage: node index.js [mySql|msSql]");
+        if (process.argv[2] != "mariadb" && process.argv[2] != "msSql") {
+            console.log("Usage: node index.js [mariadb|msSql]");
             process.exit(1);
         }
         console.log("CITS-Backend started successfully");

@@ -4,9 +4,8 @@ import getQueryInterface from "./db-management"
 let query: (sql_query: string) => Promise<any>
 
 async function setup() {
-  if (process.argv[2] != "mySql" && process.argv[2] != "msSql") {
-    console.log(process.argv)
-    console.log("Usage: node index.js [mySql|msSql]")
+  if (process.argv[2] != "mariadb" && process.argv[2] != "msSql") {
+    console.log("Usage: node index.js [mariadb|msSql]")
     process.exit(1);
   }
   console.log("CITS-Backend started successfully")
