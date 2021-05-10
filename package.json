@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ms": "tsc && node dist/index.js msSql",
-    "my": "tsc && node dist/index.js mySql",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve" : "tsc && node dist/index.js mySql",
+    "build": "tsc -w"
   },
   "repository": {
     "type": "git",
