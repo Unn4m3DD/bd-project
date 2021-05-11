@@ -1,8 +1,9 @@
 export default [
 
   (app) => app.get("/api/car_count", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -12,8 +13,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -23,8 +25,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -34,8 +37,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.quadtree_zoom != undefined &&
       typeof(JSON.parse(req.query.quadtree_zoom as string)) != "number"
       ){
         res.send({ 
@@ -45,8 +49,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.station_id != undefined &&
       typeof(JSON.parse(req.query.station_id as string)) != "object"
       ){
         res.send({ 
@@ -62,8 +67,9 @@ export default [
 
 
   (app) => app.get("/api/car_speed_average", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -73,8 +79,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -84,8 +91,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -95,8 +103,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.quadtree_zoom != undefined &&
       typeof(JSON.parse(req.query.quadtree_zoom as string)) != "number"
       ){
         res.send({ 
@@ -106,8 +115,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.station_id != undefined &&
       typeof(JSON.parse(req.query.station_id as string)) != "object"
       ){
         res.send({ 
@@ -123,8 +133,9 @@ export default [
 
 
   (app) => app.get("/api/people_count", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -134,8 +145,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -145,8 +157,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -156,8 +169,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.quadtree_zoom != undefined &&
       typeof(JSON.parse(req.query.quadtree_zoom as string)) != "number"
       ){
         res.send({ 
@@ -173,8 +187,9 @@ export default [
 
 
   (app) => app.get("/api/max_simultaneous_people_count", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -184,8 +199,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -195,8 +211,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -206,8 +223,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.quadtree_zoom != undefined &&
       typeof(JSON.parse(req.query.quadtree_zoom as string)) != "number"
       ){
         res.send({ 
@@ -217,8 +235,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.timte_interval != undefined &&
       typeof(JSON.parse(req.query.timte_interval as string)) != "number"
       ){
         res.send({ 
@@ -234,8 +253,9 @@ export default [
 
 
   (app) => app.get("/api/min_simultaneous_people_count", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -245,8 +265,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -256,8 +277,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -267,8 +289,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.quadtree_zoom != undefined &&
       typeof(JSON.parse(req.query.quadtree_zoom as string)) != "number"
       ){
         res.send({ 
@@ -278,8 +301,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.timte_interval != undefined &&
       typeof(JSON.parse(req.query.timte_interval as string)) != "number"
       ){
         res.send({ 
@@ -295,8 +319,9 @@ export default [
 
 
   (app) => app.get("/api/min_simultaneous_car_count", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -306,8 +331,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -317,8 +343,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -328,8 +355,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.quadtree_zoom != undefined &&
       typeof(JSON.parse(req.query.quadtree_zoom as string)) != "number"
       ){
         res.send({ 
@@ -339,8 +367,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.timte_interval != undefined &&
       typeof(JSON.parse(req.query.timte_interval as string)) != "number"
       ){
         res.send({ 
@@ -350,8 +379,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.station_id != undefined &&
       typeof(JSON.parse(req.query.station_id as string)) != "object"
       ){
         res.send({ 
@@ -367,8 +397,9 @@ export default [
 
 
   (app) => app.get("/api/max_simultaneous_car_count", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -378,8 +409,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -389,8 +421,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -400,8 +433,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.quadtree_zoom != undefined &&
       typeof(JSON.parse(req.query.quadtree_zoom as string)) != "number"
       ){
         res.send({ 
@@ -411,8 +445,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.timte_interval != undefined &&
       typeof(JSON.parse(req.query.timte_interval as string)) != "number"
       ){
         res.send({ 
@@ -422,8 +457,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected (default: 18)"},{"key":"timte_interval","value":"10","description":"(Optional) Time interval considered simultaneos (seconds) (default: 10s)"},{"key":"station_id","value":"[1, 2]","description":"(Optional) Array of station id of the emitter"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.station_id != undefined &&
       typeof(JSON.parse(req.query.station_id as string)) != "object"
       ){
         res.send({ 
@@ -439,8 +475,9 @@ export default [
 
 
   (app) => app.get("/api/cams_list", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -450,8 +487,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Required) Tile of the location from where the data must be queried"},{"key":"emitter_ids","value":"[2, 99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -461,8 +499,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Required) Tile of the location from where the data must be queried"},{"key":"emitter_ids","value":"[2, 99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      req.query.location_quadtree == undefined ||
+    
+      if(
+        req.query.location_quadtree == undefined ||
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -472,8 +511,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Required) Tile of the location from where the data must be queried"},{"key":"emitter_ids","value":"[2, 99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.emitter_ids != undefined &&
       typeof(JSON.parse(req.query.emitter_ids as string)) != "object"
       ){
         res.send({ 
@@ -518,8 +558,9 @@ export default [
 
 
   (app) => app.get("/api/notifications_list", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -529,8 +570,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"[10, 1]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -540,8 +582,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"[10, 1]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -551,8 +594,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"[10, 1]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.emitter_id != undefined &&
       typeof(JSON.parse(req.query.emitter_id as string)) != "object"
       ){
         res.send({ 
@@ -576,8 +620,9 @@ export default [
 
 
   (app) => app.get("/api/events", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -587,8 +632,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -598,8 +644,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -609,8 +656,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Event listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Event listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.quadtree_zoom != undefined &&
       typeof(JSON.parse(req.query.quadtree_zoom as string)) != "number"
       ){
         res.send({ 
@@ -662,8 +710,9 @@ export default [
 
 
   (app) => app.get("/api/obu_list", (req, res) => {
-    if(
-      req.query.emitter_ids == undefined ||
+    
+      if(
+        req.query.emitter_ids == undefined ||
       typeof(JSON.parse(req.query.emitter_ids as string)) != "object"
       ){
         res.send({ 
@@ -684,8 +733,9 @@ export default [
 
 
   (app) => app.get("/api/rsu_list", (req, res) => {
-    if(
-      req.query.emitter_ids == undefined ||
+    
+      if(
+        req.query.emitter_ids == undefined ||
       typeof(JSON.parse(req.query.emitter_ids as string)) != "object"
       ){
         res.send({ 
@@ -707,8 +757,9 @@ export default [
 
 
   (app) => app.get("/api/smartphone_list", (req, res) => {
-    if(
-      req.query.emitter_ids == undefined ||
+    
+      if(
+        req.query.emitter_ids == undefined ||
       typeof(JSON.parse(req.query.emitter_ids as string)) != "object"
       ){
         res.send({ 
@@ -735,8 +786,9 @@ export default [
 
 
   (app) => app.get("/api/web_list", (req, res) => {
-    if(
-      req.query.emitter_ids == undefined ||
+    
+      if(
+        req.query.emitter_ids == undefined ||
       typeof(JSON.parse(req.query.emitter_ids as string)) != "object"
       ){
         res.send({ 
@@ -758,8 +810,9 @@ export default [
 
 
   (app) => app.get("/api/cpms_list", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -769,8 +822,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_ids","value":"[2, 99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -780,8 +834,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_ids","value":"[2, 99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.location_quadtree != undefined &&
       typeof(JSON.parse(req.query.location_quadtree as string)) != "number"
       ){
         res.send({ 
@@ -791,8 +846,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_ids","value":"[2, 99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.emitter_ids != undefined &&
       typeof(JSON.parse(req.query.emitter_ids as string)) != "object"
       ){
         res.send({ 
@@ -829,8 +885,9 @@ export default [
 
 
   (app) => app.get("/api/vams_list", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -840,8 +897,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -851,8 +909,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.emitter_ids != undefined &&
       typeof(JSON.parse(req.query.emitter_ids as string)) != "object"
       ){
         res.send({ 
@@ -878,8 +937,9 @@ export default [
 
 
   (app) => app.get("/api/denms_list", (req, res) => {
-    if(
-      req.query.start_time == undefined ||
+    
+      if(
+        req.query.start_time == undefined ||
       typeof(JSON.parse(req.query.start_time as string)) != "number"
       ){
         res.send({ 
@@ -889,8 +949,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      req.query.end_time == undefined ||
+    
+      if(
+        req.query.end_time == undefined ||
       typeof(JSON.parse(req.query.end_time as string)) != "number"
       ){
         res.send({ 
@@ -900,8 +961,9 @@ export default [
           sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"}]
         })
       }
-    if(
-      
+    
+      if(
+        req.query.emitter_ids != undefined &&
       typeof(JSON.parse(req.query.emitter_ids as string)) != "object"
       ){
         res.send({ 

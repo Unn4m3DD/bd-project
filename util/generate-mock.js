@@ -5,8 +5,9 @@ for (let item of items)
   console.log(`
   (app) => app.get("/api/${item.name}", (req, res) => {
     ${item.request.url.query.map(e => {
-    return `if(
-      ${e.description.includes("Required") ? `req.query.${e.key} == undefined ||`:``}
+    return `
+      if(
+        ${e.description.includes("Required") ? `req.query.${e.key} == undefined ||`:`req.query.${e.key} != undefined &&`}
       typeof(JSON.parse(req.query.${e.key} as string)) != ${e.value.charAt(0) == "[" ? '"object"' : '"number"'}
       ){
         res.send({ 
@@ -22,3 +23,9 @@ for (let item of items)
   }),
 `)
 console.log("]")
+
+/*
+  r o
+d 0 0
+u 1 0
+*/
