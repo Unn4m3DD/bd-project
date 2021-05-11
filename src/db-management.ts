@@ -7,7 +7,6 @@ let maria_sql_connection: mariadb.Connection;
 
 async function queryMariaDb(sql_query: string) {
   const result = await maria_sql_connection.query(sql_query)
-  console.log(JSON.stringify(result))
   return result
 
 }

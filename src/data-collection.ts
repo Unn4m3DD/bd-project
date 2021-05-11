@@ -15,7 +15,6 @@ export function setupDataCollection(outer_query: (sql_query: string) => Promise<
 async function checkIDInDB(station_id: number): Promise<boolean> {
   const result =
     await query(`Select * from it2s_db.Emitter where station_id = ${station_id}`);
-    console.log(JSON.stringify(result))
   return result.length == 1;
 }
 
@@ -83,7 +82,6 @@ const dbOnMessage = {
         ${perceived_object.xSpeed},
         ${perceived_object.ySpeed},
         ${abs_speed})`;
-    console.log(perceived_object_query)
       await query(perceived_object_query);
     }
   },
@@ -154,5 +152,5 @@ async function setup() {
       }
     })
   } catch (e) { console.log(e) }
-  setInterval(() => { console.log(message_counter) }, 1000)
+  //setInterval(() => { console.log(message_counter) }, 1000)
 }
