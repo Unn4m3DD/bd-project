@@ -5,14 +5,21 @@ import mariadb = require('mariadb');
 let maria_sql_connection: mariadb.Connection;
 
 
-async function queryMariaDb(sql_query: string) {
-  const result = await maria_sql_connection.query(sql_query)
+async function queryMariaDb(sql_query: string, query_parameters: string[]) {
+  const result = await maria_sql_connection.query(sql_query, query_parameters)
   return result
 
 }
-async function queryMsSql(sql_query: string) {
+async function queryMsSql(sql_query: string, query_parameters: string[]) {
+  let index = 0;
+  while (sql_query.match(/\?/))
+    sql_query = sql_query.replace("?", "arg" + index++)
+  for (let i = 0; i < index; i++) {
+    ms_sql_connection.input('arg' + i, query_parameters[i]);
+  }
   return (await ms_sql_connection.query(sql_query)).recordset
 }
+queryMsSql("select * from ? where ? = ?", [])
 
 async function getQueryInterface() {
   if (process.argv[2] == "mariadb") {
