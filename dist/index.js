@@ -8,8 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_endpoint_1 = require("./api-endpoint");
+const data_collection_1 = require("./data-collection");
+const db_management_1 = __importDefault(require("./db-management"));
 let query;
 function setup() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -18,8 +23,12 @@ function setup() {
             process.exit(1);
         }
         console.log("CITS-Backend started successfully");
-        //try { query = await getQueryInterface() }
-        //catch (e) { console.log("An error occurred connecting to the database:", e); }
+        try {
+            query = yield db_management_1.default();
+        }
+        catch (e) {
+            console.log("An error occurred connecting to the database:", e);
+        }
         console.log("Connection to the database started successfully");
     });
 }
@@ -27,7 +36,7 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield setup();
         api_endpoint_1.setupAPIEndpoint(query);
-        //setupDataCollection(query)
+        data_collection_1.setupDataCollection(query);
     });
 }
 main();

@@ -15,7 +15,8 @@ export function setupDataCollection(outer_query: (sql_query: string) => Promise<
 async function checkIDInDB(station_id: number): Promise<boolean> {
   const result =
     await query(`Select * from it2s_db.Emitter where station_id = ${station_id}`);
-  return result.recordset.length == 1;
+    console.log(JSON.stringify(result))
+  return result.length == 1;
 }
 
 const updateIDInDB = {
@@ -105,9 +106,15 @@ const dbOnMessage = {
   }
 }
 
+const mosquitto_credentials: { [key: string]: { brokerUrl?: any, opts?: mqtt.IClientOptions } } = {
+  "msSql": { brokerUrl: 'mqtt://unn4m3dd.xyz', opts: { port: 21, } },
+  "mariadb": { brokerUrl: 'mqtt://localhost', opts: { port: 1883, username: "it2s", password: "it2sit2s" } },
+}
+
 async function setup() {
   try {
-    let client = mqtt.connect('mqtt://unn4m3dd.xyz', { port: 21, })
+    const credentials = mosquitto_credentials[process.argv[2]]
+    let client = mqtt.connect(credentials.brokerUrl, credentials.opts)
     let sent_recently = {
       cpm: {},
       cam: {},
@@ -115,6 +122,7 @@ async function setup() {
       vam: {},
     }
     client.on('connect', function () {
+      console.log("Connected to mosquitto: ", credentials.brokerUrl)
       client.subscribe('its_center/inqueue/cpm/#')
       client.subscribe('its_center/inqueue/denm/#')
       client.subscribe('its_center/inqueue/cam/#')

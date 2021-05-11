@@ -9,15 +9,15 @@ async function setup() {
     process.exit(1);
   }
   console.log("CITS-Backend started successfully")
-  //try { query = await getQueryInterface() }
-  //catch (e) { console.log("An error occurred connecting to the database:", e); }
+  try { query = await getQueryInterface() }
+  catch (e) { console.log("An error occurred connecting to the database:", e); }
   console.log("Connection to the database started successfully")
 }
 
 async function main() {
   await setup();
   setupAPIEndpoint(query)
-  //setupDataCollection(query)
+  setupDataCollection(query)
 }
 
 main();

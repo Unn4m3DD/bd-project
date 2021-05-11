@@ -6,26 +6,27 @@ let maria_sql_connection: mariadb.Connection;
 
 
 async function queryMariaDb(sql_query: string) {
-  const result = maria_sql_connection.query(sql_query)
-  console.log(result)
+  const result = await maria_sql_connection.query(sql_query)
+  console.log(JSON.stringify(result))
   return result
 
 }
 async function queryMsSql(sql_query: string) {
-  return await ms_sql_connection.query(sql_query)
+  return (await ms_sql_connection.query(sql_query)).recordset
 }
 
 async function getQueryInterface() {
   if (process.argv[2] == "mariadb") {
     const pool = mariadb.createPool({
-      host: '127.0.0.1',
+      host: 'localhost',
       user: 'root',
       password: 'it2sit2s',
-      port: 0,
-      connectionLimit: 5
+      connectionLimit: 5,
+      socketPath: "/run/mysqld/mysqld.sock",
+      database: "it2s_db"
     });
+
     maria_sql_connection = await pool.getConnection();
-    queryMariaDb("use it2s_db;")
     return queryMariaDb
   }
   else {
