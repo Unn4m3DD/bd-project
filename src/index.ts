@@ -1,7 +1,7 @@
 import { setupAPIEndpoint } from "./api-endpoint";
 import { setupDataCollection } from "./data-collection";
 import getQueryInterface from "./db-management"
-let query: (sql_query: string) => Promise<any>
+let query: (sql_query: string, query_parameters: string[]) => Promise<any>
 
 async function setup() {
   if (process.argv[2] != "mariadb" && process.argv[2] != "msSql") {

@@ -7,8 +7,8 @@ let message_counter = {
   vam: 0,
   denm: 0,
 }
-export function setupDataCollection(outer_query: (sql_query: string) => Promise<any>) {
-  query = outer_query
+export function setupDataCollection(outer_query: (sql_query: string, query_parameters: string[]) => Promise<any>) {
+  query = outer_query as (sql_query: string) => Promise<any> //this should be an error as a temporary fix
   setup()
 }
 
