@@ -67,9 +67,10 @@ const dbOnMessage = {
     await query(cpm_query);
     for (let perceived_object of cpm.perceived_objects) {
       let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2));
-      const object_latitude = cpm.latitude / 10e6 + (perceived_object.yDistance / 6371000) * (180 / Math.PI);
-      const object_longitude = cpm.longitude / 10e6 + (perceived_object.xDistance / 6371000) * (180 / Math.PI) /
-        Math.cos(object_latitude * Math.PI / 180);
+      const object_latitude = (cpm.latitude / 10e6 + (perceived_object.yDistance / 6371000) * (180 / Math.PI)) * 10e6;
+      const object_longitude =
+        (cpm.longitude / 10e6 + (perceived_object.xDistance / 6371000) * (180 / Math.PI) /
+          Math.cos(object_latitude * Math.PI / 180)) * 10e6;
       const perceived_object_query = `insert into it2s_db.PerceivedObject values( 
         ${cpm.station_id},
         ${current_timestamp},

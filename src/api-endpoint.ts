@@ -2,7 +2,7 @@
 import express = require('express')
 import api from "./api-compiled"
 const app = express()
-let query: (sql_query: string) => Promise<any>
+let query: (sql_query: string, format: string[]) => Promise<any>
 
 export function setupAPIEndpoint(outer_query: (sql_query: string) => Promise<any>) {
   query = outer_query
@@ -20,7 +20,9 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
   notifications_list: undefined,
   events: undefined,
   obu_list: undefined,
-  rsu_list: async (req, res) => { res.send(await query("select * from it2s_db.RSU")) },
+  rsu_list: async (req, res) => { 
+    res.send(await query("select * from it2s_db.RSU where emitter_station_id", [])) 
+  },
   smartphone_list: undefined,
   web_list: undefined,
   cpms_list: undefined,

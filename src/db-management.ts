@@ -24,7 +24,6 @@ async function getQueryInterface() {
       socketPath: "/run/mysqld/mysqld.sock",
       database: "it2s_db"
     });
-
     maria_sql_connection = await pool.getConnection();
     return queryMariaDb
   }
