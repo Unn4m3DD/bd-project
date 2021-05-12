@@ -19,7 +19,6 @@ async function queryMsSql(sql_query: string, query_parameters: string[]) {
   }
   return (await ms_sql_connection.query(sql_query)).recordset
 }
-queryMsSql("select * from ? where ? = ?", [])
 
 async function getQueryInterface() {
   if (process.argv[2] == "mariadb") {
