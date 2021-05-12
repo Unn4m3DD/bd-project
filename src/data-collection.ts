@@ -20,35 +20,41 @@ async function checkIDInDB(station_id: number): Promise<boolean> {
 
 const updateIDInDB = {
   cpm: async (cpm: cpm_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=1 where station_id = ${cpm.station_id}`);
+    await query(`update it2s_db.Emitter set current_app_version=1 where station_id = ${cpm.station_id}`); //hardcode
     await query(`update it2s_db.RSU set latitude=${cpm.latitude}, longitude=${cpm.longitude} where emitter_station_id = ${cpm.station_id}`);
   },
   cam: async (cam: cam_t) => {
-
+    await query(`update it2s_db.Emitter set current_app_version=1 where station_id = ${cam.station_id}`); //hardcode
+    await query(`update it2s_db.OBU set last_power_status=100 where  emitter_station_id = ${cam.station_id}`); //hardcode
   },
   vam: async (vam: vam_t) => {
-
+    await query(`update it2s_db.Emitter set current_app_version=1 where  station_id = ${vam.station_id}`); //hardcode
+    await query(`update it2s_db.App set configured_language='pt' where  emitter_station_id = ${vam.station_id}`); //hardcode
+    await query(`update it2s_db.Smartphone set last_power_status=100 where  emitter_station_id = ${vam.station_id}`); //hardcode
   },
   denm: async (denm: denm_t) => {
     await query(`update it2s_db.Emitter set current_app_version=1 where  station_id = ${denm.station_id}`); //hardcode
-    await query(`update it2s_db.App set configured_language='pt' where  emitter_station_id = ${denm.station_id}`);//hardcode
+    await query(`update it2s_db.App set configured_language='pt' where  emitter_station_id = ${denm.station_id}`); //hardcode
   }
 }
 
 const insertIDInDB = {
   cpm: async (cpm: cpm_t) => {
-    await query(`insert into it2s_db.Emitter values(${cpm.station_id}, 1)`);
+    await query(`insert into it2s_db.Emitter values(${cpm.station_id}, 1)`); //hardcoded
     await query(`insert into it2s_db.RSU values(${cpm.station_id}, ${cpm.latitude}, ${cpm.longitude})`);
   },
   cam: async (cam: cam_t) => {
-
+    await query(`insert into it2s_db.Emitter values(${cam.station_id}, 1)`); //hardcoded
+    await query(`insert into it2s_db.OBU values(${cam.station_id}, 100)`); //hardcoded
   },
   vam: async (vam: vam_t) => {
-
+    await query(`insert into it2s_db.Emitter values(${vam.station_id}, 1)`); //hardcoded
+    await query(`insert into it2s_db.App values(${vam.station_id}, 'pt')`); //hardcoded
+    await query(`insert into it2s_db.Smartphone values(${vam.station_id}, 100)`); //hardcoded
   },
   denm: async (denm: denm_t) => {
-    await query(`insert into it2s_db.Emitter values(${denm.station_id}, 1)`);
-    await query(`insert into it2s_db.App values(${denm.station_id}, 'pt')`);
+    await query(`insert into it2s_db.Emitter values(${denm.station_id}, 1)`); //hardcoded
+    await query(`insert into it2s_db.App values(${denm.station_id}, 'pt')`); //hardcoded
   }
 }
 
@@ -87,10 +93,31 @@ const dbOnMessage = {
     }
   },
   cam: async (cam: cam_t, quadtree: number) => {
-
+    message_counter.denm++
+    const query_to_send =
+      `insert into it2s_db.CAM values(
+        ${cam.station_id},
+        ${Math.floor(Date.now() / 1000)},
+        ${cam.station_type},
+        0,
+        ${cam.longitude},
+        ${cam.latitude},
+        ${quadtree}
+      )`; //${cam.speed} hardcoded 0
+    await query(query_to_send);
   },
   vam: async (vam: vam_t, quadtree: number) => {
-
+    message_counter.denm++
+    const query_to_send =
+      `insert into it2s_db.VAM values(
+        ${vam.station_id},
+        ${Math.floor(Date.now() / 1000)},
+        ${vam.station_type},
+        ${vam.longitude},
+        ${vam.latitude},
+        ${quadtree}
+      )`;
+    await query(query_to_send);
   },
   denm: async (denm: denm_t, quadtree: number) => {
     message_counter.denm++
