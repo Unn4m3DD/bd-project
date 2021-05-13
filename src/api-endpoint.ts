@@ -21,7 +21,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
   events: undefined,
   obu_list: undefined,
   rsu_list: async (req, res) => {
-    res.send(await query("select * from it2s_db.RSU where emitter_id in ?", [req.query.emitter_ids as string]))
+    res.send(await query("select * from it2s_db.RSU where emitter_id in ?", [req.query.emitter_ids]))
   },
   smartphone_list: undefined,
   web_list: undefined,
