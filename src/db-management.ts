@@ -11,13 +11,14 @@ async function queryMariaDb(sql_query: string, query_parameters: any[]) {
 
 }
 async function queryMsSql(sql_query: string, query_parameters: string[]) {
+  const request = new ms_sql_connection.Request(/* [pool or transaction] */)
   let index = 0;
   while (sql_query.match(/\?/))
     sql_query = sql_query.replace("?", "arg" + index++)
   for (let i = 0; i < index; i++) {
-    ms_sql_connection.input('arg' + i, query_parameters[i]);
+    request.input('arg' + i, query_parameters[i]);
   }
-  return (await ms_sql_connection.query(sql_query)).recordset
+  return (await request.query(sql_query)).recordset
 }
 
 async function getQueryInterface() {
