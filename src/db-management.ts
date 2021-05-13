@@ -5,7 +5,7 @@ import mariadb = require('mariadb');
 let maria_sql_connection: mariadb.Connection;
 
 
-async function queryMariaDb(sql_query: string, query_parameters: string[]) {
+async function queryMariaDb(sql_query: string, query_parameters: any[]) {
   const result = await maria_sql_connection.query(sql_query, query_parameters)
   return result
 
