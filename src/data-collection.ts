@@ -62,18 +62,27 @@ const insertIDInDB = {
 const dbOnMessage = {
   cpm: async (cpm: cpm_t, quadtree: number) => {
     message_counter.cpm++
-    const cpm_query = `insert into it2s_db.CPM values(?,?,?,?,?)`;
-    let query_params = [cpm.station_id, Math.floor(Date.now() / 1000), cpm.longitude, cpm.latitude, quadtree]
-    await query(cpm_query, query_params);
+    const current_timestamp = Math.floor(Date.now() / 1000)
+    await query(`insert into it2s_db.CPM values(?,?,?,?,?)`,
+      [cpm.station_id, current_timestamp, cpm.longitude, cpm.latitude, quadtree]);
     for (let perceived_object of cpm.perceived_objects) {
       let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2));
-      const object_latitude = (cpm.latitude / 10e6 + (perceived_object.yDistance / 6371000) * (180 / Math.PI)) * 10e6;
+      const object_latitude = (cpm.latitude / 10e6 + (perceived_object.yDistance / 100 / 6371000) * (180 / Math.PI)) * 10e6;
       const object_longitude =
-        (cpm.longitude / 10e6 + (perceived_object.xDistance / 6371000) * (180 / Math.PI) /
+        (cpm.longitude / 10e6 + (perceived_object.xDistance / 100 / 6371000) * (180 / Math.PI) /
           Math.cos(object_latitude * Math.PI / 180)) * 10e6;
-      const perceived_object_query = `insert into it2s_db.PerceivedObject values(?,?,?,?,?,?,?,?,?,?,?)`;
-      query_params = [cpm.station_id, Math.floor(Date.now() / 1000), perceived_object.objectID, object_latitude, object_longitude, quadtree, perceived_object.xDistance, perceived_object.yDistance, perceived_object.xSpeed, perceived_object.ySpeed, abs_speed]
-      await query(perceived_object_query, query_params);
+      await query(`insert into it2s_db.PerceivedObject values(?,?,?,?,?,?,?,?,?,?,?)`, [
+        cpm.station_id,
+        current_timestamp,
+        perceived_object.objectID,
+        Math.floor(object_latitude),
+        Math.floor(object_longitude),
+        quadtree,
+        perceived_object.xDistance,
+        perceived_object.yDistance,
+        perceived_object.xSpeed,
+        perceived_object.ySpeed,
+        abs_speed]);
     }
   },
   cam: async (cam: cam_t, quadtree: number) => {
@@ -92,9 +101,7 @@ const dbOnMessage = {
     message_counter.denm++
     const query_to_send = `insert into it2s_db.DENM values(?,?,?,?,?,?,?,?)`;
     const query_params = [denm.station_id, Math.floor(Date.now() / 1000), denm.cause_code, denm.sub_cause_code, denm.longitude, denm.latitude, denm.validity_duration, quadtree]
-    console.log(query_params)
     await query(query_to_send, query_params);
-    console.log(await (`SELECT TOP 1 * FROM Table ORDER BY event_timestamp DESC`))
   }
 }
 
