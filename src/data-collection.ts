@@ -94,7 +94,7 @@ const dbOnMessage = {
     const query_params = [denm.station_id, Math.floor(Date.now() / 1000), denm.cause_code, denm.sub_cause_code, denm.longitude, denm.latitude, denm.validity_duration, quadtree]
     console.log(query_params)
     await query(query_to_send, query_params);
-    console.log(await (`SELECT TOP 1 * FROM Table ORDER BY event_timestamp DESC`))
+    console.log(await query(`SELECT TOP 1 * FROM Table ORDER BY event_timestamp DESC`, []))
   }
 }
 
