@@ -3,7 +3,7 @@ const items = [...docs.item[0].item, ...docs.item[1].item]
 console.log("export default [")
 for (let item of items) {
   console.log(`
-  (app, responses) => app.get("/api/${item.name}", (req, res) => {
+  (app, responses) => app.get("/api/${item.name}", async (req, res) => {
     ${item.request.url.query.map(e => {
     return `
       if(
@@ -16,10 +16,16 @@ for (let item of items) {
           info: "This requesto should look like:",
           sub_info: ${JSON.stringify(item.request.url.query)}
         })
+        return
       }`
   }).join("\n    ")}
     if(responses["${item.name}"])
-      responses["${item.name}"](req, res)
+      try{
+        await responses["${item.name}"](req, res)
+      } catch(e) {
+        console.log("An error occurred on ${item.name} request", e)
+        res.send("An error occurred on ${item.name} request, please report to the host");
+      }
     else {
       console.log("${item.name} not implemented yet!")
       res.send(${item.response[0].body})

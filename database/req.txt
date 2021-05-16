@@ -1,0 +1,43 @@
+O problema proposto é uma solução para armazenamento permanente de eventos rodoviários 
+no âmbito de Cooperative - Intelligent Transport Systems
+Deverão ser guardados todos os eventos rodoviários, para isso é necessário manter os dados
+do mesmo: localização e momento no tempo.
+Para o problema é considerado o standard ETSI ITS-G5 que define vários tipos de eventos
+rodoviários:
+CAM (Cooperative Awareness Messages) 
+  - Enviadas pela OBU (On Board Unit) de um veiculo, contêm a posição, velocidade, 
+    tipo de veículo e id do emissor
+
+VAM (VRU(Vulnerable Road User) Awareness Message) 
+  - Enviadas por um smartphone(*), contêm a posição, tipo de veículo e id do emissor
+
+DENM - (Decentralized Environmental Notification Message)
+  - Enviadas por smartphones (*) ou website (*), contêm o id do emissor,
+    uma causa e uma sub-causa do evento
+
+Perceived Object (*)
+  - Parte de uma CPM, contêm um id do objeto, a distância à RSU em metros e a
+    velocidade do objeto.
+
+Para além destes eventos deverão ser guardados os containers dos Perceived Object, as CPM
+CPM - (Cooperative Perception Message)
+  - Enviadas por RSUs(Road Side Units), contêm o id do emissor, a posição da RSU, e uma
+    lista de objetos detetados pela RSU (perceived objects).
+
+Deverão ser armazenados também os emissores das mensagens, estes são identificáveis por um id
+e deve ser guardada informação sobre a versão da aplicação a correr nos mesmos.
+
+São definidas especializações dos emissores acima referidos:
+  RSU - Road Side Unit, deverá guardar informação da sua última posição;
+  OBU - On Board Unit, deverá guardar informação sobre o status da bateria da mesma na
+        última emissão;
+  Smartphone - Deverá guardar informação sobre a língua selecionada na aplicação;
+  WebSite - Deverá guardar informação sobre a língua selecionada na aplicação.
+
+Para além destas, deverão ser guardados todos os eventos de alguma forma anormais. 
+Para uma versão inicial deverão ser guardadas referencias para todos os eventos de 
+veículos com velocidades menores que 50 e maiores que 120, já que nesta primeira 
+aproximação os testes à aplicação serão feitos numa auto-estrada 
+    
+* - Os items assinalados com * referem contexto do problema em específico não definidos
+    no standard
