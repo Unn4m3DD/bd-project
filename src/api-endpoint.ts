@@ -62,9 +62,39 @@ from
       });
       response[i] = {
         "cpm": cpm,
-        "cam": [],
-        "vam": [],
-        "denm": []
+        "cam": query(
+          `select 
+  station_id as  station_id,
+  station_type as station_type,
+  speed as speed,
+  latitude as latitude,
+  longitude as longitude
+from CAM where event_timestamp = ?
+  ${req.query.location_quadtree ? "and ? < quadtree and quadtree < ? " : ""}`,
+          [i, ...(req.query.location_quadtree ?
+            [number_quadtree - Math.pow(2, 18 - zoom), number_quadtree + Math.pow(2, 18 - zoom)] : [])]),
+        "vam": query(
+          `select 
+  emitter_station_id as  station_id,
+  station_type as station_type,
+  latitude as latitude,
+  longitude as longitude
+from VAM where event_timestamp = ?
+  ${req.query.location_quadtree ? "and ? < quadtree and quadtree < ? " : ""}`,
+          [i, ...(req.query.location_quadtree ?
+            [number_quadtree - Math.pow(2, 18 - zoom), number_quadtree + Math.pow(2, 18 - zoom)] : [])]),
+        "denm": query(
+          `select 
+  emitter_station_id as station_id,
+  cause_code as cause_code,
+  sub_cause_code as sub_cause_code,
+  latitude as latitude,
+  longitude as longitude,
+  duration as validity_duration
+from DENM where event_timestamp = ?
+  ${req.query.location_quadtree ? "and ? < quadtree and quadtree < ? " : ""}`,
+          [i, ...(req.query.location_quadtree ?
+            [number_quadtree - Math.pow(2, 18 - zoom), number_quadtree + Math.pow(2, 18 - zoom)] : [])])
       }
     }
     res.send(response)
