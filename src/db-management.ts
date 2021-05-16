@@ -6,7 +6,11 @@ let maria_sql_connection: mariadb.Connection;
 
 
 async function queryMariaDb(sql_query: string, query_parameters: any[]) {
+  query_parameters = query_parameters.map(e => JSON.parse(e))
+  //const startTime = Date.now();
   const result = await maria_sql_connection.query(sql_query, query_parameters)
+  //if (sql_query.includes("join"))
+  //  console.log((Date.now() - startTime) + "ms");
   return result
 
 }
