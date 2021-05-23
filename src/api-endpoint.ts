@@ -1,5 +1,7 @@
 
 import express = require('express')
+import cors = require('cors')
+
 import api from "./api-compiled"
 const app = express()
 let query: (sql_query: string, query_parameters: string[]) => Promise<any>
@@ -31,7 +33,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
 }
 
 function setup() {
-  app.get("sadf", (req, res) => { })
   api.forEach(e => e(app, api_response))
+  app.use(cors())
   app.listen(8001)
 }
