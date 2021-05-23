@@ -5,21 +5,25 @@ import mariadb = require('mariadb');
 let maria_sql_connection: mariadb.Connection;
 
 
-async function queryMariaDb(sql_query: string, query_parameters: string[]) {
+async function queryMariaDb(sql_query: string, query_parameters: any[]) {
+  query_parameters = query_parameters.map(e => JSON.parse(e))
+  //const startTime = Date.now();
   const result = await maria_sql_connection.query(sql_query, query_parameters)
+  //if (sql_query.includes("join"))
+  //  console.log((Date.now() - startTime) + "ms");
   return result
 
 }
 async function queryMsSql(sql_query: string, query_parameters: string[]) {
+  const request = new ms_sql_connection.Request(/* [pool or transaction] */)
   let index = 0;
   while (sql_query.match(/\?/))
     sql_query = sql_query.replace("?", "arg" + index++)
   for (let i = 0; i < index; i++) {
-    ms_sql_connection.input('arg' + i, query_parameters[i]);
+    request.input('arg' + i, query_parameters[i]);
   }
-  return (await ms_sql_connection.query(sql_query)).recordset
+  return (await request.query(sql_query)).recordset
 }
-queryMsSql("select * from ? where ? = ?", [])
 
 async function getQueryInterface() {
   if (process.argv[2] == "mariadb") {
@@ -31,7 +35,6 @@ async function getQueryInterface() {
       socketPath: "/run/mysqld/mysqld.sock",
       database: "it2s_db"
     });
-
     maria_sql_connection = await pool.getConnection();
     return queryMariaDb
   }

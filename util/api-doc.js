@@ -488,77 +488,6 @@ module.exports = {
       "name": "Data",
       "item": [
         {
-          "name": "cams_list",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/cams_list?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&emitter_ids=[2, 99]",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "cams_list"
-              ],
-              "query": [
-                {
-                  "key": "start_time",
-                  "value": "1620223705",
-                  "description": "(Required) Notification listing start timestamp (seconds)"
-                },
-                {
-                  "key": "end_time",
-                  "value": "1620223708",
-                  "description": "(Required) Notification listing end timestamp (seconds)"
-                },
-                {
-                  "key": "location_quadtree",
-                  "value": "16443191796",
-                  "description": "(Required) Tile of the location from where the data must be queried"
-                },
-                {
-                  "key": "emitter_ids",
-                  "value": "[2, 99]",
-                  "description": "(Optional) IDs of the emitters"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "List CAMs",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "?start_time=1620223705&end_time=1620223708&emitter_ids=2",
-                  "query": [
-                    {
-                      "key": "start_time",
-                      "value": "1620223705",
-                      "description": "(Required) Notification listing start timestamp (seconds)"
-                    },
-                    {
-                      "key": "end_time",
-                      "value": "1620223708",
-                      "description": "(Required) Notification listing end timestamp (seconds)"
-                    },
-                    {
-                      "key": "emitter_ids",
-                      "value": "2",
-                      "description": "IDs of the emitters"
-                    }
-                  ]
-                }
-              },
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n      \"1620223706\":\r\n      {\r\n        \"station_id\": 2,\r\n        \"latitude\": 148123123,\r\n        \"longitude\": 81231233,\r\n        \"perceived_objects\": [{\r\n          \"objectID\": 3,\r\n          \"xDistance\": 2,\r\n          \"yDistance\": 123,\r\n          \"xSpeed\": 111,\r\n          \"ySpeed\": 1231\r\n        },\r\n        {\r\n          \"objectID\": 4,\r\n          \"xDistance\": 2,\r\n          \"yDistance\": 123,\r\n          \"xSpeed\": 1112,\r\n          \"ySpeed\": 1231\r\n        },\r\n        {\r\n          \"objectID\": 5,\r\n          \"xDistance\": 321,\r\n          \"yDistance\": 123,\r\n          \"xSpeed\": 23,\r\n          \"ySpeed\": 111\r\n        }\r\n        ]\r\n      }\r\n    }"
-            }
-          ]
-        },
-        {
           "name": "notifications_list",
           "request": {
             "method": "GET",
@@ -635,12 +564,88 @@ module.exports = {
           ]
         },
         {
+          "name": "cams_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cams_list?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&emitter_ids=[2, 99]&quadtree_zoom=18",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cams_list"
+              ],
+              "query": [
+                {
+                  "key": "start_time",
+                  "value": "1620223705",
+                  "description": "(Required) Notification listing start timestamp (seconds)"
+                },
+                {
+                  "key": "end_time",
+                  "value": "1620223708",
+                  "description": "(Required) Notification listing end timestamp (seconds)"
+                },
+                {
+                  "key": "location_quadtree",
+                  "value": "16443191796",
+                  "description": "(Required) Tile of the location from where the data must be queried"
+                },
+                {
+                  "key": "emitter_ids",
+                  "value": "[2, 99]",
+                  "description": "(Optional) IDs of the emitters"
+                },
+                {
+                  "key": "quadtree_zoom",
+                  "value": "18",
+                  "description": "(Optional) Zoom level of the data collected"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List CAMs",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "?start_time=1620223705&end_time=1620223708&emitter_ids=2",
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "1620223705",
+                      "description": "(Required) Notification listing start timestamp (seconds)"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "1620223708",
+                      "description": "(Required) Notification listing end timestamp (seconds)"
+                    },
+                    {
+                      "key": "emitter_ids",
+                      "value": "2",
+                      "description": "IDs of the emitters"
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n      \"1620223706\":\r\n      {\r\n        \"station_id\": 2,\r\n        \"latitude\": 148123123,\r\n        \"longitude\": 81231233,\r\n        \"perceived_objects\": [{\r\n          \"objectID\": 3,\r\n          \"xDistance\": 2,\r\n          \"yDistance\": 123,\r\n          \"xSpeed\": 111,\r\n          \"ySpeed\": 1231\r\n        },\r\n        {\r\n          \"objectID\": 4,\r\n          \"xDistance\": 2,\r\n          \"yDistance\": 123,\r\n          \"xSpeed\": 1112,\r\n          \"ySpeed\": 1231\r\n        },\r\n        {\r\n          \"objectID\": 5,\r\n          \"xDistance\": 321,\r\n          \"yDistance\": 123,\r\n          \"xSpeed\": 23,\r\n          \"ySpeed\": 111\r\n        }\r\n        ]\r\n      }\r\n    }"
+            }
+          ]
+        },
+        {
           "name": "events",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/events?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18",
+              "raw": "{{baseUrl}}/events?start_time=1621172276&end_time=1621172279&location_quadtree=15011352623&quadtree_zoom=17",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -650,22 +655,22 @@ module.exports = {
               "query": [
                 {
                   "key": "start_time",
-                  "value": "1620223705",
+                  "value": "1621172276",
                   "description": "(Required) Event listing start timestamp (seconds)"
                 },
                 {
                   "key": "end_time",
-                  "value": "1620223708",
+                  "value": "1621172279",
                   "description": "(Required) Event listing end timestamp (seconds)"
                 },
                 {
                   "key": "location_quadtree",
-                  "value": "16443191796",
+                  "value": "15011352623",
                   "description": "(Optional) Tile of the location from where the data must be queried"
                 },
                 {
                   "key": "quadtree_zoom",
-                  "value": "18",
+                  "value": "17",
                   "description": "(Optional) Zoom level of the data collected"
                 }
               ]
@@ -908,7 +913,7 @@ module.exports = {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/cpms_list?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&emitter_ids=[2, 99]",
+              "raw": "{{baseUrl}}/cpms_list?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&emitter_ids=[2, 99]&quadtree_zoom=18",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -935,6 +940,11 @@ module.exports = {
                   "key": "emitter_ids",
                   "value": "[2, 99]",
                   "description": "(Optional) IDs of the emitters"
+                },
+                {
+                  "key": "quadtree_zoom",
+                  "value": "18",
+                  "description": "(Optional) Zoom level of the data collected"
                 }
               ]
             }
@@ -979,7 +989,7 @@ module.exports = {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/vams_list?start_time=1620223705&end_time=1620223708&emitter_ids=[2,99]",
+              "raw": "{{baseUrl}}/vams_list?start_time=1620223705&end_time=1620223708&emitter_ids=[2,99]&location_quadtree=16443191796&quadtree_zoom=18",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -1001,6 +1011,16 @@ module.exports = {
                   "key": "emitter_ids",
                   "value": "[2,99]",
                   "description": "(Optional) IDs of the emitters"
+                },
+                {
+                  "key": "location_quadtree",
+                  "value": "16443191796",
+                  "description": "(Optional) Tile of the location from where the data must be queried"
+                },
+                {
+                  "key": "quadtree_zoom",
+                  "value": "18",
+                  "description": "(Optional) Zoom level of the data collected"
                 }
               ]
             }
@@ -1045,7 +1065,7 @@ module.exports = {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/denms_list?start_time=1620223705&end_time=1620223708&emitter_ids=[2,99]",
+              "raw": "{{baseUrl}}/denms_list?start_time=1620223705&end_time=1620223708&emitter_ids=[2,99]&location_quadtree=16443191796&quadtree_zoom=18",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -1067,6 +1087,16 @@ module.exports = {
                   "key": "emitter_ids",
                   "value": "[2,99]",
                   "description": "(Optional) IDs of the emitters"
+                },
+                {
+                  "key": "location_quadtree",
+                  "value": "16443191796",
+                  "description": "(Optional) Tile of the location from where the data must be queried"
+                },
+                {
+                  "key": "quadtree_zoom",
+                  "value": "18",
+                  "description": "(Optional) Zoom level of the data collected"
                 }
               ]
             }

@@ -1,0 +1,15 @@
+drop table it2s_db.Notification2;
+drop table it2s_db.Notification1;
+drop table it2s_db.Status;
+drop table it2s_db.DENM;
+drop table it2s_db.VAM;
+drop table it2s_db.CAM;
+drop table it2s_db.PerceivedObject;
+drop table it2s_db.CPM;
+drop table it2s_db.RSU;
+drop table it2s_db.WebSite;
+drop table it2s_db.Smartphone;
+drop table it2s_db.App;
+drop table it2s_db.OBU;
+drop table it2s_db.Emitter;
+drop schema it2s_db;
