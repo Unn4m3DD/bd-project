@@ -1,5 +1,7 @@
 
 import express = require('express')
+import cors = require('cors')
+
 import api from "./api-compiled"
 const app = express()
 let query: (sql_query: string, query_parameters: any[]) => Promise<any>
@@ -123,7 +125,7 @@ from DENM where event_timestamp = ?
 }
 
 function setup() {
-  app.get("sadf", (req, res) => { })
   api.forEach(e => e(app, api_response))
+  app.use(cors())
   app.listen(8001)
 }
