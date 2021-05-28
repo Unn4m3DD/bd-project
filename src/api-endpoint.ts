@@ -48,7 +48,7 @@ ${req.query.location_quadtree ? "and ? < quadtree and quadtree < ? " : ""}
       )
 
       cpm.forEach(async element => {
-        element.perceived_object = await query(
+        element.perceived_objects = await query(
           `select 
   perceived_object_id as objectID,
   x_distance as xDistance,
