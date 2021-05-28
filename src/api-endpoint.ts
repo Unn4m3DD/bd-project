@@ -1,6 +1,5 @@
 
 import express = require('express')
-import cors = require('cors')
 
 import api from "./api-compiled"
 const app = express()
@@ -126,6 +125,5 @@ from DENM where event_timestamp = ?
 
 function setup() {
   api.forEach(e => e(app, api_response))
-  app.use(cors())
   app.listen(8001)
 }
