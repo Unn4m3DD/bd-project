@@ -11,8 +11,8 @@ GO
 ;
 
 create table it2s_db.OBU(
-    last_power_status int not null,
     emitter_station_id int foreign key references it2s_db.Emitter(station_id) not null,
+    last_power_status int not null,
     primary key(emitter_station_id)
 )
 GO
