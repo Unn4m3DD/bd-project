@@ -197,12 +197,12 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
          creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
          this is not a performance issue, we've opted to do it this way */
         console.log(id)
-        response.push(...await query("select * from it2s_db.RSU where emitter_station_id = ?", [id]))
+        response.push(...await query("select emitter_station_id as station_id,latitude, longitude from it2s_db.RSU where emitter_station_id = ?", [id]))
       }
       res.send(response)
     }
     else
-      res.send(await query("select * from it2s_db.RSU", []))
+      res.send(await query("select emitter_station_id as station_id,latitude, longitude from it2s_db.RSU", []))
   },
   smartphone_list: undefined,
   web_list: undefined,
