@@ -16,7 +16,7 @@ async function setup() {
 
 async function main() {
   await setup();
-  setupAPIEndpoint(query)
+  //setupAPIEndpoint(query)
   setupDataCollection(query)
 }
 

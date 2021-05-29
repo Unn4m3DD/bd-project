@@ -6,8 +6,8 @@ create table it2s_db.Emitter(
   primary key(station_id)
 );
 create table it2s_db.OBU(
-  last_power_status int not null,
   emitter_station_id int not null,
+  last_power_status int not null,
   primary key(emitter_station_id),
   foreign key (emitter_station_id) references it2s_db.Emitter(station_id)
 );
@@ -90,12 +90,12 @@ create table it2s_db.CAM(
   )
 );
 create table it2s_db.VAM(
+  emitter_station_id int not null,
   event_timestamp int not null,
   station_type int not null,
   latitude int not null,
   longitude int not null,
   quadtree bigint not null,
-  emitter_station_id int not null,
   primary key(emitter_station_id, event_timestamp),
   foreign key (emitter_station_id) references it2s_db.Smartphone(emitter_station_id),
   check(
