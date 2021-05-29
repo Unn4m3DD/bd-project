@@ -8,7 +8,7 @@ let message_counter = {
   denm: 0,
 }
 export function setupDataCollection(outer_query: (sql_query: string, query_parameters: any[]) => Promise<any>) {
-  query = outer_query 
+  query = outer_query
   setup()
 }
 
@@ -86,10 +86,12 @@ const dbOnMessage = {
     }
   },
   cam: async (cam: cam_t, quadtree: number) => {
-    message_counter.cam++
-    const query_to_send = `insert into it2s_db.CAM values(?,?,?,?,?,?,?)`; //${cam.speed} hardcoded 0
-    const query_params = [cam.station_id, Math.floor(Date.now() / 1000), cam.station_type, 0, cam.latitude,cam.longitude, quadtree]
-    await query(query_to_send, query_params);
+    try {
+      message_counter.cam++
+      const query_to_send = `insert into it2s_db.CAM values(?,?,?,?,?,?,?)`; //${cam.speed} hardcoded 0
+      const query_params = [cam.station_id, Math.floor(Date.now() / 1000), cam.station_type, 0, cam.latitude, cam.longitude, quadtree]
+      await query(query_to_send, query_params);
+    } catch { console.log("fix me please")}
   },
   vam: async (vam: vam_t, quadtree: number) => {
     message_counter.vam++

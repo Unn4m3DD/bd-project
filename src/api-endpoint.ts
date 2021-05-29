@@ -72,9 +72,10 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     else
       timestamps = (await query(`call get_timestamps()`, []))[0]
     timestamps = timestamps.map(e => e.event_timestamp)
+    timestamps.shift()
+    timestamps.pop()
 
     let result = []
-    let max = 0
     for (let i = 0; i < timestamps.length; i += 2) {
       if ((timestamps[i + 1] - timestamps[i]) > 30)
         result.push([timestamps[i], timestamps[i + 1]])

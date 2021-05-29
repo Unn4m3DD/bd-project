@@ -22,8 +22,8 @@ END $$
 
 
 CREATE PROCEDURE `get_timestamps_between`(
-  IN start_time INT,
-  IN end_time INT
+  IN time_start INT,
+  IN time_end INT
 ) BEGIN
 select 
   event_timestamp
@@ -32,10 +32,10 @@ from
     (lag(event_timestamp) over (order by event_timestamp)) as prev,
     (lead(event_timestamp) over (order by event_timestamp)) as `next`
   from (
-      (select event_timestamp from CPM  where event_timestamp between start_time and end_time) union 
-      (select event_timestamp from CAM  where event_timestamp between start_time and end_time) union 
-      (select event_timestamp from VAM  where event_timestamp between start_time and end_time) union 
-      (select event_timestamp from DENM where event_timestamp between start_time and end_time)
+      (select event_timestamp from CPM  where event_timestamp between time_start and time_end) union 
+      (select event_timestamp from CAM  where event_timestamp between time_start and time_end) union 
+      (select event_timestamp from VAM  where event_timestamp between time_start and time_end) union 
+      (select event_timestamp from DENM where event_timestamp between time_start and time_end)
     ) as tmp
   ) as tmp2
 where 
