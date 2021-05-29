@@ -54,8 +54,8 @@ GO
 create table it2s_db.CPM(
     rsu_station_id int foreign key references it2s_db.RSU(emitter_station_id) not null,
     event_timestamp int not null,
-    longitude int not null, 
     latitude int not null,
+    longitude int not null, 
     quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
     primary key(rsu_station_id, event_timestamp)
 )
@@ -66,8 +66,8 @@ create table it2s_db.PerceivedObject(
     cpm_station_id int not null, 
     event_timestamp int not null, 
 	perceived_object_id int not null,
-    longitude int not null, 
     latitude int not null,
+    longitude int not null, 
     quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
     x_distance int not null,
     y_distance int not null,
