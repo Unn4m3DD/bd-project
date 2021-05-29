@@ -106,12 +106,12 @@ GO
 ;
 
 create table it2s_db.VAM(
+    emitter_station_id int foreign key references it2s_db.SmartPhone(emitter_station_id),
     event_timestamp int not null,
     station_type int not null,
     latitude int not null,
     longitude int not null,
     quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
-    emitter_station_id int foreign key references it2s_db.SmartPhone(emitter_station_id),
     primary key(emitter_station_id, event_timestamp)
 )
 GO

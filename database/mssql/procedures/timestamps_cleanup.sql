@@ -1,0 +1,2 @@
+DROP PROCEDURE get_timestamps;
+DROP PROCEDURE get_timestamps_between;
