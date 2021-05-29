@@ -202,7 +202,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
       res.send(response)
     }
     else
-      res.send(await query("select * from it2s_db.RSU", []))
+      res.send(await query("select emitter_station_id as station_id,latitude, longitude from it2s_db.RSU", []))
   },
   smartphone_list: undefined,
   web_list: undefined,
