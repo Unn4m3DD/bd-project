@@ -9,6 +9,44 @@ export function setupAPIEndpoint(outer_query: (sql_query: string, query_paramete
   query = outer_query
   setup()
 }
+
+async function get_events(
+  event_type: string,
+  start_time: number,
+  end_time: number,
+  quadtree: number | undefined,
+  zoom: number | undefined,
+  station_id: number | undefined) {
+  let quadtree_start: number, quadtree_end: number;
+  if (zoom && quadtree) {
+    quadtree_start = quadtree - Math.pow(2, 18 - zoom)
+    quadtree_end = quadtree + Math.pow(2, 18 - zoom)
+  }
+  if (station_id && zoom && quadtree) {
+    return await (query(
+      `call get_${event_type}s_quadtree_and_station_id(?, ?, ?, ?, ?);`,
+      [start_time, end_time, quadtree_start, quadtree_end, station_id]
+    ))
+  }
+  if (zoom && quadtree) {
+    return await (query(
+      `call get_${event_type}s_quadtree(?, ?, ?, ?);`,
+      [start_time, end_time, quadtree_start, quadtree_end]
+    ))
+  }
+  if (station_id) {
+    return await (query(
+      `call get_${event_type}s_station_id(?, ?, ?);`,
+      [start_time, end_time, station_id]
+    ))
+  }
+  return await (query(
+    `call get_${event_type}s(?, ?);`,
+    [start_time, end_time]
+  ))
+
+}
+
 const api_response: { [key: string]: (req: express.Request, res: express.Response) => Promise<void> } = {
   car_count: undefined,
   car_speed_average: undefined,
@@ -26,76 +64,60 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     opt location_quadtree=16443191796
     opt quadtree_zoom=18
     */
+    let start_time = JSON.parse(req.query.start_time as string)
+    let end_time = JSON.parse(req.query.end_time as string)
+    let station_id: number;
     let number_quadtree: number;
     let zoom: number = 18;
+    if (req.query.emitter_id)
+      station_id = JSON.parse(req.query.emitter_id as string)
     if (req.query.location_quadtree)
       number_quadtree = JSON.parse(req.query.location_quadtree as string)
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
+
+    const cpm_raw = await get_events("cpm", start_time, end_time, number_quadtree, zoom, station_id)
+    const cpm = {}
+    cpm_raw[0].forEach(element => {
+      cpm[element.timestamp] = {
+        station_id: element.station_id,
+        longitude: element.longitude,
+        latitude: element.latitude,
+        perceived_objects: JSON.parse(element.perceived_objects),
+      }
+    })
+
+    const cam_raw = await get_events("cam", start_time, end_time, number_quadtree, zoom, station_id)
+    const cam = {}
+    cam_raw[0].forEach(element => {
+      cam[element.timestamp] = {
+        station_id: element.station_id,
+        longitude: element.longitude,
+        latitude: element.latitude,
+        station_type: element.station_type,
+        perceived_objects: JSON.parse(element.perceived_objects),
+      }
+    })
+
+
+    const vam_raw = await get_events("vam", start_time, end_time, number_quadtree, zoom, station_id)
+    const vam = {}
+    vam_raw[0].forEach(element => {
+      vam[element.timestamp] = {
+        station_id: element.station_id,
+        longitude: element.longitude,
+        latitude: element.latitude,
+        station_type: element.station_type,
+        perceived_objects: JSON.parse(element.perceived_objects),
+      }
+    })
+
     let response = {};
     for (let i = JSON.parse(req.query.start_time as string); i < JSON.parse(req.query.end_time as string); i++) {
-      let cpm = await query(
-        `select 
-  rsu_station_id as station_id,
-  longitude as longitude,
-  latitude as latitude,
-  quadtree
-from CPM where event_timestamp = ?
-${req.query.location_quadtree ? "and ? < quadtree and quadtree < ? " : ""}
-`,
-        [i, ...(req.query.location_quadtree ?
-          [number_quadtree - Math.pow(2, 18 - zoom), number_quadtree + Math.pow(2, 18 - zoom)] : [])]
-      )
-
-      cpm.forEach(async element => {
-        element.perceived_objects = await query(
-          `select 
-  perceived_object_id as objectID,
-  x_distance as xDistance,
-  y_distance as yDistance,
-  x_speed as xSpeed,
-  y_speed as ySpeed 
-from 
-  CPM inner join PerceivedObject on 
-  ? = cpm_station_id and 
-  CPM.event_timestamp = PerceivedObject.event_timestamp
-  where CPM.event_timestamp = ?`, [element.station_id, i])
-      });
       response[i] = {
-        "cpm": cpm,
-        "cam": query(
-          `select 
-  station_id as  station_id,
-  station_type as station_type,
-  speed as speed,
-  latitude as latitude,
-  longitude as longitude
-from CAM where event_timestamp = ?
-  ${req.query.location_quadtree ? "and ? < quadtree and quadtree < ? " : ""}`,
-          [i, ...(req.query.location_quadtree ?
-            [number_quadtree - Math.pow(2, 18 - zoom), number_quadtree + Math.pow(2, 18 - zoom)] : [])]),
-        "vam": query(
-          `select 
-  emitter_station_id as  station_id,
-  station_type as station_type,
-  latitude as latitude,
-  longitude as longitude
-from VAM where event_timestamp = ?
-  ${req.query.location_quadtree ? "and ? < quadtree and quadtree < ? " : ""}`,
-          [i, ...(req.query.location_quadtree ?
-            [number_quadtree - Math.pow(2, 18 - zoom), number_quadtree + Math.pow(2, 18 - zoom)] : [])]),
-        "denm": query(
-          `select 
-  emitter_station_id as station_id,
-  cause_code as cause_code,
-  sub_cause_code as sub_cause_code,
-  latitude as latitude,
-  longitude as longitude,
-  duration as validity_duration
-from DENM where event_timestamp = ?
-  ${req.query.location_quadtree ? "and ? < quadtree and quadtree < ? " : ""}`,
-          [i, ...(req.query.location_quadtree ?
-            [number_quadtree - Math.pow(2, 18 - zoom), number_quadtree + Math.pow(2, 18 - zoom)] : [])])
+        "cpm": cpm[i],
+        "cam": cam[i],
+        "vam": vam[i]
       }
     }
     res.send(response)
