@@ -8,7 +8,7 @@ let message_counter = {
   denm: 0,
 }
 export function setupDataCollection(outer_query: (sql_query: string, query_parameters: any[]) => Promise<any>) {
-  query = outer_query //this should be an error as a temporary fix
+  query = outer_query 
   setup()
 }
 
@@ -64,7 +64,7 @@ const dbOnMessage = {
     message_counter.cpm++
     const current_timestamp = Math.floor(Date.now() / 1000)
     await query(`insert into it2s_db.CPM values(?,?,?,?,?)`,
-      [cpm.station_id, current_timestamp, cpm.longitude, cpm.latitude, quadtree]);
+      [cpm.station_id, current_timestamp, cpm.latitude, cpm.longitude, quadtree]);
     for (let perceived_object of cpm.perceived_objects) {
       let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2));
       const object_latitude = (cpm.latitude / 10e6 + (perceived_object.yDistance / 100 / 6371000) * (180 / Math.PI)) * 10e6;
@@ -88,19 +88,19 @@ const dbOnMessage = {
   cam: async (cam: cam_t, quadtree: number) => {
     message_counter.cam++
     const query_to_send = `insert into it2s_db.CAM values(?,?,?,?,?,?,?)`; //${cam.speed} hardcoded 0
-    const query_params = [cam.station_id, Math.floor(Date.now() / 1000), cam.station_type, 0, cam.longitude, cam.latitude, quadtree]
+    const query_params = [cam.station_id, Math.floor(Date.now() / 1000), cam.station_type, 0, cam.latitude,cam.longitude, quadtree]
     await query(query_to_send, query_params);
   },
   vam: async (vam: vam_t, quadtree: number) => {
     message_counter.vam++
     const query_to_send = `insert into it2s_db.VAM values(?,?,?,?,?,?)`;
-    const query_params = [vam.station_id, Math.floor(Date.now() / 1000), vam.station_type, vam.longitude, vam.latitude, quadtree]
+    const query_params = [vam.station_id, Math.floor(Date.now() / 1000), vam.station_type, vam.latitude, vam.longitude, quadtree]
     await query(query_to_send, query_params);
   },
   denm: async (denm: denm_t, quadtree: number) => {
     message_counter.denm++
     const query_to_send = `insert into it2s_db.DENM values(?,?,?,?,?,?,?,?)`;
-    const query_params = [denm.station_id, Math.floor(Date.now() / 1000), denm.cause_code, denm.sub_cause_code, denm.longitude, denm.latitude, denm.validity_duration, quadtree]
+    const query_params = [denm.station_id, Math.floor(Date.now() / 1000), denm.cause_code, denm.sub_cause_code, denm.latitude, denm.longitude, denm.validity_duration, quadtree]
     await query(query_to_send, query_params);
   }
 }
