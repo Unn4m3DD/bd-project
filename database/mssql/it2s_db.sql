@@ -3,7 +3,7 @@ GO
 ;
 
 create table it2s_db.Emitter(
-    station_id int not null,
+    station_id bigint not null,
     current_app_version int not null,
     primary key(station_id)
 )
@@ -11,7 +11,7 @@ GO
 ;
 
 create table it2s_db.OBU(
-    emitter_station_id int foreign key references it2s_db.Emitter(station_id) not null,
+    emitter_station_id bigint foreign key references it2s_db.Emitter(station_id) not null,
     last_power_status int not null,
     primary key(emitter_station_id)
 )
@@ -19,7 +19,7 @@ GO
 ;
 
 create table it2s_db.App(
-    emitter_station_id int foreign key references it2s_db.Emitter(station_id) not null,
+    emitter_station_id bigint foreign key references it2s_db.Emitter(station_id) not null,
     configured_language char(2) check( configured_language in ('pt', 'en')) not null,
     primary key(emitter_station_id)
 )
@@ -27,7 +27,7 @@ GO
 ;
 
 create table it2s_db.Smartphone(
-    emitter_station_id int foreign key references it2s_db.App(emitter_station_id) not null,
+    emitter_station_id bigint foreign key references it2s_db.App(emitter_station_id) not null,
     last_power_status int not null,
     primary key(emitter_station_id)
 )
@@ -35,7 +35,7 @@ GO
 ;
 
 create table it2s_db.WebSite(
-    emitter_station_id int foreign key references it2s_db.App(emitter_station_id) not null,
+    emitter_station_id bigint foreign key references it2s_db.App(emitter_station_id) not null,
     browser_version int not null,
     primary key(emitter_station_id)
 )
@@ -43,7 +43,7 @@ GO
 ;
 
 create table it2s_db.RSU(
-    emitter_station_id int foreign key references it2s_db.Emitter(station_id) not null,
+    emitter_station_id bigint foreign key references it2s_db.Emitter(station_id) not null,
     latitude BIGINT not null,
     longitude BIGINT not null,
     primary key(emitter_station_id)
@@ -52,7 +52,7 @@ GO
 ;
 
 create table it2s_db.CPM(
-    rsu_station_id int foreign key references it2s_db.RSU(emitter_station_id) not null,
+    rsu_station_id bigint foreign key references it2s_db.RSU(emitter_station_id) not null,
     event_timestamp int not null,
     latitude BIGINT not null,
     longitude BIGINT not null, 
@@ -63,7 +63,7 @@ GO
 ;
 
 create table it2s_db.PerceivedObject(
-    cpm_station_id int not null, 
+    cpm_station_id bigint not null, 
     event_timestamp int not null, 
 	perceived_object_id int not null,
     latitude BIGINT not null,
@@ -93,7 +93,7 @@ GO
 -- ;
 
 create table it2s_db.CAM(
-    station_id int foreign key references it2s_db.OBU(emitter_station_id) not null,
+    station_id bigint foreign key references it2s_db.OBU(emitter_station_id) not null,
     event_timestamp int not null,
     station_type int not null,
     speed int not null,
@@ -106,7 +106,7 @@ GO
 ;
 
 create table it2s_db.VAM(
-    emitter_station_id int foreign key references it2s_db.SmartPhone(emitter_station_id),
+    emitter_station_id bigint foreign key references it2s_db.SmartPhone(emitter_station_id),
     event_timestamp int not null,
     station_type int not null,
     latitude BIGINT not null,
@@ -118,7 +118,7 @@ GO
 ;
 
 create table it2s_db.DENM(
-    emitter_station_id int foreign key references it2s_db.App(emitter_station_id) not null,
+    emitter_station_id bigint foreign key references it2s_db.App(emitter_station_id) not null,
     event_timestamp int not null,
     cause_code int not null,
     sub_cause_code int not null,
@@ -139,7 +139,7 @@ GO
 ;
 
 create table it2s_db.Notification1(
-    cam_emitter_station_id int not null,
+    cam_emitter_station_id bigint not null,
     cam_event_timestamp int not null,
 	perceived_object_emitter int not null,
 	perceived_object_timestamp int not null,
@@ -153,7 +153,7 @@ GO
 ;
 
 create table it2s_db.Notification2(
-    cam_emitter_station_id int not null,
+    cam_emitter_station_id bigint not null,
     cam_event_timestamp int not null,
     status_id int foreign key references it2s_db.Status(id),
     foreign key (cam_emitter_station_id, cam_event_timestamp) references it2s_db.CAM(station_id, event_timestamp),

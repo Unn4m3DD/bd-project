@@ -20,10 +20,10 @@ GO CREATE FUNCTION it2s_db.getObjectLongitude (
 END
 GO CREATE FUNCTION it2s_db.getObjectAbsSpeed (@xSpeed INT, @ySpeed INT) RETURNS INT AS BEGIN return SQRT(Power(@xSpeed, 2) + Power(@ySpeed, 2));
 END
-GO CREATE PROCEDURE insert_cpm @emitter_id INT,
+GO CREATE PROCEDURE insert_cpm @emitter_id BIGINT,
   @timestamp INT,
-  @latitude INT,
-  @longitude INT,
+  @latitude BIGINT,
+  @longitude BIGINT,
   @quadtree BIGINT AS
 insert into it2s_db.CPM
 values(
@@ -33,11 +33,11 @@ values(
     @longitude,
     @quadtree
   )
-GO CREATE PROCEDURE insert_perceived_object @emitter_id INT,
+GO CREATE PROCEDURE insert_perceived_object @emitter_id BIGINT,
   @current_timestamp INT,
   @objectID INT,
-  @latitude INT,
-  @longitude INT,
+  @latitude BIGINT,
+  @longitude BIGINT,
   @quadtree BIGINT,
   @xDistance INT,
   @yDistance INT,
