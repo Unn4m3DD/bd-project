@@ -141,11 +141,11 @@ GO
 create table it2s_db.Notification1(
     cam_emitter_station_id int not null,
     cam_event_timestamp int not null,
-	perceived_object_emmiter int not null,
+	perceived_object_emitter int not null,
 	perceived_object_timestamp int not null,
     perceived_object_id int not null,
     status_id int foreign key references it2s_db.Status(id),
-	foreign key (perceived_object_emmiter, perceived_object_timestamp, perceived_object_id) references it2s_db.PerceivedObject(cpm_station_id, event_timestamp, perceived_object_id),
+	foreign key (perceived_object_emitter, perceived_object_timestamp, perceived_object_id) references it2s_db.PerceivedObject(cpm_station_id, event_timestamp, perceived_object_id),
     foreign key (cam_emitter_station_id, cam_event_timestamp) references it2s_db.CAM(station_id, event_timestamp),
     primary key(cam_emitter_station_id, cam_event_timestamp, perceived_object_id)
 )
