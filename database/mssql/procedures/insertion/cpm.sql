@@ -3,15 +3,18 @@ DROP PROCEDURE insert_perceived_object;
 DROP FUNCTION it2s_db.getObjectLatitude;
 DROP FUNCTION it2s_db.getObjectLongitude;
 DROP FUNCTION it2s_db.getObjectAbsSpeed
-GO CREATE FUNCTION it2s_db.getObjectLatitude (@rsu_latitude INT, @object_yDistance INT) RETURNS INT AS BEGIN return (
+GO CREATE FUNCTION it2s_db.getObjectLatitude (
+  @rsu_latitude BIGINT, 
+  @object_yDistance INT
+  ) RETURNS BIGINT AS BEGIN return (
     @rsu_latitude / 10000000.0 + (@object_yDistance / 100.0 / 6371000) * (180 / PI())
   ) * 10000000;
 END
 GO CREATE FUNCTION it2s_db.getObjectLongitude (
-    @rsu_latitude INT,
-    @rsu_longitude INT,
+    @rsu_latitude BIGINT,
+    @rsu_longitude BIGINT,
     @object_xDistance INT
-  ) RETURNS INT AS BEGIN return (
+  ) RETURNS BIGINT AS BEGIN return (
     @rsu_longitude / 10000000.0 + (@object_xDistance / 100.0 / 6371000) * (180 / PI()) / COS(@rsu_latitude * PI() / 100.0)
   ) * 10000000;
 END
