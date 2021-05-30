@@ -28,7 +28,9 @@ interface vam_t {
   timestamp_delta: number, // mod 65 536
   longitude: number, // C long, divide by 10e6 to get floating point 412400078 -> 41.2400078
   latitude: number,  // C long, divide by 10e6 to get floating point 412400078 -> 41.2400078
-  station_type: StationType
+  station_type: StationType,
+  origin: "web" | "mobile",
+  language: "pt" | "en",
 }
 
 interface denm_t {
@@ -39,7 +41,10 @@ interface denm_t {
   longitude: number,          // C long, divide by 10e6 to get floating point 412400078 -> 41.2400078
   timestamp: number,          // EPOCH -> 2004/01/01 00:00:000, + 1072915200000 to get usual unix epoch
   validity_duration: number,  // ms
-  station_type: StationType   // enum see definition bellow
+  station_type: StationType,   // enum see definition bellow
+  origin: "web" | "mobile",
+  language?: "pt" | "en",
+  browser_version?: number
 }
 
 export enum StationType {

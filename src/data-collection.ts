@@ -12,49 +12,32 @@ export function setupDataCollection(outer_query: (procedure_name: string, query_
   setup()
 }
 
-async function checkIDInDB(station_id: number): Promise<boolean> {
-  const result =
-    await query(`Select * from it2s_db.Emitter where station_id = ?`, [station_id]);
-  return result.length == 1;
-}
-
-const updateIDInDB = {
+const insertOrUpdateOnDb = {
   cpm: async (cpm: cpm_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=? where station_id = ?`, [1,cpm.station_id]); //hardcode
-    await query(`update it2s_db.RSU set latitude=?, longitude=? where emitter_station_id = ?`, [cpm.latitude, cpm.longitude, cpm.station_id]);
+    const app_version = 1; //TODO hardcoded
+    await query(`insert_rsu`, [cpm.station_id, app_version, cpm.latitude, cpm.longitude]);
   },
   cam: async (cam: cam_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=? where station_id = ?`, [1,cam.station_id]); //hardcode
-    await query(`update it2s_db.OBU set last_power_status=? where  emitter_station_id = ?`, [100, cam.station_id]); //hardcode
+    const app_version = 1; //TODO hardcoded
+    const power_status = 100; //TODO hardcoded
+    await query(`insert insert_obu`, [cam.station_id, app_version, power_status]);
   },
   vam: async (vam: vam_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=? where  station_id = ?`, [1, vam.station_id]); //hardcode
-    await query(`update it2s_db.App set configured_language=? where  emitter_station_id = ?`, ['pt', vam.station_id]); //hardcode
-    await query(`update it2s_db.Smartphone set last_power_status=? where  emitter_station_id = ?`, [100, vam.station_id]); //hardcode
-  },
-  denm: async (denm: denm_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=? where  station_id = ?`, [1,denm.station_id]); //hardcode
-    await query(`update it2s_db.App set configured_language=? where  emitter_station_id = ?`, ['pt', denm.station_id]); //hardcode
-  }
-}
+    const app_version = 1; //TODO hardcoded
+    const power_status = 100; //TODO hardcoded
+    const language = "pt" //TODO hardcoded
+    await (query("insert_smartphone", [vam.station_id, app_version, power_status, language]))
 
-const insertIDInDB = {
-  cpm: async (cpm: cpm_t) => {
-    await query(`insert into it2s_db.Emitter values(?, ?)`, [cpm.station_id, 1]); //hardcoded
-    await query(`insert into it2s_db.RSU values(?,?,?)`, [cpm.station_id, cpm.latitude, cpm.longitude]);
-  },
-  cam: async (cam: cam_t) => {
-    await query(`insert into it2s_db.Emitter values(?, ?)`, [cam.station_id, 1]); //hardcoded
-    await query(`insert into it2s_db.OBU values(?, ?)`, [cam.station_id, 100]); //hardcoded
-  },
-  vam: async (vam: vam_t) => {
-    await query(`insert into it2s_db.Emitter values(?, ?)`, [vam.station_id, 1]); //hardcoded
-    await query(`insert into it2s_db.App values(?, ?)`, [vam.station_id, 'pt']); //hardcoded
-    await query(`insert into it2s_db.Smartphone values(?, ?)`, [vam.station_id, 100]); //hardcoded
   },
   denm: async (denm: denm_t) => {
-    await query(`insert into it2s_db.Emitter values(?, ?)`, [denm.station_id, 1]); //hardcoded
-    await query(`insert into it2s_db.App values(?, ?)`, [denm.station_id, 'pt']); //hardcoded
+    const app_version = 1; //TODO hardcoded
+    const power_status = 100; //TODO hardcoded
+    const language = "pt" //TODO hardcoded
+    const browser_verion = 10 //TODO hardcoded
+    if (denm.origin == "mobile")
+      await (query("insert_smartphone", [denm.station_id, app_version, power_status, language]))
+    else
+      await (query("insert_website", [denm.station_id, app_version, browser_verion, language]))
   }
 }
 
@@ -86,24 +69,39 @@ const dbOnMessage = {
     }
   },
   cam: async (cam: cam_t, quadtree: number) => {
-    try {
-      message_counter.cam++
-      const query_to_send = `insert into it2s_db.CAM values(?,?,?,?,?,?,?)`; //${cam.speed} hardcoded 0
-      const query_params = [cam.station_id, Math.floor(Date.now() / 1000), cam.station_type, 0, cam.latitude, cam.longitude, quadtree]
-      await query(query_to_send, query_params);
-    } catch { console.log("fix me please")}
+    const speed = 0; //TODO hardcoded
+    await query("insert_cam", [
+      cam.station_id,
+      Math.floor(Date.now() / 1000),
+      cam.station_type,
+      speed,
+      cam.latitude,
+      cam.longitude,
+      quadtree
+    ]);
   },
   vam: async (vam: vam_t, quadtree: number) => {
     message_counter.vam++
-    const query_to_send = `insert into it2s_db.VAM values(?,?,?,?,?,?)`;
-    const query_params = [vam.station_id, Math.floor(Date.now() / 1000), vam.station_type, vam.latitude, vam.longitude, quadtree]
-    await query(query_to_send, query_params);
+    await query("insert_vam", [
+      vam.station_id,
+      Math.floor(Date.now() / 1000),
+      vam.station_type,
+      vam.latitude,
+      vam.longitude,
+      quadtree
+    ]);
   },
   denm: async (denm: denm_t, quadtree: number) => {
     message_counter.denm++
-    const query_to_send = `insert into it2s_db.DENM values(?,?,?,?,?,?,?,?)`;
-    const query_params = [denm.station_id, Math.floor(Date.now() / 1000), denm.cause_code, denm.sub_cause_code, denm.latitude, denm.longitude, denm.validity_duration, quadtree]
-    await query(query_to_send, query_params);
+    await query("insert_denm", [
+      denm.station_id, Math.floor(Date.now() / 1000),
+      denm.cause_code,
+      denm.sub_cause_code,
+      denm.latitude,
+      denm.longitude,
+      denm.validity_duration,
+      quadtree
+    ]);
   }
 }
 
@@ -134,13 +132,12 @@ async function setup() {
       let topic_arr = topic.split("/")
       let message_type = topic_arr[2]
       let message_content = JSON.parse(message.toString())
-      let quadtree = parseInt(topic_arr.slice(3, topic_arr.length - 1).join("").padEnd(18,"0"), 4)
+      let quadtree = parseInt(topic_arr.slice(3, topic_arr.length - 1).join("").padEnd(18, "0"), 4)
       if (topic_arr.length <= 3) return;
       try {
-        let id_in_db = await checkIDInDB(message_content.station_id);
-        if (id_in_db) await updateIDInDB[message_type](message_content);
-        else await insertIDInDB[message_type](message_content)
+        await insertOrUpdateOnDb[message_type](message_content);
       } catch (e) {
+        console.log(e)
         /*this path might be taken due to race conditions but the db ensures data integrity
         this is not a problem because it only occurs once or twice every time a new id is added to the db*/
       }
