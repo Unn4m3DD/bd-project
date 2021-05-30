@@ -20,7 +20,7 @@ const insertOrUpdateOnDb = {
   cam: async (cam: cam_t) => {
     const app_version = 1; //TODO hardcoded
     const power_status = 100; //TODO hardcoded
-    await query(`insert insert_obu`, [cam.station_id, app_version, power_status]);
+    await query(`insert_obu`, [cam.station_id, app_version, power_status]);
   },
   vam: async (vam: vam_t) => {
     const app_version = 1; //TODO hardcoded
@@ -46,27 +46,23 @@ const dbOnMessage = {
   cpm: async (cpm: cpm_t, quadtree: number) => {
     message_counter.cpm++
     const current_timestamp = Math.floor(Date.now() / 1000)
-    await query(`insert into it2s_db.CPM values(?,?,?,?,?)`,
+    await query(`insert_cpm`,
       [cpm.station_id, current_timestamp, cpm.latitude, cpm.longitude, quadtree]);
-    for (let perceived_object of cpm.perceived_objects) {
-      let abs_speed = Math.sqrt(Math.pow(perceived_object.xSpeed, 2) + Math.pow(perceived_object.ySpeed, 2));
-      const object_latitude = (cpm.latitude / 10e6 + (perceived_object.yDistance / 100 / 6371000) * (180 / Math.PI)) * 10e6;
-      const object_longitude =
-        (cpm.longitude / 10e6 + (perceived_object.xDistance / 100 / 6371000) * (180 / Math.PI) /
-          Math.cos(object_latitude * Math.PI / 180)) * 10e6;
-      await query(`insert into it2s_db.PerceivedObject values(?,?,?,?,?,?,?,?,?,?,?)`, [
+
+    cpm.perceived_objects.forEach((perceived_object) => {
+      query(`insert_perceived_object`, [
         cpm.station_id,
         current_timestamp,
         perceived_object.objectID,
-        Math.floor(object_latitude),
-        Math.floor(object_longitude),
+        cpm.latitude,
+        cpm.longitude,
         quadtree,
         perceived_object.xDistance,
         perceived_object.yDistance,
         perceived_object.xSpeed,
-        perceived_object.ySpeed,
-        abs_speed]);
-    }
+        perceived_object.ySpeed
+      ])
+    })
   },
   cam: async (cam: cam_t, quadtree: number) => {
     const speed = 0; //TODO hardcoded

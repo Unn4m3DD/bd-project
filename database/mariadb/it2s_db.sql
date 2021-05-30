@@ -30,18 +30,18 @@ create table it2s_db.WebSite(
   primary key(emitter_station_id),
   foreign key (emitter_station_id) references it2s_db.App(emitter_station_id)
 );
-create table it2s_db.RSU(
+create table it2s_db.RSU(--
   emitter_station_id int not null,
-  latitude int not null,
-  longitude int not null,
+  latitude bigint not null,
+  longitude bigint not null,
   primary key(emitter_station_id),
   foreign key (emitter_station_id) references it2s_db.Emitter(station_id)
 );
-create table it2s_db.CPM(
+create table it2s_db.CPM(--
   rsu_station_id int not null,
   event_timestamp int not null,
-  latitude int not null,
-  longitude int not null,
+  latitude bigint not null,
+  longitude bigint not null,
   quadtree bigint not null,
   primary key(rsu_station_id, event_timestamp),
   foreign key (rsu_station_id) references it2s_db.RSU(emitter_station_id),
@@ -50,12 +50,12 @@ create table it2s_db.CPM(
     and quadtree <= 68719476736
   )
 );
-create table it2s_db.PerceivedObject(
+create table it2s_db.PerceivedObject(--
   cpm_station_id int not null,
   event_timestamp int not null,
   perceived_object_id int not null,
-  latitude int not null,
-  longitude int not null,
+  latitude bigint not null,
+  longitude bigint not null,
   quadtree bigint not null,
   x_distance int not null,
   y_distance int not null,
@@ -73,13 +73,13 @@ create table it2s_db.PerceivedObject(
     and quadtree <= 68719476736
   )
 );
-create table it2s_db.CAM(
+create table it2s_db.CAM(--
   station_id int not null,
   event_timestamp int not null,
   station_type int not null,
   speed int not null,
-  latitude int not null,
-  longitude int not null,
+  latitude bigint not null,
+  longitude bigint not null,
   quadtree bigint not null,
   -- check limite quadtree zoom 18
   primary key(station_id, event_timestamp),
@@ -89,12 +89,12 @@ create table it2s_db.CAM(
     and quadtree <= 68719476736
   )
 );
-create table it2s_db.VAM(
+create table it2s_db.VAM(--
   emitter_station_id int not null,
   event_timestamp int not null,
   station_type int not null,
-  latitude int not null,
-  longitude int not null,
+  latitude bigint not null,
+  longitude bigint not null,
   quadtree bigint not null,
   primary key(emitter_station_id, event_timestamp),
   foreign key (emitter_station_id) references it2s_db.Smartphone(emitter_station_id),
@@ -103,13 +103,13 @@ create table it2s_db.VAM(
     and quadtree <= 68719476736
   )
 );
-create table it2s_db.DENM(
+create table it2s_db.DENM(--
   emitter_station_id int not null,
   event_timestamp int not null,
   cause_code int not null,
   sub_cause_code int not null,
-  latitude int not null,
-  longitude int not null,
+  latitude bigint not null,
+  longitude bigint not null,
   duration int,
   quadtree bigint not null,
   primary key(emitter_station_id, event_timestamp),
