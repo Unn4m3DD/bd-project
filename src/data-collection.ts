@@ -20,41 +20,41 @@ async function checkIDInDB(station_id: number): Promise<boolean> {
 
 const updateIDInDB = {
   cpm: async (cpm: cpm_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=1 where station_id = ?`, [cpm.station_id]); //hardcode
+    await query(`update it2s_db.Emitter set current_app_version=? where station_id = ?`, [1,cpm.station_id]); //hardcode
     await query(`update it2s_db.RSU set latitude=?, longitude=? where emitter_station_id = ?`, [cpm.latitude, cpm.longitude, cpm.station_id]);
   },
   cam: async (cam: cam_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=1 where station_id = ?`, [cam.station_id]); //hardcode
-    await query(`update it2s_db.OBU set last_power_status=100 where  emitter_station_id = ?`, [cam.station_id]); //hardcode
+    await query(`update it2s_db.Emitter set current_app_version=? where station_id = ?`, [1,cam.station_id]); //hardcode
+    await query(`update it2s_db.OBU set last_power_status=? where  emitter_station_id = ?`, [100, cam.station_id]); //hardcode
   },
   vam: async (vam: vam_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=1 where  station_id = ?`, [vam.station_id]); //hardcode
-    await query(`update it2s_db.App set configured_language='pt' where  emitter_station_id = ?`, [vam.station_id]); //hardcode
-    await query(`update it2s_db.Smartphone set last_power_status=100 where  emitter_station_id = ?`, [vam.station_id]); //hardcode
+    await query(`update it2s_db.Emitter set current_app_version=? where  station_id = ?`, [1, vam.station_id]); //hardcode
+    await query(`update it2s_db.App set configured_language=? where  emitter_station_id = ?`, ['pt', vam.station_id]); //hardcode
+    await query(`update it2s_db.Smartphone set last_power_status=? where  emitter_station_id = ?`, [100, vam.station_id]); //hardcode
   },
   denm: async (denm: denm_t) => {
-    await query(`update it2s_db.Emitter set current_app_version=1 where  station_id = ?`, [denm.station_id]); //hardcode
-    await query(`update it2s_db.App set configured_language='pt' where  emitter_station_id = ?`, [denm.station_id]); //hardcode
+    await query(`update it2s_db.Emitter set current_app_version=? where  station_id = ?`, [1,denm.station_id]); //hardcode
+    await query(`update it2s_db.App set configured_language=? where  emitter_station_id = ?`, ['pt', denm.station_id]); //hardcode
   }
 }
 
 const insertIDInDB = {
   cpm: async (cpm: cpm_t) => {
-    await query(`insert into it2s_db.Emitter values(?, 1)`, [cpm.station_id]); //hardcoded
+    await query(`insert into it2s_db.Emitter values(?, ?)`, [cpm.station_id, 1]); //hardcoded
     await query(`insert into it2s_db.RSU values(?,?,?)`, [cpm.station_id, cpm.latitude, cpm.longitude]);
   },
   cam: async (cam: cam_t) => {
-    await query(`insert into it2s_db.Emitter values(?, 1)`, [cam.station_id]); //hardcoded
-    await query(`insert into it2s_db.OBU values(?, 100)`, [cam.station_id]); //hardcoded
+    await query(`insert into it2s_db.Emitter values(?, ?)`, [cam.station_id, 1]); //hardcoded
+    await query(`insert into it2s_db.OBU values(?, ?)`, [cam.station_id, 100]); //hardcoded
   },
   vam: async (vam: vam_t) => {
-    await query(`insert into it2s_db.Emitter values(?, 1)`, [vam.station_id]); //hardcoded
-    await query(`insert into it2s_db.App values(?, 'pt')`, [vam.station_id]); //hardcoded
-    await query(`insert into it2s_db.Smartphone values(?, 100)`, [vam.station_id]); //hardcoded
+    await query(`insert into it2s_db.Emitter values(?, ?)`, [vam.station_id, 1]); //hardcoded
+    await query(`insert into it2s_db.App values(?, ?)`, [vam.station_id, 'pt']); //hardcoded
+    await query(`insert into it2s_db.Smartphone values(?, ?)`, [vam.station_id, 100]); //hardcoded
   },
   denm: async (denm: denm_t) => {
-    await query(`insert into it2s_db.Emitter values(?, 1)`, [denm.station_id]); //hardcoded
-    await query(`insert into it2s_db.App values(?, 'pt')`, [denm.station_id]); //hardcoded
+    await query(`insert into it2s_db.Emitter values(?, ?)`, [denm.station_id, 1]); //hardcoded
+    await query(`insert into it2s_db.App values(?, ?)`, [denm.station_id, 'pt']); //hardcoded
   }
 }
 
@@ -134,7 +134,7 @@ async function setup() {
       let topic_arr = topic.split("/")
       let message_type = topic_arr[2]
       let message_content = JSON.parse(message.toString())
-      let quadtree = parseInt(topic_arr.slice(3, topic_arr.length - 1).join(""), 4)
+      let quadtree = parseInt(topic_arr.slice(3, topic_arr.length - 1).join("").padEnd(18,"0"), 4)
       if (topic_arr.length <= 3) return;
       try {
         let id_in_db = await checkIDInDB(message_content.station_id);

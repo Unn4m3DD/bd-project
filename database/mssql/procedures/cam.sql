@@ -1,3 +1,8 @@
+DROP PROCEDURE get_cams_station_id;
+DROP PROCEDURE get_cams;
+DROP PROCEDURE get_cams_quadtree;
+DROP PROCEDURE get_cams_quadtree_and_station_id;
+GO
 CREATE PROCEDURE get_cams @time_start INT,
 @time_end INT AS
 select CAM.event_timestamp as [timestamp],

@@ -1,3 +1,6 @@
+DROP PROCEDURE get_timestamps;
+DROP PROCEDURE get_timestamps_between;
+GO
 CREATE PROCEDURE get_timestamps
 AS
 select 

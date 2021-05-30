@@ -1,3 +1,8 @@
+DROP PROCEDURE get_cpms_station_id;
+DROP PROCEDURE get_cpms;
+DROP PROCEDURE get_cpms_quadtree;
+DROP PROCEDURE get_cpms_quadtree_and_station_id;
+GO
 CREATE PROCEDURE get_cpms @time_start INT,
 @time_end INT AS
 select CPM.event_timestamp as [timestamp],
