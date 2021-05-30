@@ -1,6 +1,6 @@
-DROP PROCEDURE update_website;
+DROP PROCEDURE INSERT_website;
 GO
-CREATE PROCEDURE update_website @emitter_id INT, @app_version INT, @lang CHAR(2), @browser_version INT
+CREATE PROCEDURE INSERT_website @emitter_id INT, @app_version INT, @lang CHAR(2), @browser_version INT
 AS
 
 update it2s_db.Emitter set current_app_version=@app_version where  station_id = @emitter_id
