@@ -42,7 +42,7 @@ async function get_events(
     ))
   }
   return await (query(
-    `get_${event_type}s(?, ?)`,
+    `get_${event_type}s`,
     [start_time, end_time]
   ))
 
