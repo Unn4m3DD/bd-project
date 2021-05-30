@@ -24,25 +24,25 @@ async function get_events(
   }
   if (station_id && zoom && quadtree) {
     return await (query(
-      `call get_${event_type}s_quadtree_and_station_id(?, ?, ?, ?, ?);`,
+      `get_${event_type}s_quadtree_and_station_id`,
       [start_time, end_time, quadtree_start, quadtree_end, station_id]
     ))
   }
   if (zoom && quadtree) {
     return await (query(
-      `call get_${event_type}s_quadtree(?, ?, ?, ?);`,
+      `get_${event_type}s_quadtree`,
       [start_time, end_time, quadtree_start, quadtree_end]
     ))
   }
 
   if (station_id) {
     return await (query(
-      `call get_${event_type}s_station_id(?, ?, ?);`,
+      `get_${event_type}s_station_id`,
       [start_time, end_time, station_id]
     ))
   }
   return await (query(
-    `call get_${event_type}s(?, ?);`,
+    `get_${event_type}s(?, ?)`,
     [start_time, end_time]
   ))
 
@@ -68,9 +68,9 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     }
     let timestamps;
     if (start_time && end_time)
-      timestamps = (await query(`call get_timestamps_between(?, ?)`, [start_time, end_time]))[0]
+      timestamps = (await query(`get_timestamps_between`, [start_time, end_time]))[0]
     else
-      timestamps = (await query(`call get_timestamps()`, []))[0]
+      timestamps = (await query(`get_timestamps`, []))[0]
     timestamps = timestamps.map(e => e.event_timestamp)
     timestamps.shift()
     timestamps.pop()

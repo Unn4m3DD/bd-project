@@ -5,24 +5,27 @@ import mariadb = require('mariadb');
 let maria_sql_connection: mariadb.Connection;
 
 
-async function queryMariaDb(sql_query: string, query_parameters: any[]) {
+async function queryMariaDb(procedure_name: string, query_parameters: any[]) {
   query_parameters = query_parameters.map(e => JSON.parse(e))
   //const startTime = Date.now();
-  const result = await maria_sql_connection.query(sql_query, query_parameters)
-  //if (sql_query.includes("join"))
+  const result = await maria_sql_connection.query(
+    `call ${procedure_name}(${"?,".repeat(query_parameters.length - 1)}${query_parameters.length != 0 ? "?" : ""});`,
+    query_parameters)
+  //if (procedure_name.includes("join"))
   //  console.log((Date.now() - startTime) + "ms");
   return result
 
 }
-async function queryMsSql(sql_query: string, query_parameters: string[]) {
+async function queryMsSql(procedure_name: string, query_parameters: string[]) {
   const request = new ms_sql_connection.Request(/* [pool or transaction] */)
+  let query = `exec ${procedure_name}(${"?,".repeat(query_parameters.length - 1)}${query_parameters.length != 0 ? "?" : ""});`
   let index = 0;
-  while (sql_query.match(/\?/))
-    sql_query = sql_query.replace("?", "arg" + index++)
+  while (query.match(/\?/))
+    query = query.replace("?", "arg" + index++)
   for (let i = 0; i < index; i++) {
     request.input('arg' + i, query_parameters[i]);
   }
-  return (await request.query(sql_query)).recordset
+  return (await request.query(procedure_name)).recordset
 }
 
 async function getQueryInterface() {

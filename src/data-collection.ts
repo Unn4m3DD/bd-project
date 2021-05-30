@@ -1,13 +1,13 @@
 import { cam_t, cpm_t, denm_t, vam_t } from "../types/types"
 import mqtt = require('mqtt')
-let query: (sql_query: string, query_parameters: any[]) => Promise<any>
+let query: (procedure_name: string, query_parameters: any[]) => Promise<any>
 let message_counter = {
   cpm: 0,
   cam: 0,
   vam: 0,
   denm: 0,
 }
-export function setupDataCollection(outer_query: (sql_query: string, query_parameters: any[]) => Promise<any>) {
+export function setupDataCollection(outer_query: (procedure_name: string, query_parameters: any[]) => Promise<any>) {
   query = outer_query
   setup()
 }
