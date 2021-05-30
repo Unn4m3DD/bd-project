@@ -1,7 +1,6 @@
 DROP PROCEDURE insert_cpm;
 DROP PROCEDURE insert_perceived_object;
 GO
-
 CREATE PROCEDURE insert_cpm @emitter_id INT, @timestamp INT, @latitude INT, @longitude INT, @quadtree BIGINT AS
 insert into it2s_db.CPM values(@emitter_id, @timestamp, @latitude, @longitude, @quadtree)
 GO
