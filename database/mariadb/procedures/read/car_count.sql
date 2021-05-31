@@ -1,6 +1,6 @@
 /*
 --auxiliary query explaining the logic behind the query
-select count(*)
+select count(*) as value
 from (
     select (
         event_timestamp - LAG(event_timestamp) OVER(
@@ -37,7 +37,7 @@ CREATE PROCEDURE `get_car_count_quadtree_and_station_id`(
   IN `in_station_id` BIGINT
 ) BEGIN
 
-select count(*)
+select count(*) as value
 from (
     select (
         event_timestamp - LAG(event_timestamp) OVER(
@@ -51,7 +51,6 @@ from (
           event_timestamp between `time_start` and `time_end`
       and cpm_station_id = `in_station_id` 
       and quadtree between `quadtree_start` and `quadtree_end` 
-    order by event_timestamp
   ) as inner_table
 where diff > 3 or diff is NULL;
 
@@ -65,7 +64,7 @@ CREATE PROCEDURE `get_car_count_station_id`(
   IN `in_station_id` BIGINT
 ) BEGIN
 
-select count(*)
+select count(*) as value
 from (
     select (
         event_timestamp - LAG(event_timestamp) OVER(
@@ -78,7 +77,6 @@ from (
     where 
           event_timestamp between `time_start` and `time_end`
       and cpm_station_id = `in_station_id` 
-    order by event_timestamp
   ) as inner_table
 where diff > 3 or diff is NULL;
 
@@ -93,7 +91,7 @@ CREATE PROCEDURE `get_car_count_quadtree`(
   IN `quadtree_end` BIGINT
 ) BEGIN
 
-select count(*)
+select count(*) as value
 from (
     select (
         event_timestamp - LAG(event_timestamp) OVER(
@@ -106,7 +104,6 @@ from (
     where 
           event_timestamp between `time_start` and `time_end`
       and quadtree between `quadtree_start` and `quadtree_end` 
-    order by event_timestamp
   ) as inner_table
 where diff > 3 or diff is NULL;
 
@@ -118,7 +115,7 @@ CREATE PROCEDURE `get_car_count`(
   IN `time_end` BIGINT
 ) BEGIN
 
-select count(*)
+select count(*) as value
 from (
     select (
         event_timestamp - LAG(event_timestamp) OVER(
@@ -130,7 +127,6 @@ from (
     from PerceivedObject
     where 
           event_timestamp between `time_start` and `time_end`
-    order by event_timestamp
   ) as inner_table
 where diff > 3 or diff is NULL;
 
