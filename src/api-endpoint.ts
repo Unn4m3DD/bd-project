@@ -24,32 +24,54 @@ async function get_events(
   }
   if (station_id && zoom && quadtree) {
     return await (query(
-      `get_${event_type}s_quadtree_and_station_id`,
+      `get_${event_type}_quadtree_and_station_id`,
       [start_time, end_time, quadtree_start, quadtree_end, station_id]
     ))
   }
   if (zoom && quadtree) {
     return await (query(
-      `get_${event_type}s_quadtree`,
+      `get_${event_type}_quadtree`,
       [start_time, end_time, quadtree_start, quadtree_end]
     ))
   }
 
   if (station_id) {
     return await (query(
-      `get_${event_type}s_station_id`,
+      `get_${event_type}_station_id`,
       [start_time, end_time, station_id]
     ))
   }
   return await (query(
-    `get_${event_type}s`,
+    `get_${event_type}`,
     [start_time, end_time]
   ))
 
 }
 
 const api_response: { [key: string]: (req: express.Request, res: express.Response) => Promise<void> } = {
-  car_count: undefined,
+  car_count: async (req, res) => {
+    /*
+    req start_time=1620223705
+    req end_time=1620223708
+    opt location_quadtree=16443191796
+    opt quadtree_zoom=18
+    */
+    let start_time = JSON.parse(req.query.start_time as string)
+    let end_time = JSON.parse(req.query.end_time as string)
+    let station_id: number;
+    let number_quadtree: number;
+    let zoom: number = 18;
+    if (req.query.rsu_station_id)
+      station_id = JSON.parse(req.query.rsu_station_id as string)
+    if (req.query.location_quadtree)
+      number_quadtree = JSON.parse(req.query.location_quadtree as string)
+    if (req.query.quadtree_zoom)
+      zoom = JSON.parse(req.query.quadtree_zoom as string)
+    const car_count = await get_events("car_count", start_time, end_time, number_quadtree, zoom, station_id)
+    console.log(car_count[0])
+    console.log(car_count[0][0])
+    res.send({count: car_count[0][0]["count(*)"]})
+  },
   car_speed_average: undefined,
   people_count: undefined,
   max_simultaneous_people_count: undefined,
@@ -102,7 +124,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
 
-    const cam_raw = await get_events("vam", start_time, end_time, number_quadtree, zoom, station_id)
+    const cam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
     const cam = {}
     cam_raw[0].forEach(element => {
       if (!cam[element.timestamp])
@@ -137,7 +159,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
 
-    const cpm_raw = await get_events("cpm", start_time, end_time, number_quadtree, zoom, station_id)
+    const cpm_raw = await get_events("cpms", start_time, end_time, number_quadtree, zoom, station_id)
     const cpm = {}
     cpm_raw[0].forEach(element => {
       if (!cpm[element.timestamp])
@@ -150,7 +172,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
       })
     })
 
-    const cam_raw = await get_events("cam", start_time, end_time, number_quadtree, zoom, station_id)
+    const cam_raw = await get_events("cams", start_time, end_time, number_quadtree, zoom, station_id)
     const cam = {}
     cam_raw[0].forEach(element => {
       if (!cam[element.timestamp])
@@ -164,7 +186,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     })
 
 
-    const vam_raw = await get_events("vam", start_time, end_time, number_quadtree, zoom, station_id)
+    const vam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
     const vam = {}
     vam_raw[0].forEach(element => {
       if (!vam[element.timestamp])
@@ -223,7 +245,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
       number_quadtree = JSON.parse(req.query.location_quadtree as string)
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
-    const cpm_raw = await get_events("cpm", start_time, end_time, number_quadtree, zoom, station_id)
+    const cpm_raw = await get_events("cpms", start_time, end_time, number_quadtree, zoom, station_id)
     const cpm = {}
     cpm_raw[0].forEach(element => {
       if (!cpm[element.timestamp])
@@ -256,7 +278,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
 
-    const vam_raw = await get_events("vam", start_time, end_time, number_quadtree, zoom, station_id)
+    const vam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
     const vam = {}
     vam_raw[0].forEach(element => {
       if (!vam[element.timestamp])
