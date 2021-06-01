@@ -339,8 +339,9 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         station_id: element.station_id,
         longitude: element.longitude,
         latitude: element.latitude,
-        station_type: element.station_type,
-        perceived_objects: JSON.parse(element.perceived_objects),
+        cause_code: element.cause_code,
+        sub_cause_code: element.sub_cause_code,
+        duration: element.duration,
       })
     })
     res.send(denm)
