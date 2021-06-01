@@ -311,7 +311,40 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     })
     res.send(vam)
   },
-  denms_list: undefined,
+  denms_list: async (req, res) => {
+    /*
+    req start_time=1620223705
+    req end_time=1620223708
+    opt location_quadtree=16443191796
+    opt quadtree_zoom=18
+    */
+    let start_time = JSON.parse(req.query.start_time as string)
+    let end_time = JSON.parse(req.query.end_time as string)
+    let station_id: number;
+    let number_quadtree: number;
+    let zoom: number = 18;
+    if (req.query.emitter_id)
+      station_id = JSON.parse(req.query.emitter_id as string)
+    if (req.query.location_quadtree)
+      number_quadtree = JSON.parse(req.query.location_quadtree as string)
+    if (req.query.quadtree_zoom)
+      zoom = JSON.parse(req.query.quadtree_zoom as string)
+
+    const denm_raw = await get_events("denms", start_time, end_time, number_quadtree, zoom, station_id)
+    const denm = {}
+    denm_raw[0].forEach(element => {
+      if (!denm[element.timestamp])
+        denm[element.timestamp] = []
+      denm[element.timestamp].push({
+        station_id: element.station_id,
+        longitude: element.longitude,
+        latitude: element.latitude,
+        station_type: element.station_type,
+        perceived_objects: JSON.parse(element.perceived_objects),
+      })
+    })
+    res.send(denm)
+  }
 }
 
 function setup() {
