@@ -124,13 +124,13 @@ create table it2s_db.Status(
   `description` varchar(1024) not null
 );
 create table it2s_db.Notification1(
-  perceived_object_emmiter int not null,
+  perceived_object_emitter bigint not null,
   perceived_object_timestamp int not null,
   perceived_object_id int not null,
   status_id int,
   foreign key (status_id) references it2s_db.Status(id),
   foreign key (
-    perceived_object_emmiter,
+    perceived_object_emitter,
     perceived_object_timestamp,
     perceived_object_id
   ) references it2s_db.PerceivedObject(
@@ -139,14 +139,14 @@ create table it2s_db.Notification1(
     perceived_object_id
   ),
   primary key(
-    perceived_object_emmiter,
+    perceived_object_emitter,
     perceived_object_timestamp,
     perceived_object_id
   )
 );
 create table it2s_db.Notification2(
   cam_emitter_station_id bigint not null,
-  cam_event_timestamp int not null,
+  cam_event_timestamp bigint not null,
   status_id int not null,
   foreign key (cam_emitter_station_id, cam_event_timestamp) references it2s_db.CAM(station_id, event_timestamp),
   primary key(cam_emitter_station_id, cam_event_timestamp),
