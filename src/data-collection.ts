@@ -89,8 +89,19 @@ const dbOnMessage = {
   },
   denm: async (denm: denm_t, quadtree: number) => {
     message_counter.denm++
+    console.log([
+      denm.station_id, 
+      Math.floor(Date.now() / 1000),
+      denm.cause_code,
+      denm.sub_cause_code,
+      denm.latitude,
+      denm.longitude,
+      denm.validity_duration,
+      quadtree
+    ])
     await query("insert_denm", [
-      denm.station_id, Math.floor(Date.now() / 1000),
+      denm.station_id, 
+      Math.floor(Date.now() / 1000),
       denm.cause_code,
       denm.sub_cause_code,
       denm.latitude,

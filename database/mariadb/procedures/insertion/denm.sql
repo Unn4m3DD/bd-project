@@ -17,7 +17,6 @@ insert into it2s_db.DENM values(
   `timestamp`, 
   `cause_code`, 
   `sub_cause_code`, 
-  `abs_speed`, 
   `latitude`, 
   `longitude`, 
   `duration`, 
