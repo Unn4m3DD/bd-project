@@ -29,7 +29,7 @@ interface vam_t {
   longitude: number, // C long, divide by 10e6 to get floating point 412400078 -> 41.2400078
   latitude: number,  // C long, divide by 10e6 to get floating point 412400078 -> 41.2400078
   station_type: StationType,
-  origin: "web" | "mobile",
+  power_status: number,
   language: "pt" | "en",
 }
 
@@ -45,7 +45,8 @@ interface denm_t {
   origin: "web" | "mobile",
   language?: "pt" | "en",
   browser_name?: string,
-  browser_version?: string
+  browser_version?: string,
+  app_version: number,
 }
 
 export enum StationType {
