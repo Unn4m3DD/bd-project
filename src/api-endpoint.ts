@@ -123,7 +123,42 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     res.send(result)
 
   },
-  notifications_list: undefined,
+  notifications_list:  async (req, res) => {
+
+    /*
+    req start_time=1620223705
+    req end_time=1620223708
+    opt location_quadtree=16443191796
+    opt quadtree_zoom=18
+    */
+    let start_time = JSON.parse(req.query.start_time as string)
+    let end_time = JSON.parse(req.query.end_time as string)
+    let station_id: number;
+    let number_quadtree: number;
+    let zoom: number = 18;
+    if (req.query.emitter_id)
+      station_id = JSON.parse(req.query.emitter_id as string)
+    if (req.query.location_quadtree)
+      number_quadtree = JSON.parse(req.query.location_quadtree as string)
+    if (req.query.quadtree_zoom)
+      zoom = JSON.parse(req.query.quadtree_zoom as string)
+
+    const notification_raw = await get_events("notifications_list", start_time, end_time, number_quadtree, zoom, station_id)
+    const notification = {}
+    notification_raw[0].forEach(element => {
+      if (!notification[element.timestamp])
+        notification[element.timestamp] = []
+      notification[element.timestamp].push({
+        emitter_id: element.emitter_id,
+        event_timestamp: element.event_timestamp,
+        object_id: element.object_id,
+        longitude: element.longitude,
+        latitude: element.latitude,
+        description: element.description
+      })
+    })
+    res.send(notification)
+  },
   events: async (req, res) => {
     /*
     req start_time=1620223705
@@ -239,7 +274,6 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         longitude: element.longitude,
         latitude: element.latitude,
         station_type: element.station_type,
-        perceived_objects: JSON.parse(element.perceived_objects),
       })
     })
     res.send(cam)
@@ -305,7 +339,6 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         longitude: element.longitude,
         latitude: element.latitude,
         station_type: element.station_type,
-        perceived_objects: JSON.parse(element.perceived_objects),
       })
     })
     res.send(vam)

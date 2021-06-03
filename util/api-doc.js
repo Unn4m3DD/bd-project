@@ -493,7 +493,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/notifications_list?start_time=1620223705&end_time=1620223708&location_quadtree=60045410497&emitter_id=[10, 1]",
+							"raw": "{{baseUrl}}/notifications_list?start_time=1620223705&end_time=1620223708&location_quadtree=60045410497&emitter_id=1",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -518,7 +518,7 @@ module.exports = {
 								},
 								{
 									"key": "emitter_id",
-									"value": "[10, 1]",
+									"value": "1",
 									"description": "(Optional) IDs of the emitters"
 								}
 							]
@@ -741,7 +741,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/obu_list?emitter_ids=[150]",
+							"raw": "{{baseUrl}}/obu_list?emitter_ids=[2]",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -751,7 +751,7 @@ module.exports = {
 							"query": [
 								{
 									"key": "emitter_ids",
-									"value": "[150]",
+									"value": "[2]",
 									"description": "(Optional) IDs of the emitters IDs of the emitters"
 								}
 							]
@@ -1071,7 +1071,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/denms_list?start_time=1620223705&end_time=1620223708&emitter_ids=[2,99]&location_quadtree=16443191796&quadtree_zoom=18",
+							"raw": "{{baseUrl}}/denms_list?start_time=1620223705&end_time=9620223708",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1086,23 +1086,26 @@ module.exports = {
 								},
 								{
 									"key": "end_time",
-									"value": "1620223708",
+									"value": "9620223708",
 									"description": "(Required) Notification listing end timestamp (seconds)"
 								},
 								{
 									"key": "emitter_ids",
 									"value": "[2,99]",
-									"description": "(Optional) IDs of the emitters"
+									"description": "(Optional) IDs of the emitters",
+									"disabled": true
 								},
 								{
 									"key": "location_quadtree",
 									"value": "16443191796",
-									"description": "(Optional) Tile of the location from where the data must be queried"
+									"description": "(Optional) Tile of the location from where the data must be queried",
+									"disabled": true
 								},
 								{
 									"key": "quadtree_zoom",
 									"value": "18",
-									"description": "(Optional) Zoom level of the data collected"
+									"description": "(Optional) Zoom level of the data collected",
+									"disabled": true
 								}
 							]
 						}

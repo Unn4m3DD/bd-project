@@ -583,7 +583,7 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on start_time parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"[10, 1]","description":"(Optional) IDs of the emitters"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"1","description":"(Optional) IDs of the emitters"}]
         })
         return
       }
@@ -596,7 +596,7 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on end_time parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"[10, 1]","description":"(Optional) IDs of the emitters"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"1","description":"(Optional) IDs of the emitters"}]
         })
         return
       }
@@ -609,20 +609,20 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on location_quadtree parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"[10, 1]","description":"(Optional) IDs of the emitters"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"1","description":"(Optional) IDs of the emitters"}]
         })
         return
       }
     
       if(
         req.query.emitter_id != undefined &&
-      typeof(JSON.parse(req.query.emitter_id as string)) != "object"
+      typeof(JSON.parse(req.query.emitter_id as string)) != "number"
       ){
         res.send({ 
           message: "An error occured parsing input", 
           sub_message: "Error on emitter_id parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"[10, 1]","description":"(Optional) IDs of the emitters"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"location_quadtree","value":"60045410497","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"emitter_id","value":"1","description":"(Optional) IDs of the emitters"}]
         })
         return
       }
@@ -883,7 +883,7 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on emitter_ids parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"emitter_ids","value":"[150]","description":"(Optional) IDs of the emitters IDs of the emitters"}]
+          sub_info: [{"key":"emitter_ids","value":"[2]","description":"(Optional) IDs of the emitters IDs of the emitters"}]
         })
         return
       }
@@ -1214,7 +1214,7 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on start_time parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"9620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters","disabled":true},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried","disabled":true},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected","disabled":true}]
         })
         return
       }
@@ -1227,7 +1227,7 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on end_time parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"9620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters","disabled":true},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried","disabled":true},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected","disabled":true}]
         })
         return
       }
@@ -1240,7 +1240,7 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on emitter_ids parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"9620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters","disabled":true},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried","disabled":true},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected","disabled":true}]
         })
         return
       }
@@ -1253,7 +1253,7 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on location_quadtree parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"9620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters","disabled":true},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried","disabled":true},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected","disabled":true}]
         })
         return
       }
@@ -1266,7 +1266,7 @@ export default [
           message: "An error occured parsing input", 
           sub_message: "Error on quadtree_zoom parameter", 
           info: "This requesto should look like:",
-          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"1620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters"},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried"},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected"}]
+          sub_info: [{"key":"start_time","value":"1620223705","description":"(Required) Notification listing start timestamp (seconds)"},{"key":"end_time","value":"9620223708","description":"(Required) Notification listing end timestamp (seconds)"},{"key":"emitter_ids","value":"[2,99]","description":"(Optional) IDs of the emitters","disabled":true},{"key":"location_quadtree","value":"16443191796","description":"(Optional) Tile of the location from where the data must be queried","disabled":true},{"key":"quadtree_zoom","value":"18","description":"(Optional) Zoom level of the data collected","disabled":true}]
         })
         return
       }

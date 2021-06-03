@@ -16,6 +16,6 @@ for (let item of items) {
 fetch("http://ccam.av.it.pt/api/${item.name}?${query}", { method: 'GET', redirect: 'follow' })
   .then(response => response.text())
   .then(result => JSON.parse(result))
-  .catch(error => console.log('An error occurred attempting to access ${item.name}, query details: http://ccam.av.it.pt/api/${item.name}?${query}'));
+  .catch(error => console.log('error on query: http://ccam.av.it.pt/api/${item.name}?${query}'));
   `)
 }
