@@ -123,40 +123,6 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     res.send(result)
 
   },
-  cams_list: async (req, res) => {
-    /*
-    req start_time=1620223705
-    req end_time=1620223708
-    opt location_quadtree=16443191796
-    opt quadtree_zoom=18
-    */
-    let start_time = JSON.parse(req.query.start_time as string)
-    let end_time = JSON.parse(req.query.end_time as string)
-    let station_id: number;
-    let number_quadtree: number;
-    let zoom: number = 18;
-    if (req.query.emitter_id)
-      station_id = JSON.parse(req.query.emitter_id as string)
-    if (req.query.location_quadtree)
-      number_quadtree = JSON.parse(req.query.location_quadtree as string)
-    if (req.query.quadtree_zoom)
-      zoom = JSON.parse(req.query.quadtree_zoom as string)
-
-    const cam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
-    const cam = {}
-    cam_raw[0].forEach(element => {
-      if (!cam[element.timestamp])
-        cam[element.timestamp] = []
-      cam[element.timestamp].push({
-        station_id: element.station_id,
-        longitude: element.longitude,
-        latitude: element.latitude,
-        station_type: element.station_type,
-        perceived_objects: JSON.parse(element.perceived_objects),
-      })
-    })
-    res.send(cam)
-  },
   notifications_list: undefined,
   events: async (req, res) => {
     /*
@@ -244,37 +210,40 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     }
     res.send(response)
   },
-  obu_list:  async (req, res) => {
-    
-    if (req.query.emitter_ids) {
-      let response = [];
-      for (let id of JSON.parse(req.query.emitter_ids as string)) {
-        /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
-         creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
-         this is not a performance issue, we've opted to do it this way */
-        response.push(...((await query("get_obu_list_emitter_id", [id]))[0]))
-      }
-      res.send(response)
-    }
-    else
-      res.send((await query("get_obu_list", []))[0])
+  cams_list: async (req, res) => {
+    /*
+    req start_time=1620223705
+    req end_time=1620223708
+    opt location_quadtree=16443191796
+    opt quadtree_zoom=18
+    */
+    let start_time = JSON.parse(req.query.start_time as string)
+    let end_time = JSON.parse(req.query.end_time as string)
+    let station_id: number;
+    let number_quadtree: number;
+    let zoom: number = 18;
+    if (req.query.emitter_id)
+      station_id = JSON.parse(req.query.emitter_id as string)
+    if (req.query.location_quadtree)
+      number_quadtree = JSON.parse(req.query.location_quadtree as string)
+    if (req.query.quadtree_zoom)
+      zoom = JSON.parse(req.query.quadtree_zoom as string)
+
+    const cam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
+    const cam = {}
+    cam_raw[0].forEach(element => {
+      if (!cam[element.timestamp])
+        cam[element.timestamp] = []
+      cam[element.timestamp].push({
+        station_id: element.station_id,
+        longitude: element.longitude,
+        latitude: element.latitude,
+        station_type: element.station_type,
+        perceived_objects: JSON.parse(element.perceived_objects),
+      })
+    })
+    res.send(cam)
   },
-  rsu_list: async (req, res) => {
-    if (req.query.emitter_ids) {
-      let response = [];
-      for (let id of JSON.parse(req.query.emitter_ids as string)) {
-        /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
-         creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
-         this is not a performance issue, we've opted to do it this way */
-        response.push(...await query("get_rsus_emitter_id", [id]))
-      }
-      res.send(response)
-    }
-    else
-      res.send(await query("get_rsus", []))
-  },
-  smartphone_list: undefined,
-  web_list: undefined,
   cpms_list: async (req, res) => {
     /*
     req start_time=1620223705
@@ -375,7 +344,38 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
       })
     })
     res.send(denm)
-  }
+  },
+  obu_list: async (req, res) => {
+
+    if (req.query.emitter_ids) {
+      let response = [];
+      for (let id of JSON.parse(req.query.emitter_ids as string)) {
+        /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
+         creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
+         this is not a performance issue, we've opted to do it this way */
+        response.push(...((await query("get_obu_list_emitter_id", [id]))[0]))
+      }
+      res.send(response)
+    }
+    else
+      res.send((await query("get_obu_list", []))[0])
+  },
+  rsu_list: async (req, res) => {
+    if (req.query.emitter_ids) {
+      let response = [];
+      for (let id of JSON.parse(req.query.emitter_ids as string)) {
+        /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
+         creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
+         this is not a performance issue, we've opted to do it this way */
+        response.push(...await query("get_rsus_emitter_id", [id]))
+      }
+      res.send(response)
+    }
+    else
+      res.send(await query("get_rsus", []))
+  },
+  smartphone_list: undefined,
+  web_list: undefined,
 }
 
 function setup() {
