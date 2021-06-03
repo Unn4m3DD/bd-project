@@ -3,9 +3,9 @@ DROP PROCEDURE get_cams;
 DROP PROCEDURE get_cams_quadtree;
 DROP PROCEDURE get_cams_quadtree_and_station_id;
 GO
-CREATE PROCEDURE get_cams 
+CREATE PROCEDURE get_cams
   @time_start BIGINT,
-  @time_end BIGINT 
+  @time_end BIGINT
 AS
 select CAM.event_timestamp as [timestamp],
   CAM.station_id as station_id,
@@ -14,8 +14,8 @@ select CAM.event_timestamp as [timestamp],
   CAM.station_type as station_type
 from it2s_db.CAM
 where CAM.event_timestamp between @time_start and @time_end
-GO 
-CREATE PROCEDURE get_cams_station_id 
+GO
+CREATE PROCEDURE get_cams_station_id
   @time_start BIGINT,
   @time_end BIGINT,
   @in_station_id BIGINT
@@ -28,11 +28,13 @@ select CAM.event_timestamp as [timestamp],
 from it2s_db.CAM
 where CAM.event_timestamp between @time_start and @time_end
   and @in_station_id = station_id
-GO 
-CREATE PROCEDURE get_cams_quadtree @time_start BIGINT,
+GO
+CREATE PROCEDURE get_cams_quadtree
+  @time_start BIGINT,
   @time_end BIGINT,
   @quadtree_start BIGINT,
-  @quadtree_end BIGINT AS
+  @quadtree_end BIGINT
+AS
 select CAM.event_timestamp as [timestamp],
   CAM.station_id as station_id,
   CAM.longitude as longitude,
@@ -41,13 +43,14 @@ select CAM.event_timestamp as [timestamp],
 from it2s_db.CAM
 where CAM.event_timestamp between @time_start and @time_end
   and quadtree between @quadtree_start and @quadtree_end
-GO 
+GO
 CREATE PROCEDURE get_cams_quadtree_and_station_id
   @time_start BIGINT,
   @time_end BIGINT,
   @quadtree_start BIGINT,
   @quadtree_end BIGINT,
-  @in_station_id BIGINT AS
+  @in_station_id BIGINT
+AS
 select CAM.event_timestamp as [timestamp],
   CAM.station_id as station_id,
   CAM.longitude as longitude,
