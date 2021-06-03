@@ -3,7 +3,8 @@ DROP PROCEDURE get_notifications_list;
 DROP PROCEDURE get_notifications_list_station_id;
 DROP PROCEDURE get_notifications_list_quadtree;
 DROP PROCEDURE get_notifications_list_quadtree_and_station_id;
-DROP TRIGGER it2s_db.speed_limit_trigger;
+DROP TRIGGER it2s_db.speed_limit_trigger1;
+DROP TRIGGER it2s_db.speed_limit_trigger2;
 GO
 CREATE VIEW notifications
 AS
@@ -71,7 +72,7 @@ where notifications.emitter_id = @in_emitter_id
   and notifications.quadtree = @location_quadtree
   and notifications.event_timestamp between @start_time and @end_time
 GO
-CREATE TRIGGER it2s_db.speed_limit_trigger ON it2s_db.PerceivedObject
+CREATE TRIGGER it2s_db.speed_limit_trigger1 ON it2s_db.PerceivedObject
 AFTER INSERT
 AS
 	BEGIN
@@ -96,4 +97,26 @@ AS
   FROM @to_insert
 END;
 GO
-
+CREATE TRIGGER it2s_db.speed_limit_trigger2 ON it2s_db.CAM
+AFTER INSERT
+AS
+	BEGIN
+  DECLARE @to_insert 
+		table(
+    cam_emitter_station_id bigint,
+    cam_event_timestamp bigint,
+    status_id int
+		);
+  insert into @to_insert
+  SELECT
+    station_id as cam_emitter_station_id,
+    event_timestamp as cam_event_timestamp,
+    status_id=0
+  from it2s_db.CAM
+  where speed > 3333;
+  -- 120Km/h ~= 3333cm/s
+  INSERT INTO it2s_db.Notification2
+  SELECT *
+  FROM @to_insert
+END;
+GO
