@@ -91,7 +91,24 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     const car_speed = await get_events("car_average_speed", start_time, end_time, number_quadtree, zoom, station_id)
     res.send({ value: car_speed[0][0]["value"] })
   },
-  people_count: undefined,
+  people_count: async (req, res) => {
+    /*
+    req start_time=1620223705
+    req end_time=1620223708
+    opt location_quadtree=16443191796
+    opt quadtree_zoom=18
+    */
+    let start_time = JSON.parse(req.query.start_time as string)
+    let end_time = JSON.parse(req.query.end_time as string)
+    let number_quadtree: number;
+    let zoom: number = 18;
+    if (req.query.location_quadtree)
+      number_quadtree = JSON.parse(req.query.location_quadtree as string)
+    if (req.query.quadtree_zoom)
+      zoom = JSON.parse(req.query.quadtree_zoom as string)
+    const car_speed = await get_events("people_count", start_time, end_time, number_quadtree, zoom, undefined)
+    res.send({ value: car_speed[0][0]["value"] })
+  },
   max_simultaneous_people_count: undefined,
   min_simultaneous_people_count: undefined,
   min_simultaneous_car_count: undefined,
