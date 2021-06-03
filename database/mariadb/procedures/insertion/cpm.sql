@@ -31,8 +31,8 @@ CREATE FUNCTION it2s_db.getObjectAbsSpeed (`xSpeed` INT, `ySpeed` INT) RETURNS I
 DELIMITER $$
 
 CREATE PROCEDURE `insert_cpm`(
-  `emitter_id` INT,
-  `timestamp` INT,
+  `emitter_id` BIGINT,
+  `timestamp` BIGINT,
   `latitude` INT,
   `longitude` INT,
   `quadtree` BIGINT
@@ -48,11 +48,11 @@ CREATE PROCEDURE `insert_cpm`(
 END $$
 
 CREATE PROCEDURE `insert_perceived_object` (
-  `emitter_id` INT,
-  `current_timestamp` INT,
+  `emitter_id` BIGINT,
+  `current_timestamp` BIGINT,
   `objectID` INT,
-  `cpm_latitude` INT,
-  `cpm_longitude` INT,
+  `cpm_latitude` BIGINT,
+  `cpm_longitude` BIGINT,
   `quadtree` BIGINT,
   `xDistance` INT,
   `yDistance` INT,

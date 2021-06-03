@@ -44,7 +44,8 @@ interface denm_t {
   station_type: StationType,   // enum see definition bellow
   origin: "web" | "mobile",
   language?: "pt" | "en",
-  browser_version?: number
+  browser_name?: string,
+  browser_version?: string
 }
 
 export enum StationType {

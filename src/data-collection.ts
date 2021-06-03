@@ -91,7 +91,7 @@ const dbOnMessage = {
   denm: async (denm: denm_t, quadtree: number) => {
     message_counter.denm++
     await query("insert_denm", [
-      denm.station_id, 
+      denm.station_id,
       Math.floor(Date.now() / 1000),
       denm.cause_code,
       denm.sub_cause_code,
@@ -107,26 +107,27 @@ const mosquitto_credentials: { [key: string]: { brokerUrl?: any, opts?: mqtt.ICl
   "msSql": { brokerUrl: 'mqtt://unn4m3dd.xyz', opts: { port: 21, } },
   "mariadb": { brokerUrl: 'mqtt://localhost', opts: { port: 1883, username: "it2s", password: "it2sit2s" } },
 }
-
+let mqtt_client: mqtt.MqttClient;
+let last_count = 0;
 async function setup() {
   try {
     const credentials = mosquitto_credentials[process.argv[2]]
-    let client = mqtt.connect(credentials.brokerUrl, credentials.opts)
+    mqtt_client = mqtt.connect(credentials.brokerUrl, credentials.opts)
     let sent_recently = {
       cpm: {},
       cam: {},
       denm: {},
       vam: {},
     }
-    client.on('connect', function () {
+    mqtt_client.on('connect', function () {
       console.log("Connected to mosquitto: ", credentials.brokerUrl)
-      client.subscribe('its_center/inqueue/cpm/#')
-      client.subscribe('its_center/inqueue/denm/#')
-      client.subscribe('its_center/inqueue/cam/#')
-      client.subscribe('its_center/inqueue/vam/#')
+      mqtt_client.subscribe('its_center/inqueue/cpm/#')
+      mqtt_client.subscribe('its_center/inqueue/denm/#')
+      mqtt_client.subscribe('its_center/inqueue/cam/#')
+      mqtt_client.subscribe('its_center/inqueue/vam/#')
       //console.log("connected")
     })
-    client.on('message', async (topic, message) => {
+    mqtt_client.on('message', async (topic, message) => {
       let topic_arr = topic.split("/")
       let message_type = topic_arr[2]
       let message_content = JSON.parse(message.toString())
@@ -145,6 +146,13 @@ async function setup() {
         dbOnMessage[message_type](message_content, quadtree);
       }
     })
+    setInterval(async () => {
+      const result = (await query("get_notification_count", []))[0][0].value
+      if(result != last_count){
+        last_count = result;
+        mqtt_client.publish("its_center/notification", "notifications_changed")
+      }
+    }, 100)
   } catch (e) { console.log(e) }
   // setInterval(() => { console.log(message_counter) }, 1000)
 }
