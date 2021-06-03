@@ -14,27 +14,27 @@ export function setupDataCollection(outer_query: (procedure_name: string, query_
 
 const insertOrUpdateOnDb = {
   cpm: async (cpm: cpm_t) => {
-    const app_version = 1; //TODO hardcoded
+    const app_version = 1; // hardcoded
     await query(`insert_rsu`, [cpm.station_id, app_version, cpm.latitude, cpm.longitude]);
   },
   cam: async (cam: cam_t) => {
-    const app_version = 1; //TODO hardcoded
+    const app_version = 13; // hardcoded
     const power_status = 100; //TODO hardcoded
     await query(`insert_obu`, [cam.station_id, app_version, power_status]);
   },
   vam: async (vam: vam_t) => {
-    const app_version = 1; //TODO hardcoded
-    const power_status = 100; //TODO hardcoded
-    const language = "pt" //TODO hardcoded
+    const app_version = 13; // hardcoded
+    const power_status = vam.language || 100; //TODO
+    const language = vam.language || "pt" //TODO
     await (query("insert_smartphone", [vam.station_id, app_version, power_status, language]))
 
   },
   denm: async (denm: denm_t) => {
-    const app_version = 1; //TODO hardcoded
-    const power_status = 100; //TODO hardcoded
-    const language = "pt" //TODO hardcoded
-    const browser_name = "chrome" //TODO hardcoded
-    const browser_version = "10.0.1.2" //TODO hardcoded
+    const app_version = denm.app_version;
+    const power_status = denm.language || 100; 
+    const language = denm.language || "pt" 
+    const browser_name = denm.browser_name || "chrome"
+    const browser_version = denm.browser_version || "10.0.1.2"
     if (denm.origin == "mobile")
       await (query("insert_smartphone", [denm.station_id, app_version, power_status, language]))
     else
@@ -148,7 +148,7 @@ async function setup() {
     })
     setInterval(async () => {
       const result = (await query("get_notification_count", []))[0][0].value
-      if(result != last_count){
+      if (result != last_count) {
         last_count = result;
         mqtt_client.publish("its_center/notification", "notifications_changed")
       }
