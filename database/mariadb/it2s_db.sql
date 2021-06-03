@@ -26,7 +26,8 @@ create table it2s_db.Smartphone(
 );
 create table it2s_db.WebSite(
   emitter_station_id bigint not null,
-  browser_version varchar(15) not null,
+  browser_name varchar(32) not null,
+  browser_version varchar(64) not null,
   primary key(emitter_station_id),
   foreign key (emitter_station_id) references it2s_db.App(emitter_station_id)
 );

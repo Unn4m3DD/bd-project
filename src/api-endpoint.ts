@@ -109,10 +109,6 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     const car_speed = await get_events("people_count", start_time, end_time, number_quadtree, zoom, undefined)
     res.send({ value: car_speed[0][0]["value"] })
   },
-  max_simultaneous_people_count: undefined,
-  min_simultaneous_people_count: undefined,
-  min_simultaneous_car_count: undefined,
-  max_simultaneous_car_count: undefined,
   event_timestamps: async (req, res) => {
     /*
     req start_time=1620223705
