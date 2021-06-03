@@ -217,17 +217,48 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
       })
     })
 
+
+    const denm_raw = await get_events("denms", start_time, end_time, number_quadtree, zoom, station_id)
+    const denm = {}
+    denm_raw[0].forEach(element => {
+      if (!denm[element.timestamp])
+        denm[element.timestamp] = []
+      denm[element.timestamp].push({
+        station_id: element.station_id,
+        longitude: element.longitude,
+        latitude: element.latitude,
+        cause_code: element.cause_code,
+        sub_cause_code: element.sub_cause_code,
+        duration: element.duration,
+      })
+    })
+
     let response = {};
     for (let i = JSON.parse(req.query.start_time as string); i < JSON.parse(req.query.end_time as string); i++) {
       response[i] = {
         "cpm": cpm[i],
         "cam": cam[i],
-        "vam": vam[i]
+        "vam": vam[i],
+        "denm": denm[i]
       }
     }
     res.send(response)
   },
-  obu_list: undefined,
+  obu_list:  async (req, res) => {
+    
+    if (req.query.emitter_ids) {
+      let response = [];
+      for (let id of JSON.parse(req.query.emitter_ids as string)) {
+        /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
+         creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
+         this is not a performance issue, we've opted to do it this way */
+        response.push(...((await query("get_obu_list_emitter_id", [id]))[0]))
+      }
+      res.send(response)
+    }
+    else
+      res.send((await query("get_obu_list", []))[0])
+  },
   rsu_list: async (req, res) => {
     if (req.query.emitter_ids) {
       let response = [];
@@ -235,7 +266,6 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
          creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
          this is not a performance issue, we've opted to do it this way */
-        console.log(id)
         response.push(...await query("get_rsus_emitter_id", [id]))
       }
       res.send(response)

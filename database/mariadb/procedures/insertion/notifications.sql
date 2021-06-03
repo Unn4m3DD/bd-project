@@ -76,7 +76,7 @@ CREATE PROCEDURE get_notifications_list_quadtree_and_station_id (
   `location_quadtree` bigint
 )
 BEGIN
-  SELECT * notifications_list
+  SELECT * from notifications_list
   where notifications_list.emitter_id = `in_emitter_id`
   and notifications_list.quadtree = `location_quadtree`
   and notifications_list.event_timestamp between `start_time` and `end_time`;
