@@ -53,7 +53,7 @@ GO
 
 create table it2s_db.CPM(
     rsu_station_id bigint foreign key references it2s_db.RSU(emitter_station_id) not null,
-    event_timestamp int not null,
+    event_timestamp bigint not null,
     latitude BIGINT not null,
     longitude BIGINT not null, 
     quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
@@ -64,7 +64,7 @@ GO
 
 create table it2s_db.PerceivedObject(
     cpm_station_id bigint not null, 
-    event_timestamp int not null, 
+    event_timestamp bigint not null, 
 	perceived_object_id int not null,
     latitude BIGINT not null,
     longitude BIGINT not null, 
@@ -82,7 +82,7 @@ GO
 
 -- create table it2s_db.roadEvent(
 --     cpm_station_id int not null,
---     event_timestamp int not null,
+--     event_timestamp bigint not null,
 --     perceived_object_id int not null,
 --     latitude int not null,
 --     longitude BIGINT not null,
@@ -94,7 +94,7 @@ GO
 
 create table it2s_db.CAM(
     station_id bigint foreign key references it2s_db.OBU(emitter_station_id) not null,
-    event_timestamp int not null,
+    event_timestamp bigint not null,
     station_type int not null,
     speed int not null,
     latitude BIGINT not null,
@@ -107,7 +107,7 @@ GO
 
 create table it2s_db.VAM(
     emitter_station_id bigint foreign key references it2s_db.SmartPhone(emitter_station_id),
-    event_timestamp int not null,
+    event_timestamp bigint not null,
     station_type int not null,
     latitude BIGINT not null,
     longitude BIGINT not null,
@@ -119,7 +119,7 @@ GO
 
 create table it2s_db.DENM(
     emitter_station_id bigint foreign key references it2s_db.App(emitter_station_id) not null,
-    event_timestamp int not null,
+    event_timestamp bigint not null,
     cause_code int not null,
     sub_cause_code int not null,
     latitude BIGINT not null,
@@ -152,10 +152,12 @@ GO
 
 create table it2s_db.Notification2(
     cam_emitter_station_id bigint not null,
-    cam_event_timestamp int not null,
+    cam_event_timestamp bigint not null,
     status_id int foreign key references it2s_db.Status(id),
     foreign key (cam_emitter_station_id, cam_event_timestamp) references it2s_db.CAM(station_id, event_timestamp),
     primary key(cam_emitter_station_id, cam_event_timestamp)
 )
 GO
 ;
+
+INSERT INTO it2s_db.Status VALUES(0, 'Vehicle going above 120 Km/h');

@@ -20,7 +20,7 @@ where
   prev != (event_timestamp - 1) or
   [next] != (event_timestamp + 1)
 GO
-CREATE PROCEDURE get_timestamps_between @time_start INT, @time_end INT
+CREATE PROCEDURE get_timestamps_between @time_start BIGINT, @time_end BIGINT
 AS
 select 
   event_timestamp

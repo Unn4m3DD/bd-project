@@ -1,9 +1,9 @@
 DROP VIEW notifications; 
-DROP PROCEDURE notifications_list;
-DROP PROCEDURE notifications_list_station_id;
-DROP PROCEDURE notifications_list_quadtree;
-DROP PROCEDURE notifications_list_quadtree_and_station_id;
-
+DROP PROCEDURE get_notifications_list;
+DROP PROCEDURE get_notifications_list_station_id;
+DROP PROCEDURE get_notifications_list_quadtree;
+DROP PROCEDURE get_notifications_list_quadtree_and_station_id;
+DROP TRIGGER it2s_db.speed_limit_trigger;
 GO
 CREATE VIEW notifications
 AS
@@ -32,41 +32,61 @@ SELECT perceived_object_emitter as emitter_id,
       and cam_event_timestamp = event_timestamp
       join it2s_db.Status on Notification2.status_id = Status.id;
 GO
-CREATE PROCEDURE notifications_list 
-  @start_time int, 
-  @end_time int
+CREATE PROCEDURE get_notifications_list 
+  @start_time bigint, 
+  @end_time bigint
 AS
-SELECT * FROM notifications_list
+SELECT * FROM notifications
 where event_timestamp between @start_time and @end_time
 GO
-CREATE PROCEDURE notifications_list_station_id 
-  @start_time int, 
-  @end_time int, 
+CREATE PROCEDURE get_notifications_list_station_id 
+  @start_time bigint, 
+  @end_time bigint, 
   @in_emitter_id bigint
 AS
-SELECT * FROM notifications_list
-where notifications_list.emitter_id = @in_emitter_id 
-and notifications_list.event_timestamp between @start_time and @end_time
+SELECT * FROM notifications
+where notifications.emitter_id = @in_emitter_id 
+and notifications.event_timestamp between @start_time and @end_time
 GO
-CREATE PROCEDURE notifications_list_quadtree 
-  @start_time int, 
-  @end_time int, 
+CREATE PROCEDURE get_notifications_list_quadtree 
+  @start_time bigint, 
+  @end_time bigint, 
   @location_quadtree bigint
 AS
-SELECT * FROM notifications_list
-where notifications_list.quadtree = @location_quadtree and notifications_list.event_timestamp between @start_time and @end_time
+SELECT * FROM notifications
+where notifications.quadtree = @location_quadtree and notifications.event_timestamp between @start_time and @end_time
 GO
-CREATE PROCEDURE notifications_list_quadtree_and_station_id 
-  @start_time int, 
-  @end_time int,
+CREATE PROCEDURE get_notifications_list_quadtree_and_station_id 
+  @start_time bigint, 
+  @end_time bigint,
   @in_emitter_id bigint, 
   @location_quadtree bigint
 AS
-SELECT * FROM(
-SELECT * FROM notifications1 union SELECT * FROM notifications2 
-) as notifications_list
-where notifications_list.emitter_id = @in_emitter_id
-  and notifications_list.quadtree = @location_quadtree
-  and notifications_list.event_timestamp between @start_time and @end_time
+SELECT * FROM notifications
+where notifications.emitter_id = @in_emitter_id
+  and notifications.quadtree = @location_quadtree
+  and notifications.event_timestamp between @start_time and @end_time
 
+CREATE TRIGGER it2s_db.speed_limit_trigger ON it2s_db.PerceivedObject
+AFTER INSERT
+AS
+	BEGIN
+	DECLARE @to_insert 
+		table(
+			perceived_object_emitter bigint,
+			perceived_object_timestamp bigint,
+			perceived_object_id int,
+			status_id int
+		);
+	insert into @to_insert 
+		SELECT 
+			cpm_station_id as perceived_object_emitter,
+			event_timestamp as perceived_object_timestamp,
+			perceived_object_id as perceived_object_id,
+			status_id=0
+		from it2s_db.PerceivedObject 
+		where abs_speed > 3333; -- 120Km/h ~= 3333cm/s
+	INSERT INTO it2s_db.Notification1 SELECT * FROM @to_insert
+	END;
+GO
 
