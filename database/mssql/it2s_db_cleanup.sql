@@ -1,3 +1,6 @@
+DROP VIEW notifications;
+GO
+;
 drop table it2s_db.Notification2;
 GO
 ;
