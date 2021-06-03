@@ -185,3 +185,6 @@ union
     JOIN it2s_db.CAM ON cam_emitter_station_id = station_id
     and cam_event_timestamp = event_timestamp
     join it2s_db.Status on Notification2.status_id = Status.id;
+
+INSERT INTO it2s_db.Status
+VALUES(0, 'Vehicle going above 140 Km/h');

@@ -165,6 +165,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         emitter_id: element.emitter_id,
         event_timestamp: element.event_timestamp,
         object_id: element.object_id,
+        speed: element.speed,
         longitude: element.longitude,
         latitude: element.latitude,
         description: element.description
