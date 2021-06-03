@@ -5,8 +5,8 @@ DROP PROCEDURE `get_people_count`;
 DELIMITER $$
 
 CREATE PROCEDURE `get_people_count_quadtree`(
-  IN `time_start` INT,
-  IN `time_end` INT,
+  IN `time_start` BIGINT,
+  IN `time_end` BIGINT,
   IN `quadtree_start` BIGINT,
   IN `quadtree_end` BIGINT
 ) BEGIN
@@ -18,8 +18,8 @@ CREATE PROCEDURE `get_people_count_quadtree`(
 END $$
 
 CREATE PROCEDURE `get_people_count`(
-  IN `time_start` INT,
-  IN `time_end` INT
+  IN `time_start` BIGINT,
+  IN `time_end` BIGINT
 ) BEGIN
   select 
     count(distinct emitter_station_id) as `value`

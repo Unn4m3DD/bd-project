@@ -26,7 +26,7 @@ create table it2s_db.Smartphone(
 );
 create table it2s_db.WebSite(
   emitter_station_id bigint not null,
-  browser_version int not null,
+  browser_version varchar(15) not null,
   primary key(emitter_station_id),
   foreign key (emitter_station_id) references it2s_db.App(emitter_station_id)
 );
@@ -91,7 +91,7 @@ create table it2s_db.CAM(--
 );
 create table it2s_db.VAM(--
   emitter_station_id bigint not null,
-  event_timestamp int not null,
+  event_timestamp bigint not null,
   station_type int not null,
   latitude bigint not null,
   longitude bigint not null,
