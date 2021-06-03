@@ -33,11 +33,12 @@ const insertOrUpdateOnDb = {
     const app_version = 1; //TODO hardcoded
     const power_status = 100; //TODO hardcoded
     const language = "pt" //TODO hardcoded
-    const browser_verion = 10 //TODO hardcoded
+    const browser_name = "chrome" //TODO hardcoded
+    const browser_version = "10.0.1.2" //TODO hardcoded
     if (denm.origin == "mobile")
       await (query("insert_smartphone", [denm.station_id, app_version, power_status, language]))
     else
-      await (query("insert_website", [denm.station_id, app_version, browser_verion, language]))
+      await (query("insert_website", [denm.station_id, app_version, browser_name, browser_version, language]))
   }
 }
 
@@ -90,7 +91,8 @@ const dbOnMessage = {
   denm: async (denm: denm_t, quadtree: number) => {
     message_counter.denm++
     await query("insert_denm", [
-      denm.station_id, Math.floor(Date.now() / 1000),
+      denm.station_id, 
+      Math.floor(Date.now() / 1000),
       denm.cause_code,
       denm.sub_cause_code,
       denm.latitude,

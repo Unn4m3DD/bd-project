@@ -14,7 +14,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/car_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&station_id=[1, 2]",
+							"raw": "{{baseUrl}}/car_count?start_time=1621172276&end_time=1621174276&location_quadtree=15011352623&quadtree_zoom=18&rsu_station_id=10",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -24,17 +24,17 @@ module.exports = {
 							"query": [
 								{
 									"key": "start_time",
-									"value": "1620223705",
+									"value": "1621172276",
 									"description": "(Required) Event listing start timestamp (seconds)"
 								},
 								{
 									"key": "end_time",
-									"value": "1620223708",
+									"value": "1621174276",
 									"description": "(Required) Event listing end timestamp (seconds)"
 								},
 								{
 									"key": "location_quadtree",
-									"value": "16443191796",
+									"value": "15011352623",
 									"description": "(Optional) Tile of the location from where the data must be queried"
 								},
 								{
@@ -43,8 +43,8 @@ module.exports = {
 									"description": "(Optional) Zoom level of the data collected (default: 18)"
 								},
 								{
-									"key": "station_id",
-									"value": "[1, 2]",
+									"key": "rsu_station_id",
+									"value": "10",
 									"description": "(Optional) Array of station id of the emitter"
 								}
 							]
@@ -106,7 +106,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/car_speed_average?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&station_id=[1, 2]",
+							"raw": "{{baseUrl}}/car_speed_average?start_time=1621172276&end_time=1621174276&location_quadtree=15011352623&quadtree_zoom=18&rsu_station_id=10",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -116,17 +116,17 @@ module.exports = {
 							"query": [
 								{
 									"key": "start_time",
-									"value": "1620223705",
+									"value": "1621172276",
 									"description": "(Required) Event listing start timestamp (seconds)"
 								},
 								{
 									"key": "end_time",
-									"value": "1620223708",
+									"value": "1621174276",
 									"description": "(Required) Event listing end timestamp (seconds)"
 								},
 								{
 									"key": "location_quadtree",
-									"value": "16443191796",
+									"value": "15011352623",
 									"description": "(Optional) Tile of the location from where the data must be queried"
 								},
 								{
@@ -135,8 +135,8 @@ module.exports = {
 									"description": "(Optional) Zoom level of the data collected (default: 18)"
 								},
 								{
-									"key": "station_id",
-									"value": "[1, 2]",
+									"key": "rsu_station_id",
+									"value": "10",
 									"description": "(Optional) Array of station id of the emitter"
 								}
 							]
@@ -243,244 +243,6 @@ module.exports = {
 							"body": "{\"value\":27}"
 						}
 					]
-				},
-				{
-					"name": "max_simultaneous_people_count",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/max_simultaneous_people_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&timte_interval=10",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"max_simultaneous_people_count"
-							],
-							"query": [
-								{
-									"key": "start_time",
-									"value": "1620223705",
-									"description": "(Required) Event listing start timestamp (seconds)"
-								},
-								{
-									"key": "end_time",
-									"value": "1620223708",
-									"description": "(Required) Event listing end timestamp (seconds)"
-								},
-								{
-									"key": "location_quadtree",
-									"value": "16443191796",
-									"description": "(Optional) Tile of the location from where the data must be queried"
-								},
-								{
-									"key": "quadtree_zoom",
-									"value": "18",
-									"description": "(Optional) Zoom level of the data collected (default: 18)"
-								},
-								{
-									"key": "timte_interval",
-									"value": "10",
-									"description": "(Optional) Time interval considered simultaneos (seconds) (default: 10s)"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "example",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": null
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": "{\"value\":18}"
-						}
-					]
-				},
-				{
-					"name": "min_simultaneous_people_count",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/min_simultaneous_people_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&timte_interval=10",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"min_simultaneous_people_count"
-							],
-							"query": [
-								{
-									"key": "start_time",
-									"value": "1620223705",
-									"description": "(Required) Event listing start timestamp (seconds)"
-								},
-								{
-									"key": "end_time",
-									"value": "1620223708",
-									"description": "(Required) Event listing end timestamp (seconds)"
-								},
-								{
-									"key": "location_quadtree",
-									"value": "16443191796",
-									"description": "(Optional) Tile of the location from where the data must be queried"
-								},
-								{
-									"key": "quadtree_zoom",
-									"value": "18",
-									"description": "(Optional) Zoom level of the data collected (default: 18)"
-								},
-								{
-									"key": "timte_interval",
-									"value": "10",
-									"description": "(Optional) Time interval considered simultaneos (seconds) (default: 10s)"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "example",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": null
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": "{\"value\":4}"
-						}
-					]
-				},
-				{
-					"name": "min_simultaneous_car_count",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/min_simultaneous_car_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&timte_interval=10&station_id=[1, 2]",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"min_simultaneous_car_count"
-							],
-							"query": [
-								{
-									"key": "start_time",
-									"value": "1620223705",
-									"description": "(Required) Event listing start timestamp (seconds)"
-								},
-								{
-									"key": "end_time",
-									"value": "1620223708",
-									"description": "(Required) Event listing end timestamp (seconds)"
-								},
-								{
-									"key": "location_quadtree",
-									"value": "16443191796",
-									"description": "(Optional) Tile of the location from where the data must be queried"
-								},
-								{
-									"key": "quadtree_zoom",
-									"value": "18",
-									"description": "(Optional) Zoom level of the data collected (default: 18)"
-								},
-								{
-									"key": "timte_interval",
-									"value": "10",
-									"description": "(Optional) Time interval considered simultaneos (seconds) (default: 10s)"
-								},
-								{
-									"key": "station_id",
-									"value": "[1, 2]",
-									"description": "(Optional) Array of station id of the emitter"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "example",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": null
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": "{\"value\":5}"
-						}
-					]
-				},
-				{
-					"name": "max_simultaneous_car_count",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/max_simultaneous_car_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&timte_interval=10&station_id=[1, 2]",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"max_simultaneous_car_count"
-							],
-							"query": [
-								{
-									"key": "start_time",
-									"value": "1620223705",
-									"description": "(Required) Event listing start timestamp (seconds)"
-								},
-								{
-									"key": "end_time",
-									"value": "1620223708",
-									"description": "(Required) Event listing end timestamp (seconds)"
-								},
-								{
-									"key": "location_quadtree",
-									"value": "16443191796",
-									"description": "(Optional) Tile of the location from where the data must be queried"
-								},
-								{
-									"key": "quadtree_zoom",
-									"value": "18",
-									"description": "(Optional) Zoom level of the data collected (default: 18)"
-								},
-								{
-									"key": "timte_interval",
-									"value": "10",
-									"description": "(Optional) Time interval considered simultaneos (seconds) (default: 10s)"
-								},
-								{
-									"key": "station_id",
-									"value": "[1, 2]",
-									"description": "(Optional) Array of station id of the emitter"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "example",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": null
-							},
-							"_postman_previewlanguage": null,
-							"header": null,
-							"cookie": [],
-							"body": "{\"value\":12}"
-						}
-					]
 				}
 			]
 		},
@@ -493,7 +255,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/notifications_list?start_time=1620223705&end_time=1620223708&location_quadtree=60045410497&emitter_id=[10, 1]",
+							"raw": "{{baseUrl}}/notifications_list?start_time=1620223705&end_time=1620223708&location_quadtree=60045410497&emitter_id=1",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -518,7 +280,7 @@ module.exports = {
 								},
 								{
 									"key": "emitter_id",
-									"value": "[10, 1]",
+									"value": "1",
 									"description": "(Optional) IDs of the emitters"
 								}
 							]
@@ -645,7 +407,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/events?start_time=1621172276&end_time=1621172279",
+							"raw": "{{baseUrl}}/events?start_time=1621172276&end_time=1621174276&location_quadtree=15011352623&quadtree_zoom=17",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -660,20 +422,18 @@ module.exports = {
 								},
 								{
 									"key": "end_time",
-									"value": "1621172279",
+									"value": "1621174276",
 									"description": "(Required) Event listing end timestamp (seconds)"
 								},
 								{
 									"key": "location_quadtree",
 									"value": "15011352623",
-									"description": "(Optional) Tile of the location from where the data must be queried",
-									"disabled": true
+									"description": "(Optional) Tile of the location from where the data must be queried"
 								},
 								{
 									"key": "quadtree_zoom",
 									"value": "17",
-									"description": "(Optional) Zoom level of the data collected",
-									"disabled": true
+									"description": "(Optional) Zoom level of the data collected"
 								},
 								{
 									"key": "emitter_id",
@@ -743,7 +503,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/obu_list?emitter_ids=[150]",
+							"raw": "{{baseUrl}}/obu_list?emitter_ids=[2]",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -753,8 +513,8 @@ module.exports = {
 							"query": [
 								{
 									"key": "emitter_ids",
-									"value": "[150]",
-									"description": "(Required) IDs of the emitters"
+									"value": "[2]",
+									"description": "(Optional) IDs of the emitters IDs of the emitters"
 								}
 							]
 						},
@@ -865,7 +625,7 @@ module.exports = {
 							"_postman_previewlanguage": null,
 							"header": null,
 							"cookie": [],
-							"body": "[\r\n    {\r\n        emitter_id: 101,\r\n        configured_language: \"pt\",\r\n        current_app_version: \"1.0\"\r\n    },\r\n    {\r\n        emitter_id: 102,\r\n        configured_language: \"en\",\r\n        current_app_version: \"1.1\"\r\n    }\r\n]"
+							"body": "[\r\n    {\r\n        emitter_id: 101,\r\n        last_power_status: 100, \r\n        configured_language: \"pt\"\r\n    },\r\n    {\r\n        emitter_id: 102,\r\n        configured_language: \"en\",\r\n        current_app_version: \"1.1\"\r\n    }\r\n]"
 						}
 					]
 				},
@@ -911,7 +671,7 @@ module.exports = {
 							"_postman_previewlanguage": null,
 							"header": null,
 							"cookie": [],
-							"body": "[\r\n    {\r\n        emitter_id: 101,\r\n        browser_version: \"Safari 6\",\r\n        current_app_version: 1\r\n    }\r\n]"
+							"body": "[\r\n    {\r\n        emitter_id: 101,\r\n        browser_version: \"Safari 6\",\r\n        configured_language: \"pt\"\r\n    }\r\n]"
 						}
 					]
 				},
@@ -1073,7 +833,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/denms_list?start_time=1620223705&end_time=1620223708&emitter_ids=[2,99]&location_quadtree=16443191796&quadtree_zoom=18",
+							"raw": "{{baseUrl}}/denms_list?start_time=1620223705&end_time=9620223708",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1088,23 +848,26 @@ module.exports = {
 								},
 								{
 									"key": "end_time",
-									"value": "1620223708",
+									"value": "9620223708",
 									"description": "(Required) Notification listing end timestamp (seconds)"
 								},
 								{
 									"key": "emitter_ids",
 									"value": "[2,99]",
-									"description": "(Optional) IDs of the emitters"
+									"description": "(Optional) IDs of the emitters",
+									"disabled": true
 								},
 								{
 									"key": "location_quadtree",
 									"value": "16443191796",
-									"description": "(Optional) Tile of the location from where the data must be queried"
+									"description": "(Optional) Tile of the location from where the data must be queried",
+									"disabled": true
 								},
 								{
 									"key": "quadtree_zoom",
 									"value": "18",
-									"description": "(Optional) Zoom level of the data collected"
+									"description": "(Optional) Zoom level of the data collected",
+									"disabled": true
 								}
 							]
 						}
@@ -1149,7 +912,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/event_timestamps?time_interval=[1620223705, 1620223715]",
+							"raw": "{{baseUrl}}/event_timestamps?time_interval=[1621172002, 1621172253]",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1159,7 +922,7 @@ module.exports = {
 							"query": [
 								{
 									"key": "time_interval",
-									"value": "[1620223705, 1620223715]",
+									"value": "[1621172002, 1621172253]",
 									"description": "(Optional) Filter by Time Interval"
 								}
 							]
@@ -1192,6 +955,249 @@ module.exports = {
 							"header": null,
 							"cookie": [],
 							"body": "[[1620223705, 1620223712]]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Optional",
+			"item": [
+				{
+					"name": "min_simultaneous_car_count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/min_simultaneous_car_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&timte_interval=10&station_id=[1, 2]",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"min_simultaneous_car_count"
+							],
+							"query": [
+								{
+									"key": "start_time",
+									"value": "1620223705",
+									"description": "(Required) Event listing start timestamp (seconds)"
+								},
+								{
+									"key": "end_time",
+									"value": "1620223708",
+									"description": "(Required) Event listing end timestamp (seconds)"
+								},
+								{
+									"key": "location_quadtree",
+									"value": "16443191796",
+									"description": "(Optional) Tile of the location from where the data must be queried"
+								},
+								{
+									"key": "quadtree_zoom",
+									"value": "18",
+									"description": "(Optional) Zoom level of the data collected (default: 18)"
+								},
+								{
+									"key": "timte_interval",
+									"value": "10",
+									"description": "(Optional) Time interval considered simultaneos (seconds) (default: 10s)"
+								},
+								{
+									"key": "station_id",
+									"value": "[1, 2]",
+									"description": "(Optional) Array of station id of the emitter"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\"value\":5}"
+						}
+					]
+				},
+				{
+					"name": "max_simultaneous_car_count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/max_simultaneous_car_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&timte_interval=10&station_id=[1, 2]",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"max_simultaneous_car_count"
+							],
+							"query": [
+								{
+									"key": "start_time",
+									"value": "1620223705",
+									"description": "(Required) Event listing start timestamp (seconds)"
+								},
+								{
+									"key": "end_time",
+									"value": "1620223708",
+									"description": "(Required) Event listing end timestamp (seconds)"
+								},
+								{
+									"key": "location_quadtree",
+									"value": "16443191796",
+									"description": "(Optional) Tile of the location from where the data must be queried"
+								},
+								{
+									"key": "quadtree_zoom",
+									"value": "18",
+									"description": "(Optional) Zoom level of the data collected (default: 18)"
+								},
+								{
+									"key": "timte_interval",
+									"value": "10",
+									"description": "(Optional) Time interval considered simultaneos (seconds) (default: 10s)"
+								},
+								{
+									"key": "station_id",
+									"value": "[1, 2]",
+									"description": "(Optional) Array of station id of the emitter"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\"value\":12}"
+						}
+					]
+				},
+				{
+					"name": "min_simultaneous_people_count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/min_simultaneous_people_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&timte_interval=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"min_simultaneous_people_count"
+							],
+							"query": [
+								{
+									"key": "start_time",
+									"value": "1620223705",
+									"description": "(Required) Event listing start timestamp (seconds)"
+								},
+								{
+									"key": "end_time",
+									"value": "1620223708",
+									"description": "(Required) Event listing end timestamp (seconds)"
+								},
+								{
+									"key": "location_quadtree",
+									"value": "16443191796",
+									"description": "(Optional) Tile of the location from where the data must be queried"
+								},
+								{
+									"key": "quadtree_zoom",
+									"value": "18",
+									"description": "(Optional) Zoom level of the data collected (default: 18)"
+								},
+								{
+									"key": "timte_interval",
+									"value": "10",
+									"description": "(Optional) Time interval considered simultaneos (seconds) (default: 10s)"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\"value\":4}"
+						}
+					]
+				},
+				{
+					"name": "max_simultaneous_people_count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/max_simultaneous_people_count?start_time=1620223705&end_time=1620223708&location_quadtree=16443191796&quadtree_zoom=18&timte_interval=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"max_simultaneous_people_count"
+							],
+							"query": [
+								{
+									"key": "start_time",
+									"value": "1620223705",
+									"description": "(Required) Event listing start timestamp (seconds)"
+								},
+								{
+									"key": "end_time",
+									"value": "1620223708",
+									"description": "(Required) Event listing end timestamp (seconds)"
+								},
+								{
+									"key": "location_quadtree",
+									"value": "16443191796",
+									"description": "(Optional) Tile of the location from where the data must be queried"
+								},
+								{
+									"key": "quadtree_zoom",
+									"value": "18",
+									"description": "(Optional) Zoom level of the data collected (default: 18)"
+								},
+								{
+									"key": "timte_interval",
+									"value": "10",
+									"description": "(Optional) Time interval considered simultaneos (seconds) (default: 10s)"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\"value\":18}"
 						}
 					]
 				}

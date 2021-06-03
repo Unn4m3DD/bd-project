@@ -6,8 +6,8 @@ DROP PROCEDURE `get_cpms_quadtree_and_station_id`;
 DELIMITER $$
 
 CREATE PROCEDURE `get_cpms`(
-  IN time_start INT,
-  IN time_end INT
+  IN time_start BIGINT,
+  IN time_end BIGINT
 ) BEGIN
 select 
   CPM.event_timestamp as `timestamp`,
@@ -36,9 +36,9 @@ END $$
 
 
 CREATE PROCEDURE `get_cpms_station_id`(
-  IN time_start INT,
-  IN time_end INT,
-  IN in_station_id INT
+  IN time_start BIGINT,
+  IN time_end BIGINT,
+  IN in_station_id BIGINT
 ) BEGIN
 select 
   CPM.event_timestamp as `timestamp`,
@@ -68,8 +68,8 @@ END $$
 
 
 CREATE PROCEDURE `get_cpms_quadtree`(
-  IN time_start INT,
-  IN time_end INT,
+  IN time_start BIGINT,
+  IN time_end BIGINT,
   IN quadtree_start BIGINT,
   IN quadtree_end BIGINT
 ) BEGIN
@@ -101,11 +101,11 @@ END $$
 
 
 CREATE PROCEDURE `get_cpms_quadtree_and_station_id`(
-  IN time_start INT,
-  IN time_end INT,
+  IN time_start BIGINT,
+  IN time_end BIGINT,
   IN quadtree_start BIGINT,
   IN quadtree_end BIGINT,
-  IN in_station_id INT
+  IN in_station_id BIGINT
 ) BEGIN
 select 
   CPM.event_timestamp as `timestamp`,

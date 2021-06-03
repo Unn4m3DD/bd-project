@@ -6,13 +6,11 @@ let maria_sql_connection: mariadb.Connection;
 
 
 async function queryMariaDb(procedure_name: string, query_parameters: any[]) {
-  query_parameters = query_parameters.map(e => JSON.parse(e))
+  query_parameters = query_parameters.map(e => { try { return JSON.parse(e) } catch (err) { return e } })
   //const startTime = Date.now();
   const result = await maria_sql_connection.query(
-    `call ${procedure_name}(${
-      "?,".repeat(query_parameters.length - 1 > 0 ? query_parameters.length - 1 : 0)
-    }${
-      query_parameters.length != 0 ? "?" : ""
+    `call ${procedure_name}(${"?,".repeat(query_parameters.length - 1 > 0 ? query_parameters.length - 1 : 0)
+    }${query_parameters.length != 0 ? "?" : ""
     });`,
     query_parameters)
   //if (procedure_name.includes("join"))
@@ -22,11 +20,9 @@ async function queryMariaDb(procedure_name: string, query_parameters: any[]) {
 }
 async function queryMsSql(procedure_name: string, query_parameters: string[]) {
   const request = new ms_sql_connection.Request(/* [pool or transaction] */)
-  let query = `call ${procedure_name}(${
-    "?,".repeat(query_parameters.length - 1 > 0 ? query_parameters.length - 1 : 0)
-  }${
-    query_parameters.length != 0 ? "?" : ""
-  });`
+  let query = `call ${procedure_name}(${"?,".repeat(query_parameters.length - 1 > 0 ? query_parameters.length - 1 : 0)
+    }${query_parameters.length != 0 ? "?" : ""
+    });`
   let index = 0;
   while (query.match(/\?/))
     query = query.replace("?", "arg" + index++)
