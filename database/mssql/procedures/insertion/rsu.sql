@@ -6,6 +6,7 @@ CREATE PROCEDURE insert_rsu
     @longitude INT,
     @app_version INT
 AS
+BEGIN TRAN
 update it2s_db.Emitter set current_app_version=@app_version where station_id = @emitter_id
 IF @@ROWCOUNT=0
     insert into it2s_db.Emitter
@@ -14,3 +15,4 @@ update it2s_db.RSU set latitude=@latitude, longitude=@longitude where emitter_st
 IF @@ROWCOUNT=0
     insert into it2s_db.RSU
 values(@emitter_id, @latitude, @longitude);
+COMMIT TRAN
