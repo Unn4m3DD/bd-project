@@ -3,7 +3,7 @@ DROP PROCEDURE `insert_smartphone`;
 DELIMITER $$
 
 CREATE PROCEDURE `insert_smartphone`(
-  IN `emitter_id` INT,
+  IN `emitter_id` BIGINT,
   IN `app_version` INT, 
   IN `power_status` INT, 
   IN `lang` CHAR(2)

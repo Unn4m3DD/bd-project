@@ -231,6 +231,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
 
     const denm_raw = await get_events("denms", start_time, end_time, number_quadtree, zoom, station_id)
     const denm = {}
+    console.log(denm_raw)
     denm_raw[0].forEach(element => {
       if (!denm[element.timestamp])
         denm[element.timestamp] = []

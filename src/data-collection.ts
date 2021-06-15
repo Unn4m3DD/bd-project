@@ -144,7 +144,7 @@ async function setup() {
         }
         setTimeout(() => sent_recently[message_type][message_content.station_id] = false, 1000);
         try {
-	  await dbOnMessage[message_type](message_content, quadtree);
+          await dbOnMessage[message_type](message_content, quadtree);
         } catch (e) { console.log(e) }
       }
     })
