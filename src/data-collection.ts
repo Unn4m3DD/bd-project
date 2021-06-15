@@ -30,7 +30,7 @@ const insertOrUpdateOnDb = {
 
   },
   denm: async (denm: denm_t) => {
-    const app_version = denm.app_version;
+    const app_version = denm.app_version || 1;
     const power_status = denm.language || 100;
     const language = denm.language || "pt"
     const browser_name = denm.browser_name || "chrome"
@@ -103,7 +103,7 @@ const dbOnMessage = {
   }
 }
 
-const mosquitto_credentials: { [key: string]: { brokerUrl?: any, opts?: mqtt.IClientOptions } } = {
+const mosquitto_credentials: { [key: string]: { brokerUrl: any, opts: mqtt.IClientOptions } } = {
   "msSql": { brokerUrl: 'mqtt://unn4m3dd.xyz', opts: { port: 21, } },
   "mariadb": { brokerUrl: 'mqtt://localhost', opts: { port: 1883, username: "it2s", password: "it2sit2s" } },
 }
