@@ -14,7 +14,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/car_count?start_time=1621172276&end_time=1621174276&location_quadtree=15011352623&quadtree_zoom=18&rsu_station_id=10",
+							"raw": "{{baseUrl}}/car_count?start_time=1621172276&end_time=1621174276",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -35,17 +35,20 @@ module.exports = {
 								{
 									"key": "location_quadtree",
 									"value": "15011352623",
-									"description": "(Optional) Tile of the location from where the data must be queried"
+									"description": "(Optional) Tile of the location from where the data must be queried",
+									"disabled": true
 								},
 								{
 									"key": "quadtree_zoom",
 									"value": "18",
-									"description": "(Optional) Zoom level of the data collected (default: 18)"
+									"description": "(Optional) Zoom level of the data collected (default: 18)",
+									"disabled": true
 								},
 								{
 									"key": "rsu_station_id",
 									"value": "10",
-									"description": "(Optional) Array of station id of the emitter"
+									"description": "(Optional) Array of station id of the emitter",
+									"disabled": true
 								}
 							]
 						}
@@ -407,7 +410,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/events?start_time=1621172276&end_time=1621174276&location_quadtree=15011352623&quadtree_zoom=17",
+							"raw": "{{baseUrl}}/events?start_time=1621707278&end_time=1621707578",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -417,23 +420,25 @@ module.exports = {
 							"query": [
 								{
 									"key": "start_time",
-									"value": "1621172276",
+									"value": "1621707278",
 									"description": "(Required) Event listing start timestamp (seconds)"
 								},
 								{
 									"key": "end_time",
-									"value": "1621174276",
+									"value": "1621707578",
 									"description": "(Required) Event listing end timestamp (seconds)"
 								},
 								{
 									"key": "location_quadtree",
 									"value": "15011352623",
-									"description": "(Optional) Tile of the location from where the data must be queried"
+									"description": "(Optional) Tile of the location from where the data must be queried",
+									"disabled": true
 								},
 								{
 									"key": "quadtree_zoom",
 									"value": "17",
-									"description": "(Optional) Zoom level of the data collected"
+									"description": "(Optional) Zoom level of the data collected",
+									"disabled": true
 								},
 								{
 									"key": "emitter_id",
@@ -833,7 +838,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/denms_list?start_time=1620223705&end_time=9620223708",
+							"raw": "{{baseUrl}}/denms_list?start_time=1622806954&end_time=1622836954",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -843,12 +848,12 @@ module.exports = {
 							"query": [
 								{
 									"key": "start_time",
-									"value": "1620223705",
+									"value": "1622806954",
 									"description": "(Required) Notification listing start timestamp (seconds)"
 								},
 								{
 									"key": "end_time",
-									"value": "9620223708",
+									"value": "1622836954",
 									"description": "(Required) Notification listing end timestamp (seconds)"
 								},
 								{
@@ -912,7 +917,7 @@ module.exports = {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/event_timestamps?time_interval=[1621172002, 1621172253]",
+							"raw": "{{baseUrl}}/event_timestamps",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -923,7 +928,8 @@ module.exports = {
 								{
 									"key": "time_interval",
 									"value": "[1621172002, 1621172253]",
-									"description": "(Optional) Filter by Time Interval"
+									"description": "(Required) Filter by Time Interval",
+									"disabled": true
 								}
 							]
 						}

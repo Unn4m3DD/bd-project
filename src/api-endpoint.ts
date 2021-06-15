@@ -119,11 +119,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
       start_time = JSON.parse(req.query.time_interval as string)[0]
       end_time = JSON.parse(req.query.time_interval as string)[1]
     }
-    let timestamps;
-    if (start_time && end_time)
-      timestamps = (await query(`get_timestamps_between`, [start_time, end_time]))[0]
-    else
-      timestamps = (await query(`get_timestamps`, []))[0]
+    let timestamps = (await query(`get_timestamps_between`, [start_time, end_time]))[0]
     timestamps = timestamps.map(e => e.event_timestamp)
     timestamps.shift()
     timestamps.pop()
@@ -136,7 +132,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     res.send(result)
 
   },
-  notifications_list:  async (req, res) => {
+  notifications_list: async (req, res) => {
 
     /*
     req start_time=1620223705

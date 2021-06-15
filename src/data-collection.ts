@@ -31,8 +31,8 @@ const insertOrUpdateOnDb = {
   },
   denm: async (denm: denm_t) => {
     const app_version = denm.app_version;
-    const power_status = denm.language || 100; 
-    const language = denm.language || "pt" 
+    const power_status = denm.language || 100;
+    const language = denm.language || "pt"
     const browser_name = denm.browser_name || "chrome"
     const browser_version = denm.browser_version || "10.0.1.2"
     if (denm.origin == "mobile")
@@ -133,15 +133,15 @@ async function setup() {
       let message_content = JSON.parse(message.toString())
       let quadtree = parseInt(topic_arr.slice(3, topic_arr.length - 1).join("").padEnd(18, "0"), 4)
       if (topic_arr.length <= 3) return;
-      try {
-        await insertOrUpdateOnDb[message_type](message_content);
-      } catch (e) {
-        console.log(e)
-        /*this path might be taken due to race conditions but the db ensures data integrity
-        this is not a problem because it only occurs once or twice every time a new id is added to the db*/
-      }
       if (!sent_recently[message_type][message_content.station_id]) {
         sent_recently[message_type][message_content.station_id] = true;
+        try {
+          await insertOrUpdateOnDb[message_type](message_content);
+        } catch (e) {
+          console.log(e)
+          /*this path might be taken due to race conditions but the db ensures data integrity
+          this is not a problem because it only occurs once or twice every time a new id is added to the db*/
+        }
         setTimeout(() => sent_recently[message_type][message_content.station_id] = false, 1000);
         dbOnMessage[message_type](message_content, quadtree);
       }
@@ -152,7 +152,7 @@ async function setup() {
         last_count = result;
         mqtt_client.publish("its_center/notification", "notifications_changed")
       }
-    }, 100)
+    }, 1000)
   } catch (e) { console.log(e) }
   // setInterval(() => { console.log(message_counter) }, 1000)
 }
