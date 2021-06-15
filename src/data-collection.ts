@@ -143,7 +143,9 @@ async function setup() {
           this is not a problem because it only occurs once or twice every time a new id is added to the db*/
         }
         setTimeout(() => sent_recently[message_type][message_content.station_id] = false, 1000);
-        dbOnMessage[message_type](message_content, quadtree);
+        try {
+	  dbOnMessage[message_type](message_content, quadtree);
+        } catch (e) { console.log(e) }
       }
     })
     setInterval(async () => {
