@@ -188,73 +188,89 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
 
-    const cpm_raw = await get_events("cpms", start_time, end_time, number_quadtree, zoom, station_id)
-    const cpm = {}
-    cpm_raw[0].forEach(element => {
-      if (!cpm[element.timestamp])
-        cpm[element.timestamp] = []
-      cpm[element.timestamp].push({
-        station_id: element.station_id,
-        longitude: element.longitude,
-        latitude: element.latitude,
-        perceived_objects: JSON.parse(element.perceived_objects),
+    const cpm = (async () => {
+      const cpm_raw = await get_events("cpms", start_time, end_time, number_quadtree, zoom, station_id)
+      const cpm = {}
+      cpm_raw[0].forEach(element => {
+        if (!cpm[element.timestamp])
+          cpm[element.timestamp] = []
+        cpm[element.timestamp].push({
+          station_id: element.station_id,
+          longitude: element.longitude,
+          latitude: element.latitude,
+          perceived_objects: JSON.parse(element.perceived_objects),
+        })
       })
-    })
+      return cpm
+    })()
 
-    const cam_raw = await get_events("cams", start_time, end_time, number_quadtree, zoom, station_id)
-    const cam = {}
-    cam_raw[0].forEach(element => {
-      if (!cam[element.timestamp])
-        cam[element.timestamp] = []
-      cam[element.timestamp].push({
-        station_id: element.station_id,
-        longitude: element.longitude,
-        latitude: element.latitude,
-        station_type: element.station_type,
+
+
+    const cam = (async () => {
+      const cam_raw = await get_events("cams", start_time, end_time, number_quadtree, zoom, station_id)
+      const cam = {}
+      cam_raw[0].forEach(element => {
+        if (!cam[element.timestamp])
+          cam[element.timestamp] = []
+        cam[element.timestamp].push({
+          station_id: element.station_id,
+          longitude: element.longitude,
+          latitude: element.latitude,
+          station_type: element.station_type,
+        })
       })
-    })
+      return cam
+    })()
 
 
-    const vam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
-    const vam = {}
-    vam_raw[0].forEach(element => {
-      if (!vam[element.timestamp])
-        vam[element.timestamp] = []
-      vam[element.timestamp].push({
-        station_id: element.station_id,
-        longitude: element.longitude,
-        latitude: element.latitude,
-        station_type: element.station_type,
+    const vam = (async () => {
+      const vam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
+      const vam = {}
+      vam_raw[0].forEach(element => {
+        if (!vam[element.timestamp])
+          vam[element.timestamp] = []
+        vam[element.timestamp].push({
+          station_id: element.station_id,
+          longitude: element.longitude,
+          latitude: element.latitude,
+          station_type: element.station_type,
+        })
       })
-    })
+      return vam
+    })()
 
 
-    const denm_raw = await get_events("denms", start_time, end_time, number_quadtree, zoom, station_id)
-    const denm = {}
-    console.log(denm_raw)
-    denm_raw[0].forEach(element => {
-      if (!denm[element.timestamp])
-        denm[element.timestamp] = []
-      denm[element.timestamp].push({
-        station_id: element.station_id,
-        longitude: element.longitude,
-        latitude: element.latitude,
-        cause_code: element.cause_code,
-        sub_cause_code: element.sub_cause_code,
-        duration: element.duration,
+    const denm = (async () => {
+      const denm_raw = await get_events("denms", start_time, end_time, number_quadtree, zoom, station_id)
+      const denm = {}
+      denm_raw[0].forEach(element => {
+        if (!denm[element.timestamp])
+          denm[element.timestamp] = []
+        denm[element.timestamp].push({
+          station_id: element.station_id,
+          longitude: element.longitude,
+          latitude: element.latitude,
+          cause_code: element.cause_code,
+          sub_cause_code: element.sub_cause_code,
+          duration: element.duration,
+        })
       })
-    })
+      return denm
+    })()
 
-    let response = {};
-    for (let i = JSON.parse(req.query.start_time as string); i < JSON.parse(req.query.end_time as string); i++) {
-      response[i] = {
-        "cpm": cpm[i],
-        "cam": cam[i],
-        "vam": vam[i],
-        "denm": denm[i]
-      }
-    }
-    res.send(response)
+    Promise.all([cpm, cam, vam, denm])
+      .then(([cpm, cam, vam, denm]) => {
+        let response = {};
+        for (let i = JSON.parse(req.query.start_time as string); i < JSON.parse(req.query.end_time as string); i++) {
+          response[i] = {
+            "cpm": cpm[i],
+            "cam": cam[i],
+            "vam": vam[i],
+            "denm": denm[i]
+          }
+        }
+        res.send(response)
+      })
   },
   cams_list: async (req, res) => {
     /*
