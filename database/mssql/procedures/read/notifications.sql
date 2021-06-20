@@ -24,22 +24,25 @@ GO
 CREATE PROCEDURE get_notifications_list_quadtree
   @start_time bigint,
   @end_time bigint,
-  @location_quadtree bigint
+  @quadtree_start bigint,
+  @quadtree_end bigint
 AS
 SELECT *
 FROM notifications
-where notifications.quadtree = @location_quadtree and notifications.event_timestamp between @start_time and @end_time
+where notifications.quadtree BETWEEN @quadtree_start and @quadtree_end
+  and notifications.event_timestamp between @start_time and @end_time
 GO
 CREATE PROCEDURE get_notifications_list_quadtree_and_station_id
   @start_time bigint,
   @end_time bigint,
   @in_emitter_id bigint,
-  @location_quadtree bigint
+  @quadtree_start bigint,
+  @quadtree_end bigint
 AS
 SELECT *
 FROM notifications
 where notifications.emitter_id = @in_emitter_id
-  and notifications.quadtree = @location_quadtree
+  and notifications.quadtree BETWEEN @quadtree_start and @quadtree_end
   and notifications.event_timestamp between @start_time and @end_time
 GO
 

@@ -1,6 +1,7 @@
-drop function it2s_db.check_user;
+drop function it2s_db.udf_check_user;
+drop procedure check_user;
 GO
-create function it2s_db.check_user(
+create function it2s_db.udf_check_user(
   @username varchar(128),
   @passwd_in varchar(64)
 ) returns int
@@ -23,4 +24,10 @@ BEGIN
     return 1;
   return 0;
 END
+GO
+create procedure check_user 
+  @username varchar(128),
+  @passwd_in varchar(64)
+AS
+  SELECT it2s_db.udf_check_user(@username, @passwd_in) as value
 GO
