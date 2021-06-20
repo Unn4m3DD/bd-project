@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "tsc && node dist/index.js mariadb",
-    "build": "tsc -w",
+    "build": "tsc",
     "generate": "node util/generate-api-test.js > tests/test-all-endpoints.js && node util/generate-mock.js > src/api-compiled.ts",
     "test": "node tests/test-all-endpoints.js"
   },

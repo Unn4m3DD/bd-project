@@ -13,9 +13,9 @@ for (let item of items) {
   queries = queries.filter(query => required_params.reduce((prev, req_param) => prev && query.includes(req_param.key), true))
   for (let query of queries)
     console.log(`
-fetch("http://ccam.av.it.pt/api/${item.name}?${query}", { method: 'GET', redirect: 'follow' })
+fetch("http://localhost:8001/api/${item.name}?${query}", { method: 'GET', redirect: 'follow' })
   .then(response => response.text())
   .then(result => JSON.parse(result))
-  .catch(error => console.log('error on query: http://ccam.av.it.pt/api/${item.name}?${query}'));
+  .catch(error => console.log('error on query: http://localhost:8001/api/${item.name}?${query}'));
   `)
 }

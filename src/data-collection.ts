@@ -104,7 +104,7 @@ const dbOnMessage = {
 }
 
 const mosquitto_credentials: { [key: string]: { brokerUrl: any, opts: mqtt.IClientOptions } } = {
-  "msSql": { brokerUrl: 'mqtt://unn4m3dd.xyz', opts: { port: 21, } },
+  "msSql": { brokerUrl: 'mqtt://unn4m3dd.xyz', opts: { port: 21 } },
   "mariadb": { brokerUrl: 'mqtt://localhost', opts: { port: 1883, username: "it2s", password: "it2sit2s" } },
 }
 let mqtt_client: mqtt.MqttClient;
@@ -113,6 +113,9 @@ async function setup() {
   try {
     const credentials = mosquitto_credentials[process.argv[2]]
     mqtt_client = mqtt.connect(credentials.brokerUrl, credentials.opts)
+    mqtt_client.on("error", () => {
+      console.log("An error occurred connecting to the data collection broker, please contact us")
+    })
     let sent_recently = {
       cpm: {},
       cam: {},
@@ -149,7 +152,7 @@ async function setup() {
       }
     })
     setInterval(async () => {
-      const result = (await query("get_notification_count", []))[0][0].value
+      const result = (await query("get_notification_count", []))[0].value
       if (result != last_count) {
         last_count = result;
         mqtt_client.publish("its_center/notification", "notifications_changed")

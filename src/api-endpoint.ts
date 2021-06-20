@@ -68,7 +68,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
     const car_count = await get_events("car_count", start_time, end_time, number_quadtree, zoom, station_id)
-    res.send({ value: car_count[0][0]["value"] })
+    res.send({ value: car_count[0]["value"] })
   },
   car_speed_average: async (req, res) => {
     /*
@@ -89,7 +89,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
     const car_speed = await get_events("car_average_speed", start_time, end_time, number_quadtree, zoom, station_id)
-    res.send({ value: car_speed[0][0]["value"] })
+    res.send({ value: car_speed[0]["value"] })
   },
   people_count: async (req, res) => {
     /*
@@ -107,7 +107,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     if (req.query.quadtree_zoom)
       zoom = JSON.parse(req.query.quadtree_zoom as string)
     const car_speed = await get_events("people_count", start_time, end_time, number_quadtree, zoom, undefined)
-    res.send({ value: car_speed[0][0]["value"] })
+    res.send({ value: car_speed[0]["value"] })
   },
   event_timestamps: async (req, res) => {
     /*
@@ -119,7 +119,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
       start_time = JSON.parse(req.query.time_interval as string)[0]
       end_time = JSON.parse(req.query.time_interval as string)[1]
     }
-    let timestamps = (await query(`get_timestamps_between`, [start_time, end_time]))[0]
+    let timestamps = (await query(`get_timestamps_between`, [start_time, end_time]))
     timestamps = timestamps.map(e => e.event_timestamp)
     timestamps.shift()
     timestamps.pop()
@@ -154,7 +154,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
 
     const notification_raw = await get_events("notifications_list", start_time, end_time, number_quadtree, zoom, station_id)
     const notification = {}
-    notification_raw[0].forEach(element => {
+    notification_raw.forEach(element => {
       if (!notification[element.timestamp])
         notification[element.timestamp] = []
       notification[element.timestamp].push({
@@ -191,7 +191,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     const cpm = (async () => {
       const cpm_raw = await get_events("cpms", start_time, end_time, number_quadtree, zoom, station_id)
       const cpm = {}
-      cpm_raw[0].forEach(element => {
+      cpm_raw.forEach(element => {
         if (!cpm[element.timestamp])
           cpm[element.timestamp] = []
         cpm[element.timestamp].push({
@@ -209,7 +209,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     const cam = (async () => {
       const cam_raw = await get_events("cams", start_time, end_time, number_quadtree, zoom, station_id)
       const cam = {}
-      cam_raw[0].forEach(element => {
+      cam_raw.forEach(element => {
         if (!cam[element.timestamp])
           cam[element.timestamp] = []
         cam[element.timestamp].push({
@@ -226,7 +226,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     const vam = (async () => {
       const vam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
       const vam = {}
-      vam_raw[0].forEach(element => {
+      vam_raw.forEach(element => {
         if (!vam[element.timestamp])
           vam[element.timestamp] = []
         vam[element.timestamp].push({
@@ -243,7 +243,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
     const denm = (async () => {
       const denm_raw = await get_events("denms", start_time, end_time, number_quadtree, zoom, station_id)
       const denm = {}
-      denm_raw[0].forEach(element => {
+      denm_raw.forEach(element => {
         if (!denm[element.timestamp])
           denm[element.timestamp] = []
         denm[element.timestamp].push({
@@ -293,7 +293,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
 
     const cam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
     const cam = {}
-    cam_raw[0].forEach(element => {
+    cam_raw.forEach(element => {
       if (!cam[element.timestamp])
         cam[element.timestamp] = []
       cam[element.timestamp].push({
@@ -325,7 +325,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
       zoom = JSON.parse(req.query.quadtree_zoom as string)
     const cpm_raw = await get_events("cpms", start_time, end_time, number_quadtree, zoom, station_id)
     const cpm = {}
-    cpm_raw[0].forEach(element => {
+    cpm_raw.forEach(element => {
       if (!cpm[element.timestamp])
         cpm[element.timestamp] = []
       cpm[element.timestamp].push({
@@ -358,7 +358,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
 
     const vam_raw = await get_events("vams", start_time, end_time, number_quadtree, zoom, station_id)
     const vam = {}
-    vam_raw[0].forEach(element => {
+    vam_raw.forEach(element => {
       if (!vam[element.timestamp])
         vam[element.timestamp] = []
       vam[element.timestamp].push({
@@ -391,7 +391,7 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
 
     const denm_raw = await get_events("denms", start_time, end_time, number_quadtree, zoom, station_id)
     const denm = {}
-    denm_raw[0].forEach(element => {
+    denm_raw.forEach(element => {
       if (!denm[element.timestamp])
         denm[element.timestamp] = []
       denm[element.timestamp].push({
@@ -413,12 +413,12 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
          creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
          this is not a performance issue, we've opted to do it this way */
-        response.push(...((await query("get_obu_list_emitter_id", [id]))[0]))
+        response.push(...((await query("get_obu_list_emitter_id", [id]))))
       }
       res.send(response)
     }
     else
-      res.send((await query("get_obu_list", []))[0])
+      res.send((await query("get_obu_list", [])))
   },
   rsu_list: async (req, res) => {
     if (req.query.emitter_ids) {
@@ -427,12 +427,12 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
          creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
          this is not a performance issue, we've opted to do it this way */
-        response.push(...((await query("get_rsus_emitter_id", [id]))[0]))
+        response.push(...((await query("get_rsu_list_emitter_id", [id]))))
       }
       res.send(response)
     }
     else
-      res.send((await query("get_rsus", []))[0])
+      res.send((await query("get_rsu_list", [])))
   },
   smartphone_list: async (req, res) => {
 
@@ -442,12 +442,12 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
          creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
          this is not a performance issue, we've opted to do it this way */
-        response.push(...((await query("get_smartphone_list_emitter_id", [id]))[0]))
+        response.push(...((await query("get_smartphone_list_emitter_id", [id]))))
       }
       res.send(response)
     }
     else
-      res.send((await query("get_smartphone_list", []))[0])
+      res.send((await query("get_smartphone_list", [])))
   },
   web_list: async (req, res) => {
 
@@ -457,16 +457,45 @@ const api_response: { [key: string]: (req: express.Request, res: express.Respons
         /* we would like to use emitter_station_id in (...emitter_ids) but there is no secure way of doing it without 
          creating complex code. since almost every query will not have more than 3 to 4 ids on a worst case scenario
          this is not a performance issue, we've opted to do it this way */
-        response.push(...((await query("get_website_list_emitter_id", [id]))[0]))
+        response.push(...((await query("get_website_list_emitter_id", [id]))))
       }
       res.send(response)
     }
     else
-      res.send((await query("get_website_list", []))[0])
+      res.send((await query("get_website_list", [])))
   },
 }
 
 function setup() {
   api.forEach(e => e(app, api_response))
+  app.get("/api/add_user", async (req, res) => {
+    try {
+      if (req.query.username && req.query.password) {
+        const username = req.query.username as string
+        const password = req.query.password as string
+        res.send(await query("insert_user", [username, password]))
+      } else {
+        res.send("An error occurred with the request format")
+      }
+    } catch (e) {
+      res.send("An error occurred with the request format " + e)
+      console.log(e)
+    }
+  })
+
+  app.get("/api/login", async (req, res) => {
+    try {
+      if (req.query.username && req.query.password) {
+        const username = req.query.username as string
+        const password = req.query.password as string
+        res.send({ success: !!(await query("check_user", [username, password]))[0].value })
+      } else {
+        res.send("An error occurred with the request format")
+      }
+    } catch (e) {
+      res.send("An error occurred with the request format " + e)
+      console.log(e)
+    }
+  })
   app.listen(8001)
 }

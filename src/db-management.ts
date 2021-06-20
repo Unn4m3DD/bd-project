@@ -15,24 +15,35 @@ async function queryMariaDb(procedure_name: string, query_parameters: any[]) {
     query_parameters)
   //if (procedure_name.includes("join"))
   //  console.log((Date.now() - startTime) + "ms");
-  return result
+  return result[0]
 
 }
-async function queryMsSql(procedure_name: string, query_parameters: string[]) {
+async function queryMsSql(procedure_name: string, query_parameters: any[]) {
   const request = new ms_sql_connection.Request(/* [pool or transaction] */)
-  let query = `call ${procedure_name}(${"?,".repeat(query_parameters.length - 1 > 0 ? query_parameters.length - 1 : 0)
+  let query_string = `exec ${procedure_name} ${"?,".repeat(query_parameters.length - 1 > 0 ? query_parameters.length - 1 : 0)
     }${query_parameters.length != 0 ? "?" : ""
-    });`
+    };`
   let index = 0;
-  while (query.match(/\?/))
-    query = query.replace("?", "arg" + index++)
+  while (query_string.match(/\?/))
+    query_string = query_string.replace("?", "@arg" + index++)
   for (let i = 0; i < index; i++) {
-    request.input('arg' + i, query_parameters[i]);
+    if (typeof (query_parameters[i]) == "number" && query_parameters[i] > (1 << 32))
+      request.input('arg' + i, ms_sql_connection.BigInt, query_parameters[i]);
+    else
+      request.input('arg' + i, query_parameters[i]);
   }
-  return (await request.query(procedure_name)).recordset
+  try {
+    //console.log((await request.query(query_string)).recordset)
+    return (await request.query(query_string)).recordset
+  } catch (e) {
+    console.log(query_string)
+    console.log(query_parameters)
+    console.log(e)
+    return null;
+  }
 }
 
-async function getQueryInterface() {
+async function getQueryInterface(username?: string, password?: string) {
   if (process.argv[2] == "mariadb") {
     const pool = mariadb.createPool({
       host: 'localhost',
@@ -47,8 +58,8 @@ async function getQueryInterface() {
   }
   else {
     await ms_sql_connection.connect({
-      user: "p2g1",
-      password: "Tuprima1!",
+      user: username,
+      password: password,
       server: "mednat.ieeta.pt",
       serverName: "\\SQLSERVER",
       port: 8101,
