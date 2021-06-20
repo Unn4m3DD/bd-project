@@ -14,3 +14,4 @@ SELECT emitter_station_id as emitter_id,
       last_power_status
 from it2s_db.OBU
 where emitter_station_id = @id;
+GO

@@ -60,3 +60,4 @@ from it2s_db.CAM
 where CAM.event_timestamp between @time_start and @time_end
   and @in_station_id = station_id
   and quadtree between @quadtree_start and @quadtree_end;
+  GO

@@ -80,3 +80,5 @@ where
   DENM.event_timestamp between @time_start and @time_end and
   @in_station_id = emitter_station_id and
   quadtree between @quadtree_start and @quadtree_end;
+GO
+

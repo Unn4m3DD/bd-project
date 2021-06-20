@@ -1,7 +1,7 @@
 DROP PROCEDURE insert_smartphone;
 GO
 CREATE PROCEDURE insert_smartphone
-    @emitter_id INT,
+    @emitter_id BIGINT,
     @app_version INT,
     @lang CHAR(2),
     @last_power_status INT
@@ -32,3 +32,4 @@ IF @@ROWCOUNT=0
 			COMMIT TRAN
 		END
 END
+GO

@@ -14,3 +14,4 @@ SELECT emitter_station_id as emitter_id,
       latitude, longitude
 from it2s_db.RSU
 where emitter_station_id = @id;
+GO

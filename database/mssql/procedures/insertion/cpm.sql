@@ -69,3 +69,5 @@ values(
     @ySpeed,
     it2s_db.getObjectAbsSpeed(@xSpeed, @ySpeed)
   );
+  GO
+  

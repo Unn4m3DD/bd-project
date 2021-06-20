@@ -42,3 +42,4 @@ where notifications.emitter_id = @in_emitter_id
   and notifications.quadtree = @location_quadtree
   and notifications.event_timestamp between @start_time and @end_time
 GO
+

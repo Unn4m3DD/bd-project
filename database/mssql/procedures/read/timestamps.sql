@@ -62,3 +62,5 @@ from
 where 
   prev != (event_timestamp - 1) or
   [next] != (event_timestamp + 1);
+GO
+

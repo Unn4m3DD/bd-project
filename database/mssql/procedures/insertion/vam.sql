@@ -10,3 +10,4 @@ CREATE PROCEDURE insert_vam
 AS
 insert into it2s_db.VAM
 values(@emitter_id, @timestamp, @station_type, @latitude, @longitude, @quadtree)
+GO

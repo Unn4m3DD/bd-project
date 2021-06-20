@@ -154,7 +154,7 @@ GO
 create table it2s_db.Notification1
 (
     perceived_object_emitter bigint not null,
-    perceived_object_timestamp int not null,
+    perceived_object_timestamp bigint not null,
     perceived_object_id int not null,
     status_id int foreign key references it2s_db.Status(id),
     foreign key (perceived_object_emitter, perceived_object_timestamp, perceived_object_id)
@@ -171,6 +171,15 @@ create table it2s_db.Notification2
     status_id int foreign key references it2s_db.Status(id),
     foreign key (cam_emitter_station_id, cam_event_timestamp) references it2s_db.CAM(station_id, event_timestamp),
     primary key(cam_emitter_station_id, cam_event_timestamp)
+)
+GO
+;
+create table it2s_db.dbUser
+(
+    id bigint IDENTITY(1,1) primary key,
+    normalized_username varchar(128) unique,
+    salt char(64),
+    password binary(32)
 )
 GO
 ;

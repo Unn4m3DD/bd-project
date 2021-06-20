@@ -16,3 +16,4 @@ SELECT WebSite.emitter_station_id as emitter_id,
 from it2s_db.WebSite
       JOIN it2s_db.App on WebSite.emitter_station_id = App.emitter_station_id
 where WebSite.emitter_station_id = @id;
+GO

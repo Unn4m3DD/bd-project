@@ -52,5 +52,7 @@ select
 from it2s_db.PerceivedObject
 where 
       event_timestamp between @time_start and @time_end;
+GO
+
 
 

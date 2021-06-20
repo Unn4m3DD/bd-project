@@ -11,4 +11,5 @@ CREATE PROCEDURE insert_demn
   @quadtree BIGINT
 AS
 insert into it2s_db.DENM
-values(@emitter_id, @timestamp, @cause_code, @sub_cause_code, @abs_speed, @latitude, @longitude, @duration, @quadtree);
+values(@emitter_id, @timestamp, @cause_code, @sub_cause_code, @latitude, @longitude, @duration, @quadtree);
+GO

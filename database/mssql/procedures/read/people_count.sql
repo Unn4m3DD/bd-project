@@ -27,3 +27,4 @@ BEGIN
   from it2s_db.VAM
   where event_timestamp between @time_start and @time_end;
 END;
+GO

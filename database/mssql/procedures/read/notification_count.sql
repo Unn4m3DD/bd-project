@@ -7,3 +7,4 @@ BEGIN
     count(*) as [value]
   from notifications;
 END 
+GO

@@ -16,3 +16,4 @@ SELECT Smartphone.emitter_station_id as emitter_id,
 from it2s_db.Smartphone
       JOIN it2s_db.App on Smartphone.emitter_station_id = App.emitter_station_id
 where Smartphone.emitter_station_id = @id;
+GO

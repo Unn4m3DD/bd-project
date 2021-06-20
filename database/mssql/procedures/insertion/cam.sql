@@ -11,3 +11,4 @@ CREATE PROCEDURE insert_cam
 AS
 insert into it2s_db.CAM
 values(@emitter_id, @timestamp, @station_type, @abs_speed, @latitude, @longitude, @quadtree)
+GO

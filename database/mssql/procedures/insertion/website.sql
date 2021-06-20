@@ -1,7 +1,7 @@
-DROP PROCEDURE INSERT_website;
+DROP PROCEDURE insert_website;
 GO
-CREATE PROCEDURE INSERT_website
-    @emitter_id INT,
+CREATE PROCEDURE insert_website
+    @emitter_id BIGINT,
     @app_version INT,
     @lang CHAR(2),
     @browser_version INT
@@ -32,3 +32,4 @@ IF @@ROWCOUNT=0
             COMMIT TRAN
         END
 END
+GO

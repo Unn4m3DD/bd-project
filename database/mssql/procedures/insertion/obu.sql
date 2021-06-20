@@ -1,7 +1,7 @@
 DROP PROCEDURE insert_obu;
 GO
 CREATE PROCEDURE insert_obu
-    @emitter_id INT,
+    @emitter_id BIGINT,
     @app_version INT,
     @last_power_status INT
 AS
@@ -15,3 +15,4 @@ IF @@ROWCOUNT=0
     insert into it2s_db.OBU
 values(@emitter_id, @last_power_status);
 COMMIT TRAN
+GO

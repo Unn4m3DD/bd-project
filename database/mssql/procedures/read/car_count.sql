@@ -112,3 +112,4 @@ from (
           event_timestamp between @time_start and @time_end
   ) as inner_table
 where diff > 3 or diff is NULL;
+GO
