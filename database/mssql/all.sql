@@ -1,3 +1,265 @@
+create index timestamp_cpm on it2s_db.CPM(event_timestamp);
+create index timestamp_perceived_object on it2s_db.PerceivedObject(event_timestamp);
+create index timestamp_cam on it2s_db.CAM(event_timestamp);
+create index timestamp_vam on it2s_db.VAM(event_timestamp);
+create index timestamp_denm on it2s_db.DENM(event_timestamp);
+create index username on it2s_db.dbUser(normalized_username);
+
+
+drop index timestamp_cpm on it2s_db.CPM;
+drop index timestamp_perceived_object on it2s_db.PerceivedObject;
+drop index timestamp_cam on it2s_db.CAM;
+drop index timestamp_vam on it2s_db.VAM;
+drop index timestamp_denm on it2s_db.DENM;DROP VIEW notifications;
+GO
+drop table it2s_db.dbUser
+GO
+drop table it2s_db.Notification2;
+GO
+drop table it2s_db.Notification1;
+GO
+drop table it2s_db.Status;
+GO
+drop table it2s_db.DENM;
+GO
+drop table it2s_db.VAM;
+GO
+drop table it2s_db.CAM;
+GO
+drop table it2s_db.PerceivedObject;
+GO
+drop table it2s_db.CPM;
+GO
+drop table it2s_db.RSU;
+GO
+drop table it2s_db.WebSite;
+GO
+drop table it2s_db.Smartphone;
+GO
+drop table it2s_db.App;
+GO
+drop table it2s_db.OBU;
+GO
+drop table it2s_db.Emitter;
+GO
+drop schema it2s_db;
+GO
+
+create schema it2s_db;
+GO
+;
+
+create table it2s_db.Emitter
+(
+    station_id bigint not null,
+    current_app_version int not null,
+    primary key(station_id)
+)
+GO
+;
+
+create table it2s_db.OBU
+(
+    emitter_station_id bigint foreign key references it2s_db.Emitter(station_id) not null,
+    last_power_status int not null,
+    primary key(emitter_station_id)
+)
+GO
+;
+
+create table it2s_db.App
+(
+    emitter_station_id bigint foreign key references it2s_db.Emitter(station_id) not null,
+    configured_language char(2) check( configured_language in ('pt', 'en')) not null,
+    primary key(emitter_station_id)
+)
+GO
+;
+
+create table it2s_db.Smartphone
+(
+    emitter_station_id bigint foreign key references it2s_db.App(emitter_station_id) not null,
+    last_power_status int not null,
+    primary key(emitter_station_id)
+)
+GO
+;
+
+create table it2s_db.WebSite
+(
+    emitter_station_id bigint foreign key references it2s_db.App(emitter_station_id) not null,
+    browser_version int not null,
+    primary key(emitter_station_id)
+)
+GO
+;
+
+create table it2s_db.RSU
+(
+    emitter_station_id bigint foreign key references it2s_db.Emitter(station_id) not null,
+    latitude BIGINT not null,
+    longitude BIGINT not null,
+    primary key(emitter_station_id)
+)
+GO
+;
+
+create table it2s_db.CPM
+(
+    rsu_station_id bigint foreign key references it2s_db.RSU(emitter_station_id) not null,
+    event_timestamp bigint not null,
+    latitude BIGINT not null,
+    longitude BIGINT not null,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
+    primary key(rsu_station_id, event_timestamp)
+)
+GO
+;
+
+create table it2s_db.PerceivedObject
+(
+    cpm_station_id bigint not null,
+    event_timestamp bigint not null,
+    perceived_object_id int not null,
+    latitude BIGINT not null,
+    longitude BIGINT not null,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
+    x_distance int not null,
+    y_distance int not null,
+    x_speed int not null,
+    y_speed int not null,
+    abs_speed int not null,
+    foreign key (cpm_station_id, event_timestamp) references it2s_db.CPM(rsu_station_id, event_timestamp),
+    primary key(cpm_station_id, event_timestamp, perceived_object_id)
+)
+GO
+;
+
+-- create table it2s_db.roadEvent(
+--     cpm_station_id int not null,
+--     event_timestamp bigint not null,
+--     perceived_object_id int not null,
+--     latitude int not null,
+--     longitude BIGINT not null,
+--     foreign key(cpm_station_id, event_timestamp, perceived_object_id) references it2s_db.PerceivedObject( cpm_station_id, event_timestamp, perceived_object_id),
+--     primary key(cpm_station_id, event_timestamp)
+-- )
+-- GO
+-- ;
+
+create table it2s_db.CAM
+(
+    station_id bigint foreign key references it2s_db.OBU(emitter_station_id) not null,
+    event_timestamp bigint not null,
+    station_type int not null,
+    speed int not null,
+    latitude BIGINT not null,
+    longitude BIGINT not null,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
+    -- check limite quadtree zoom 18
+    primary key(station_id, event_timestamp)
+)
+GO
+;
+
+create table it2s_db.VAM
+(
+    emitter_station_id bigint foreign key references it2s_db.SmartPhone(emitter_station_id),
+    event_timestamp bigint not null,
+    station_type int not null,
+    latitude BIGINT not null,
+    longitude BIGINT not null,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
+    primary key(emitter_station_id, event_timestamp)
+)
+GO
+;
+
+create table it2s_db.DENM
+(
+    emitter_station_id bigint foreign key references it2s_db.App(emitter_station_id) not null,
+    event_timestamp bigint not null,
+    cause_code int not null,
+    sub_cause_code int not null,
+    latitude BIGINT not null,
+    longitude BIGINT not null,
+    duration int,
+    quadtree bigint check(0 <= quadtree and quadtree <= 68719476736) not null,
+    primary key(emitter_station_id, event_timestamp)
+)
+GO
+;
+
+create table it2s_db.Status
+(
+    id int primary key not null,
+    [description] varchar(1024) not null,
+)
+GO
+;
+
+create table it2s_db.Notification1
+(
+    perceived_object_emitter bigint not null,
+    perceived_object_timestamp bigint not null,
+    perceived_object_id int not null,
+    status_id int foreign key references it2s_db.Status(id),
+    foreign key (perceived_object_emitter, perceived_object_timestamp, perceived_object_id)
+        references it2s_db.PerceivedObject(cpm_station_id, event_timestamp, perceived_object_id),
+    primary key(perceived_object_emitter, perceived_object_timestamp, perceived_object_id)
+)
+GO
+;
+
+create table it2s_db.Notification2
+(
+    cam_emitter_station_id bigint not null,
+    cam_event_timestamp bigint not null,
+    status_id int foreign key references it2s_db.Status(id),
+    foreign key (cam_emitter_station_id, cam_event_timestamp) references it2s_db.CAM(station_id, event_timestamp),
+    primary key(cam_emitter_station_id, cam_event_timestamp)
+)
+GO
+;
+create table it2s_db.dbUser
+(
+    id bigint IDENTITY(1,1) primary key,
+    normalized_username varchar(128) unique,
+    salt char(64),
+    password binary(32)
+)
+GO
+;
+CREATE VIEW notifications
+AS
+            SELECT perceived_object_emitter as emitter_id,
+            perceived_object_timestamp as event_timestamp,
+            PerceivedObject.perceived_object_id as [object_id],
+            latitude,
+            longitude,
+            quadtree,
+            [description]
+        FROM it2s_db.Notification1
+            JOIN it2s_db.PerceivedObject ON perceived_object_emitter = PerceivedObject.cpm_station_id
+                and perceived_object_timestamp = PerceivedObject.event_timestamp
+                and Notification1.perceived_object_id = PerceivedObject.perceived_object_id
+            join it2s_db.Status on Notification1.status_id = Status.id
+    union
+        SELECT cam_emitter_station_id as emitter_id,
+            cam_event_timestamp as event_timestamp,
+            object_id=null,
+            latitude,
+            longitude,
+            quadtree,
+            [description]
+        FROM it2s_db.Notification2
+            JOIN it2s_db.CAM ON cam_emitter_station_id = station_id
+                and cam_event_timestamp = event_timestamp
+            join it2s_db.Status on Notification2.status_id = Status.id;
+GO
+INSERT INTO it2s_db.Status
+VALUES(0, 'Vehicle going above 120 Km/h');
+GO
 DROP PROCEDURE insert_cam;
 GO
 CREATE PROCEDURE insert_cam
@@ -476,9 +738,10 @@ from (
   ) as inner_table
 where diff > 3 or diff is NULL;
 GO
-drop function it2s_db.check_user;
+drop function it2s_db.udf_check_user;
+drop procedure check_user;
 GO
-create function it2s_db.check_user(
+create function it2s_db.udf_check_user(
   @username varchar(128),
   @passwd_in varchar(64)
 ) returns int
@@ -502,12 +765,19 @@ BEGIN
   return 0;
 END
 GO
+create procedure check_user 
+  @username varchar(128),
+  @passwd_in varchar(64)
+AS
+  SELECT it2s_db.udf_check_user(@username, @passwd_in) as value
+GO
 DROP PROCEDURE get_cpms_station_id;
 DROP PROCEDURE get_cpms;
 DROP PROCEDURE get_cpms_quadtree;
 DROP PROCEDURE get_cpms_quadtree_and_station_id;
 GO
-CREATE PROCEDURE get_cpms 
+
+CREATE PROCEDURE get_cpms
   @time_start BIGINT,
   @time_end BIGINT
 AS
@@ -525,6 +795,8 @@ select CPM.event_timestamp as [timestamp],
 from it2s_db.CPM
 where CPM.event_timestamp between @time_start and @time_end
 GO
+
+
 CREATE PROCEDURE get_cpms_station_id
   @time_start BIGINT,
   @time_end BIGINT,
@@ -545,6 +817,8 @@ from it2s_db.CPM
 where CPM.event_timestamp between @time_start and @time_end
   and @in_station_id = rsu_station_id 
 GO
+
+
 CREATE PROCEDURE get_cpms_quadtree
   @time_start BIGINT,
   @time_end BIGINT,
@@ -566,6 +840,8 @@ from it2s_db.CPM
 where CPM.event_timestamp between @time_start and @time_end
   and quadtree between @quadtree_start and @quadtree_end
 GO
+
+
 CREATE PROCEDURE get_cpms_quadtree_and_station_id
   @time_start BIGINT,
   @time_end BIGINT,
@@ -588,6 +864,77 @@ from it2s_db.CPM
 where CPM.event_timestamp between @time_start and @time_end
   and @in_station_id = rsu_station_id
   and quadtree between @quadtree_start and @quadtree_end;
+GO
+DROP PROCEDURE get_cpms_cursor
+GO
+CREATE PROCEDURE get_cpms_cursor
+  @time_start BIGINT,
+  @time_end BIGINT
+AS
+
+DECLARE @result table(
+  station_id bigint,
+  [timestamp] bigint,
+  latitude bigint,
+  longitude bigint,
+  perceived_objects VARCHAR(max)
+);
+
+DECLARE @cpm_rsu_station_id bigint, @cpm_event_timestamp bigint, @cpm_latitude bigint, @cpm_longitude bigint;
+
+DECLARE cpm_cursor CURSOR FOR SELECT rsu_station_id, event_timestamp, latitude, longitude
+FROM it2s_db.CPM where [timestamp] between @time_start and @time_end;
+
+OPEN cpm_cursor;
+
+FETCH NEXT FROM cpm_cursor INTO 
+    @cpm_rsu_station_id,@cpm_event_timestamp, @cpm_latitude, @cpm_longitude;
+
+WHILE @@FETCH_STATUS = 0
+  BEGIN
+  DECLARE @perceived_object_id int, @x_distance int, @y_distance int, @x_speed int, @y_speed int;
+
+  DECLARE perceived_obj_cursor CURSOR FOR SELECT perceived_object_id, x_distance, y_distance, x_speed, y_speed
+  FROM it2s_db.PerceivedObject
+  where @cpm_rsu_station_id = cpm_station_id;
+  DECLARE @current_perceived_objects VARCHAR(max);
+  SET @current_perceived_objects = '['
+  OPEN perceived_obj_cursor;
+  FETCH NEXT FROM perceived_obj_cursor INTO 
+    @perceived_object_id, @x_distance, @y_distance, @x_speed, @y_speed;
+  DECLARE @sep char
+  WHILE @@FETCH_STATUS = 0
+  BEGIN
+    SET @current_perceived_objects += @sep
+    SET @current_perceived_objects += '{'
+    SET @current_perceived_objects += '"objectID":' + CAST(@perceived_object_id as VARCHAR) + ','
+    SET @current_perceived_objects += '"xDistance":' + CAST(@x_distance as VARCHAR) + ','
+    SET @current_perceived_objects += '"yDistance":' + CAST(@y_distance as VARCHAR) + ','
+    SET @current_perceived_objects += '"xSpeed":' + CAST(@x_speed as VARCHAR) + ','
+    SET @current_perceived_objects += '"ySpeed":' + CAST(@y_speed as VARCHAR)
+    SET @current_perceived_objects += '}'
+    SET @sep = ','
+    FETCH NEXT FROM perceived_obj_cursor INTO 
+      @perceived_object_id, @x_distance, @y_distance, @x_speed, @y_speed;
+  END;
+  CLOSE perceived_obj_cursor;
+  DEALLOCATE perceived_obj_cursor;
+
+  insert into @result
+  values
+    (@cpm_rsu_station_id, @cpm_event_timestamp, @cpm_latitude, @cpm_longitude, @current_perceived_objects)
+
+  FETCH NEXT FROM cpm_cursor INTO 
+        @cpm_rsu_station_id,@cpm_event_timestamp, @cpm_latitude, @cpm_longitude;
+END;
+
+CLOSE cpm_cursor;
+
+DEALLOCATE cpm_cursor;
+
+GO
+
+exec get_cpms_cursor 1624212475, 1624212485
 GO
 DROP PROCEDURE get_denms_station_id;
 DROP PROCEDURE get_denms;
@@ -699,22 +1046,25 @@ GO
 CREATE PROCEDURE get_notifications_list_quadtree
   @start_time bigint,
   @end_time bigint,
-  @location_quadtree bigint
+  @quadtree_start bigint,
+  @quadtree_end bigint
 AS
 SELECT *
 FROM notifications
-where notifications.quadtree = @location_quadtree and notifications.event_timestamp between @start_time and @end_time
+where notifications.quadtree BETWEEN @quadtree_start and @quadtree_end
+  and notifications.event_timestamp between @start_time and @end_time
 GO
 CREATE PROCEDURE get_notifications_list_quadtree_and_station_id
   @start_time bigint,
   @end_time bigint,
   @in_emitter_id bigint,
-  @location_quadtree bigint
+  @quadtree_start bigint,
+  @quadtree_end bigint
 AS
 SELECT *
 FROM notifications
 where notifications.emitter_id = @in_emitter_id
-  and notifications.quadtree = @location_quadtree
+  and notifications.quadtree BETWEEN @quadtree_start and @quadtree_end
   and notifications.event_timestamp between @start_time and @end_time
 GO
 
@@ -971,54 +1321,53 @@ from it2s_db.WebSite
       JOIN it2s_db.App on WebSite.emitter_station_id = App.emitter_station_id
 where WebSite.emitter_station_id = @id;
 GO
+DROP TRIGGER insert_smartphone_trigger;
+DROP TRIGGER insert_website_trigger;
+GO
+CREATE TRIGGER insert_smartphone_trigger on it2s_db.Smartphone
+INSTEAD OF INSERT
+AS 
+BEGIN
+		insert into it2s_db.Smartphone 
+		select * from inserted 
+			where emitter_station_id not in (select emitter_station_id from it2s_db.WebSite);
+END
+GO
+CREATE TRIGGER insert_website_trigger on it2s_db.WebSite
+INSTEAD OF INSERT
+AS 
+BEGIN
+		insert into it2s_db.WebSite 
+		select * from inserted 
+			where emitter_station_id not in (select emitter_station_id from it2s_db.SmartPhone);
+END
+GO
 DROP TRIGGER it2s_db.speed_limit_trigger1;
 DROP TRIGGER it2s_db.speed_limit_trigger2;
 GO
 CREATE TRIGGER it2s_db.speed_limit_trigger1 ON it2s_db.PerceivedObject
 AFTER INSERT
 AS
-	BEGIN
-  DECLARE @to_insert 
-		table(
-    perceived_object_emitter bigint,
-    perceived_object_timestamp bigint,
-    perceived_object_id int,
-    status_id int
-		);
-  insert into @to_insert
-  SELECT
-    cpm_station_id as perceived_object_emitter,
-    event_timestamp as perceived_object_timestamp,
-    perceived_object_id as perceived_object_id,
-    status_id=0
-  from it2s_db.PerceivedObject
-  where abs_speed > 3888;
   -- 140Km/h ~= 3888cm/s
   INSERT INTO it2s_db.Notification1
-  SELECT *
-  FROM @to_insert
-END;
+SELECT
+  cpm_station_id as perceived_object_emitter,
+  event_timestamp as perceived_object_timestamp,
+  perceived_object_id as perceived_object_id,
+  status_id=0
+from inserted
+where abs_speed > 3888;
 GO
 CREATE TRIGGER it2s_db.speed_limit_trigger2 ON it2s_db.CAM
 AFTER INSERT
 AS
-	BEGIN
-  DECLARE @to_insert 
-		table(
-    cam_emitter_station_id bigint,
-    cam_event_timestamp bigint,
-    status_id int
-		);
-  insert into @to_insert
-  SELECT
-    station_id as cam_emitter_station_id,
-    event_timestamp as cam_event_timestamp,
-    status_id=0
-  from it2s_db.CAM
-  where speed > 3888;
+
   -- 140Km/h ~= 3888cm/s
   INSERT INTO it2s_db.Notification2
-  SELECT *
-  FROM @to_insert
-END;
+SELECT
+  station_id as cam_emitter_station_id,
+  event_timestamp as cam_event_timestamp,
+  status_id=0
+from inserted
+where speed > 3888;
 GO
